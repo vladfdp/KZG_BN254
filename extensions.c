@@ -1,16 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <extension.h>
+#include "extensions.h"
+#include "Fp.h"
+#include "int256.h"
+#include "int512.h"
+
 
 #define p 17
 #define k 12
 
-typedef struct Fp2 Fp2;
-struct Fp2
-{
-	Fp.x;
-	Fp.y;
-};
+
 
 Fp2 Fp2_add(Fp2 a,Fp2 b)
 {
@@ -36,13 +35,6 @@ Fp2 Fp2_sub(Fp2 a,Fp2 b)
 	return c;
 }
 
-typedef struct Fp6 Fp6;
-struct Fp6
-{
-	Fp2.x;
-	Fp2.y;
-	Fp2.z;
-}
 
 Fp6 Fp6_add(Fp6 a,Fp6 b)
 {
@@ -74,12 +66,7 @@ Fp6_mult(Fp6 a, Fp6 b)
 	return c;
 }
 
-typedef struct Fp12 Fp12;
-struct Fp12
-{
-	Fp12.x;
-	Fp12.y;
-};
+
 
 
 Fp12 Fp12_add(Fp12 a,Fp12 b)
