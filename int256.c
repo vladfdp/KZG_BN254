@@ -108,6 +108,11 @@ int256 modulo(int512 x, int256 mod){ //on assume que x < mod*2^256
 
 }
 
+int256 zero_256(){
+    int256 zero = {0,0,0,0};
+    return zero;
+}
+
 int256 shift_right_256(int256 x){
 
     x.u0 >>= 1;

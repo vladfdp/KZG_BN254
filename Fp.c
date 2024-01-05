@@ -6,7 +6,10 @@
 
 const Fp P = {{10,10,10,10}};
 
-
+Fp Fp_zero(){
+    Fp zero = {zero_256()};
+    return zero;
+}
 
 Fp Fp_add(Fp a, Fp b){
     
@@ -17,6 +20,31 @@ Fp Fp_add(Fp a, Fp b){
         return sum_min_P;
     }
     return sum;  
+}
+
+Fp Fp_exp(Fp base, int256 exponant){
+
+    Fp ans = Fp_zero();
+
+    for (int i = 0; i < 256; i++)
+    {
+        if (exponant.u0 & 1){
+            ans = Fp_add(ans,base);
+        }
+        base = Fp_mul(base, base);
+        exponant = shift_right_256(exponant);
+    }
+    return ans;
+    
+}
+
+Fp Fp_opp(Fp x){        //retourne -x dans Fp
+    Fp ans = {sub_256(P.num,x.num)};
+    return ans;
+}
+
+Fp Fp_sub(Fp a,Fp b){
+    return Fp_add( a, Fp_opp(b));
 }
 
 Fp Fp_mul(Fp a, Fp b){
