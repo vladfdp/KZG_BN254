@@ -8,7 +8,7 @@ typedef struct Fp{
     int256 num;
 }Fp;
 
-Fp Fp_from_int(uint64_t n)
+Fp Fp_from_int(uint64_t n);
 
 Fp Fp_zero();
 

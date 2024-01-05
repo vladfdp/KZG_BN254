@@ -85,7 +85,7 @@ Fp12 Fp12_sub(Fp12 a,Fp12 b)
 	return c;
 };
 
-Fp12 Fp12_mul(a.y,b.y)
+Fp12 Fp12_mul(Fp12 a,Fp12 b)
 {
 	Fp12 c;
 	Fp6 v;
