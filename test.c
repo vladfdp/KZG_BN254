@@ -4,6 +4,7 @@
 #include "Fp.h"
 #include "int256.h"
 #include "int512.h"
+#include "extensions.h"
 
 
 

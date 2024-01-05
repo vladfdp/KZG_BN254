@@ -28,4 +28,8 @@ int512 shift_right_512(int512 x);
 
 int512 shift_left_by_32(int512 x);
 
+int512 zero_512();
+
+int256 modulo(int512 x, int256 mod);
+
 #endif

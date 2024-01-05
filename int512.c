@@ -69,7 +69,7 @@ int512 sub_512(int512 a, int512 b){       //on assume que a > b
 
 }
 
-int512 zero(){
+int512 zero_512(){
     int512 zero = {0,0,0,0,0,0,0,0};
     return zero;
 }
@@ -98,7 +98,7 @@ int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit pa
 
 int512 mul_from_256(int256 a, int256 b){
 
-    int512 sum = zero();
+    int512 sum = zero_512();
 
     for (int i = 0; i < 8; i++)
     {
