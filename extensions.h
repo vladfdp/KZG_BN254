@@ -15,7 +15,7 @@ Fp2 Fp2_add(Fp2 a,Fp2 b);
 
 Fp2 Fp2_sub(Fp2 a,Fp2 b);
 
-Fp2 Fp2_mult(Fp2 a,Fp2 b); 
+Fp2 Fp2_mul(Fp2 a,Fp2 b); 
 
 typedef struct Fp6 Fp6;
 struct Fp6
@@ -29,7 +29,7 @@ Fp6 Fp6_add(Fp6 a,Fp6 b);
 
 Fp6 Fp6_sub(Fp6 a,Fp6 b);
 
-Fp6 Fp6_mult(Fp6 a,Fp6 b,Fp6 c);
+Fp6 Fp6_mul(Fp6 a,Fp6 b,Fp6 c);
 
 typedef struct Fp12 Fp12;
 struct Fp12
@@ -42,4 +42,4 @@ Fp12 Fp12_add(Fp12 a,Fp12 b);
 
 Fp12 Fp12_sub(Fp12 a,Fp12 b);
 
-Fp12 Fp12_mult(Fp12 a,Fp12 b);
+Fp12 Fp12_mul(Fp12 a,Fp12 b);
