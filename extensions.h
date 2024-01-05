@@ -25,9 +25,9 @@ struct Fp6
 	Fp2 z;
 };
 
-Fp6 Fp6_add(Fp6 a,Fp6 b,Fp6 c);
+Fp6 Fp6_add(Fp6 a,Fp6 b);
 
-Fp6 Fp6_sub(Fp6 a,Fp6 b, Fp6 c);
+Fp6 Fp6_sub(Fp6 a,Fp6 b);
 
 Fp6 Fp6_mult(Fp6 a,Fp6 b,Fp6 c);
 

@@ -102,7 +102,7 @@ int512 mul_from_256(int256 a, int256 b){
 
     for (int i = 0; i < 8; i++)
     {
-        u_int64_t slice = get_32_slice(b,i);
+        uint64_t slice = get_32_slice(b,i);
         int512 cur = mul_by_32(a,slice);
         for (int j = 0; j < i; j++)
         {
