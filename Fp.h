@@ -8,6 +8,10 @@ typedef struct Fp{
     int256 num;
 }Fp;
 
+Fp Fp_from_int(uint64_t n)
+
+Fp Fp_zero();
+
 Fp Fp_add(Fp a, Fp b);
 
 Fp Fp_mul(Fp a, Fp b);

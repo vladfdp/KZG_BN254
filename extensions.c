@@ -19,11 +19,11 @@ Fp2 Fp2_add(Fp2 a,Fp2 b)
 	return c;
 }
 
-Fp2 Fp2_mult(Fp2 a,Fp2 b)
+Fp2 Fp2_mul(Fp2 a,Fp2 b)
 {
 	Fp2 c;
-	c.x = Fp_sub(Fp_mult(a.x, b.x),Fp_mult(a.y,b.y));
-	c.y = Fp_add(Fp_mult(a.x,b.y),Fp_mult(b.x,a.y));
+	c.x = Fp_sub(Fp_mul(a.x, b.x),Fp_mul(a.y,b.y));
+	c.y = Fp_add(Fp_mul(a.x,b.y),Fp_mul(b.x,a.y));
 	return c;
 }
 
@@ -54,15 +54,15 @@ Fp6 Fp6_sub(Fp6 a,Fp6 b)
 	return c;
 }
 
-Fp6_mult(Fp6 a, Fp6 b)
+Fp6_mul(Fp6 a, Fp6 b)
 {
 	Fp6 c;
 	Fp2 d;
 	d.x = 9;
 	d.y = u;
-	c.x = Fp2_add(Fp2_mult(a.x,b.x), Fp2_mult(d,Fp2_add(Fp2_mult(a.z,b.y),Fp2_mult(a.y,b.z))));
-	c.y = Fp2_add(Fp2_add(Fp2_mult(a.x,b.y),Fp2_mult(a.y,b.x)),Fp2_mult(d,Fp2_mult(a.z,b.z)));
-	c.z = Fp2_add(Fp2_mult(a.y,b.y),Fp2_mult(a.z,b.x));
+	c.x = Fp2_add(Fp2_mul(a.x,b.x), Fp2_mul(d,Fp2_add(Fp2_mul(a.z,b.y),Fp2_mul(a.y,b.z))));
+	c.y = Fp2_add(Fp2_add(Fp2_mul(a.x,b.y),Fp2_mul(a.y,b.x)),Fp2_mul(d,Fp2_mul(a.z,b.z)));
+	c.z = Fp2_add(Fp2_mul(a.y,b.y),Fp2_mul(a.z,b.x));
 	return c;
 }
 
@@ -85,7 +85,7 @@ Fp12 Fp12_sub(Fp12 a,Fp12 b)
 	return c;
 };
 
-Fp12 Fp12_mult(a.y,b.y)
+Fp12 Fp12_mul(a.y,b.y)
 {
 	Fp12 c;
 	Fp6 v;
@@ -97,7 +97,7 @@ Fp12 Fp12_mult(a.y,b.y)
 	v2.y = 0;
 	v.x = v1;
 	v.y = v2;
-	c.x = Fp6_add(Fp6_mult(a.x,b.x), Fp6_mult(Fp6_mult(a.y,b.y),v));
-	c.y = Fp6_add(Fp6_mult(a.x,b.y),Fp6_mult(b.x,a.y));
+	c.x = Fp6_add(Fp6_mul(a.x,b.x), Fp6_mul(Fp6_mul(a.y,b.y),v));
+	c.y = Fp6_add(Fp6_mul(a.x,b.y),Fp6_mul(b.x,a.y));
 	return c; 
 }
