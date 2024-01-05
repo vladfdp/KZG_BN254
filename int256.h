@@ -16,6 +16,8 @@ int cmp_256(int256 a, int256 b);
 
 int256 sub_256(int256 a, int256 b);
 
-int256 shift_right(int256 x);
+int256 shift_right_256(int256 x);
+
+uint64_t get_32_slice(int256 x, int i);
 
 #endif

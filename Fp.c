@@ -21,7 +21,11 @@ Fp Fp_add(Fp a, Fp b){
 
 Fp Fp_mul(Fp a, Fp b){
 
-    int512
+    int512 prod = mul_from_256(a.num , b.num);
+    Fp ans = {modulo(prod , P.num)};
+
+    return ans;
+
 }
 
 void print_Fp(Fp x){

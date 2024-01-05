@@ -38,7 +38,7 @@ int512 add_512(int512 a, int512 b){
     a.u0 + b.u0,
     };
     
-    ans.u1 += (ans.u0 < a.u0) ? 1 : 0;
+    ans.u1 += (ans.u0 < a.u0) ? 1 : 0;                          //les retenues
     ans.u2 += (ans.u1 < a.u1) || (ans.u1 < b.u1) ? 1 : 0;
     ans.u3 += (ans.u2 < a.u2) || (ans.u2 < b.u2) ? 1 : 0;
     ans.u4 += (ans.u3 < a.u3) || (ans.u3 < b.u3) ? 1 : 0;
@@ -70,28 +70,109 @@ int512 sub_512(int512 a, int512 b){       //on assume que a > b
 }
 
 int512 zero(){
-    return {0,0,0,0,0,0,0,0};
+    int512 zero = {0,0,0,0,0,0,0,0};
+    return zero;
+}
+
+int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit par un de 32
+
+    int512 even = {0,0,0,0,
+    x.u3 * slice,
+    x.u2 * slice,
+    x.u1 * slice,
+    x.u0 * slice,   
+    };
+
+    int512 odd = {0,0,0,0,
+    (x.u3 >> 32) * slice,
+    (x.u2 >> 32) * slice,
+    (x.u1 >> 32) * slice,
+    (x.u0 >> 32) * slice,   
+    };
+
+    return add_512(even , shift_left_by_32(odd));
+
 }
 
 
 
 int512 mul_from_256(int256 a, int256 b){
 
-
+    int512 sum = zero();
 
     for (int i = 0; i < 8; i++)
     {
-        int slice = get_32_slice(b,i);
-        sum = add(sum,mul_by_32());
+        u_int64_t slice = get_32_slice(b,i);
+        int512 cur = mul_by_32(a,slice);
+        for (int j = 0; j < i; j++)
+        {
+            cur = shift_left_by_32(cur);
+        }
+        
+        sum = add_512(sum, cur);
     }
-    
-
-
-
-
-
+    return sum;
 }
 
 
 
 
+int512 shift_right_by_32(int512 x){
+
+    x.u0 >>= 32;
+    x.u0 ^= x.u1 << 32;
+    x.u1 >>=32;
+    x.u1 ^= x.u2 << 32;
+    x.u2 >>=32;
+    x.u2 ^= x.u3 << 32;
+    x.u3 >>=32;
+    x.u3 ^= x.u4 << 32;
+    x.u4 >>=32;
+    x.u4 ^= x.u5 << 32;
+    x.u5 >>=32;
+    x.u5 ^= x.u6 << 32;
+    x.u6 >>=32;
+    x.u6 ^= x.u7 << 32;
+    x.u7 >>=32;
+    return x;
+}
+
+int512 shift_left_by_32(int512 x){
+
+    x.u7 <<=32;
+    x.u7 ^= x.u6 >> 32;
+    x.u6 <<=32;
+    x.u6 ^= x.u5 >> 32;
+    x.u5 <<=32;
+    x.u5 ^= x.u4 >> 32;
+    x.u4 <<=32;
+    x.u4 ^= x.u3 >> 32;
+    x.u3 <<=32;
+    x.u3 ^= x.u2 >> 32;
+    x.u2 <<=32;
+    x.u2 ^= x.u1 >> 32;
+    x.u1 <<=32;
+    x.u1 ^= x.u0 >> 32;
+    x.u0 <<=32;
+    return x;
+}
+
+int512 shift_right_512(int512 x){
+
+    x.u0 >>= 1;
+    x.u0 ^= (x.u1 & 1) << 63;
+    x.u1 >>=1;
+    x.u1 ^= (x.u2 & 1) << 63;
+    x.u2 >>=1;
+    x.u2 ^= (x.u3 & 1) << 63;
+    x.u3 >>=1;
+    x.u3 ^= (x.u4 & 1) << 63;
+    x.u4 >>=1;
+    x.u4 ^= (x.u5 & 1) << 63;
+    x.u5 >>=1;
+    x.u5 ^= (x.u6 & 1) << 63;
+    x.u6 >>=1;
+    x.u6 ^= (x.u7 & 1) << 63;
+    x.u7 >>=1;
+    return x;
+}

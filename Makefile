@@ -14,7 +14,7 @@ Fp.o: Fp.c
 
 int256.o: int256.c
 	gcc -c int256.c -I/opt/homebrew/include
-int256.o: int512.c
+int512.o: int512.c
 	gcc -c int256.c -I/opt/homebrew/include
 
 

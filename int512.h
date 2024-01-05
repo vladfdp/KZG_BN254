@@ -24,4 +24,8 @@ int512 sub_512(int512 a, int512 b);
 
 int512 mul_from_256(int256 a, int256 b);
 
+int512 shift_right_512(int512 x);
+
+int512 shift_left_by_32(int512 x);
+
 #endif
