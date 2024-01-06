@@ -32,4 +32,6 @@ int512 zero_512();
 
 int256 modulo(int512 x, int256 mod);
 
+void print_512(int512 x);
+
 #endif

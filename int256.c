@@ -43,8 +43,8 @@ int256 sub_256(int256 a, int256 b){       //on assume que a >= b
     a.u0 - b.u0,
     };
     ans.u1 -= (ans.u0 > a.u0) ? 1 : 0; //effectue la retenue inverse
-    ans.u2 -= (ans.u1 > a.u1) || (ans.u1 > b.u1) ? 1 : 0;
-    ans.u3 -= (ans.u2 > a.u2) || (ans.u2 > b.u2) ? 1 : 0;
+    ans.u2 -= (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 )  ? 1 : 0;
+    ans.u3 -= (ans.u2 > a.u2) || ((ans.u2 == a.u2) && b.u2 )  ? 1 : 0;
 
     return ans;
 
@@ -55,25 +55,25 @@ uint64_t get_32_slice(int256 x, int i){
     switch (i)
     {
     case 0:
-        return x.u0 & 0xFFFFFFFFFFFFFFFF;
+        return x.u0 & 0x00000000FFFFFFFF;
         break;
     case 1:
         return x.u0 >> 32;
         break;
     case 2:
-        return x.u1 & 0xFFFFFFFFFFFFFFFF;
+        return x.u1 & 0x00000000FFFFFFFF;
         break;
     case 3:
         return x.u1 >> 32;
         break;
     case 4:
-        return x.u2 & 0xFFFFFFFFFFFFFFFF;
+        return x.u2 & 0x00000000FFFFFFFF;
         break;
     case 5:
         return x.u2 >> 32;
         break;
     case 6:
-        return x.u3 & 0xFFFFFFFFFFFFFFFF;
+        return x.u3 & 0x00000000FFFFFFFF;
         break;
     case 7:
         return x.u3 >> 32;
@@ -86,7 +86,7 @@ uint64_t get_32_slice(int256 x, int i){
 }
 
 
-int256 modulo(int512 x, int256 mod){ //on assume que x < mod*2^256
+int256 modulo(int512 x, int256 mod){ //on considere que x < mod*2^256
 
     int512 mod_shifted = {
         mod.u3,
@@ -95,11 +95,15 @@ int256 modulo(int512 x, int256 mod){ //on assume que x < mod*2^256
         mod.u0,
         0,0,0,0,
     };
-
-    for (int i = 0; i < 256; i++)
+    print_512(x);
+    for (int i = 0; i < 256 + 1; i++)
     {
+    print_512(x);
+        printf("\n");
+        print_512(mod_shifted);
+        printf("\n");
         if (cmp_512( x,mod_shifted)){
-            x = sub_512 (x, mod_shifted);
+            x = sub_512(x, mod_shifted);
         }
         mod_shifted = shift_right_512(mod_shifted);
     }

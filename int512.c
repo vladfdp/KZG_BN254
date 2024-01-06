@@ -1,4 +1,7 @@
+#include <stdint.h>
+#include <stdio.h>
 #include "int512.h"
+#include "int256.h"
 
 
 int cmp_512(int512 a, int512 b){ // verifie si a est plus grand ou egal a b
@@ -52,18 +55,23 @@ int512 add_512(int512 a, int512 b){
 
 int512 sub_512(int512 a, int512 b){       //on assume que a > b
 
-    int512 ans = {a.u3 - b.u3,
+    int512 ans = {a.u7 - b.u7,
+    a.u6 - b.u6,
+    a.u5 - b.u5,
+    a.u4 - b.u4,
+    a.u3 - b.u3,
     a.u2 - b.u2,
     a.u1 - b.u1,
     a.u0 - b.u0,
     };
+
     ans.u1 -= (ans.u0 > a.u0) ? 1 : 0; //effectue la retenue inverse
-    ans.u2 -= (ans.u1 > a.u1) || (ans.u1 > b.u1) ? 1 : 0;
-    ans.u3 -= (ans.u2 > a.u2) || (ans.u2 > b.u2) ? 1 : 0;
-    ans.u4 -= (ans.u3 > a.u3) || (ans.u3 > b.u3) ? 1 : 0;
-    ans.u5 -= (ans.u4 > a.u4) || (ans.u4 > b.u4) ? 1 : 0;
-    ans.u6 -= (ans.u5 > a.u5) || (ans.u5 > b.u5) ? 1 : 0;
-    ans.u7 -= (ans.u6 > a.u6) || (ans.u6 > b.u6) ? 1 : 0;
+    ans.u2 -= (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 ) ? 1 : 0;
+    ans.u3 -= (ans.u2 > a.u2) || ((ans.u2 == a.u2) && b.u2 ) ? 1 : 0;
+    ans.u4 -= (ans.u3 > a.u3) || ((ans.u3 == a.u3) && b.u3 ) ? 1 : 0;
+    ans.u5 -= (ans.u4 > a.u4) || ((ans.u4 == a.u4) && b.u4 ) ? 1 : 0;
+    ans.u6 -= (ans.u5 > a.u5) || ((ans.u5 == a.u5) && b.u5 ) ? 1 : 0;
+    ans.u7 -= (ans.u6 > a.u6) || ((ans.u6 == a.u6) && b.u6 ) ? 1 : 0;
 
     return ans;
 
@@ -94,6 +102,9 @@ int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit pa
 
 }
 
+void print_512(int512 x){
+    printf("{%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu}\n",x.u7,x.u6,x.u5,x.u4,x.u3,x.u2,x.u1,x.u0);
+}
 
 
 int512 mul_from_256(int256 a, int256 b){
