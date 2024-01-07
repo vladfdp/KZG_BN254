@@ -12,15 +12,18 @@
 
 typedef struct Fp12
 {
-	Fp6 x1;
 	Fp6 x0;
-}Fp12;
+	Fp6 x1;
+	
+}Fp12; // Fp12 = Fp6[w]/(w^2-v)
 
 Fp12 Fp12_add(Fp12 a,Fp12 b);
 
 Fp12 Fp12_sub(Fp12 a,Fp12 b);
 
 Fp12 Fp12_mul(Fp12 a,Fp12 b);
+
+void print_Fp12(Fp12 a);
 
 
 #endif

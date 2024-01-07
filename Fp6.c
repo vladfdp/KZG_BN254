@@ -36,3 +36,11 @@ Fp6 Fp6_mul(Fp6 a, Fp6 b)
 	c.x2 = Fp2_add(Fp2_mul(a.x1,b.x1),Fp2_mul(a.x2,b.x0));
 	return c;
 }
+
+
+void print_Fp6(Fp6 a)
+{
+	print_Fp2(a.x0); printf("+ (");
+	print_Fp2(a.x1); printf(") v + (");
+	print_Fp2(a.x2); printf (") v^2");
+}
