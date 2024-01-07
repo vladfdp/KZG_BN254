@@ -70,7 +70,7 @@ Fp Fp_mul(Fp a, Fp b){
 
 void print_Fp(Fp x){
     int256 A = x.num;
-    printf("{%lX,%lX,%lX,%lX}\n",A.u3,A.u2,A.u1,A.u0);
+    printf("{%lX,%lX,%lX,%lX}",A.u3,A.u2,A.u1,A.u0);
     //print_256(A);
 }
 

@@ -13,9 +13,14 @@
 int main(){
 
     uint64_t f = 0xFFFFFFFFFFFFFFFF;
+
+    Fp A1 = {{0,0,0,8}};
+    Fp B1 = {{0,0,0,0}};
+    Fp C1 = {{0,0,0,8}};
+    Fp D1 = {{0,0,0,0}};
   
-    Fp2 A2 = {A1, B1}; 
-    Fp2 B2 = {B1, C1}; 
+    Fp2 A2 = {A1, B1};
+    Fp2 B2 = {C1, D1}; 
     Fp2 C2 = Fp2_add(A2,B2);
     Fp2 E2 = Fp2_sub(A2,B2);
     Fp2 F2 = Fp2_mul(A2,B2);
