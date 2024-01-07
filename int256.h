@@ -22,6 +22,8 @@ int256 zero_256();
 
 uint64_t get_32_slice(int256 x, int i);
 
+void print_256(int256 x);
+
 
 
 #endif

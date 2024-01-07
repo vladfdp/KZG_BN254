@@ -95,13 +95,8 @@ int256 modulo(int512 x, int256 mod){ //on considere que x < mod*2^256
         mod.u0,
         0,0,0,0,
     };
-    print_512(x);
     for (int i = 0; i < 256 + 1; i++)
     {
-    print_512(x);
-        printf("\n");
-        print_512(mod_shifted);
-        printf("\n");
         if (cmp_512( x,mod_shifted)){
             x = sub_512(x, mod_shifted);
         }
@@ -127,4 +122,10 @@ int256 shift_right_256(int256 x){
     x.u2 ^= (x.u3 & 1) << 63;
     x.u3 >>=1;
     return x;
+}
+
+void print_256(int256 x){
+    //printf("{%lu,%lu,%lu,%lu}",x.u3,x.u2,x.u1,x.u0);
+
+    printf("{%lx,%lx,%lx,%lx}",x.u3,x.u2,x.u1,x.u0);
 }

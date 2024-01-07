@@ -4,11 +4,16 @@
 #include "int512.h"
 #include "Fp.h"
 
-const Fp P = {{10,10,10,10}};
+const int256 P = {0,0,0x706,0x0f9e24e6ffdbd05d};//{0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd47};
 
 Fp Fp_zero(){
-    Fp zero = {zero_256()};
+    Fp zero = {{0,0,0,0}};
     return zero;
+}
+
+Fp Fp_one(){
+    Fp one = {{0,0,0,1}};
+    return one;
 }
 
 Fp Fp_from_int(uint64_t n){
@@ -22,31 +27,32 @@ Fp Fp_add(Fp a, Fp b){
     
     Fp sum = {add_256(a.num, b.num)};
     
-    if (cmp_256(sum.num, P.num )){
-        Fp sum_min_P = {sub_256(sum.num , P.num)};
+    if (cmp_256(sum.num, P )){
+        Fp sum_min_P = {sub_256(sum.num , P)};
         return sum_min_P;
     }
     return sum;  
 }
 
-Fp Fp_exp(Fp base, int256 exponant){
+Fp Fp_exp(Fp base, int256 exponent){
 
-    Fp ans = Fp_zero();
+    Fp ans = Fp_one();
 
-    for (int i = 0; i < 256; i++)
+    while (exponent.u3  || exponent.u2 ||  exponent.u1 ||exponent.u0 )
     {
-        if (exponant.u0 & 1){
-            ans = Fp_add(ans,base);
+        if (exponent.u0 & 1){
+            ans = Fp_mul(ans,base);
         }
+        print_Fp(base);
         base = Fp_mul(base, base);
-        exponant = shift_right_256(exponant);
+        exponent = shift_right_256(exponent);
     }
     return ans;
     
 }
 
 Fp Fp_opp(Fp x){        //retourne -x dans Fp
-    Fp ans = {sub_256(P.num,x.num)};
+    Fp ans = {sub_256(P,x.num)};
     return ans;
 }
 
@@ -57,14 +63,15 @@ Fp Fp_sub(Fp a,Fp b){
 Fp Fp_mul(Fp a, Fp b){
 
     int512 prod = mul_from_256(a.num , b.num);
-    Fp ans = {modulo(prod , P.num)};
+    //print_512(prod);
+    Fp ans = {modulo(prod , P)};
     return ans;
 }
 
 void print_Fp(Fp x){
     int256 A = x.num;
-    //printf("{%.64X,%.64X,%.64X,%.64X}\n",A.u3,A.u2,A.u1,A.u0);
-    printf("{%lu,%lu,%lu,%lu}",A.u3,A.u2,A.u1,A.u0);
+    printf("{%lX,%lX,%lX,%lX}\n",A.u3,A.u2,A.u1,A.u0);
+    //print_256(A);
 }
 
 // Fp Fp_inv(Fp x){

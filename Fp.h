@@ -20,6 +20,8 @@ Fp Fp_sub(Fp a, Fp b);
 
 Fp Fp_opp(Fp x);
 
+Fp Fp_exp(Fp base, int256 exponent);
+
 void print_Fp(Fp x);
 
 #endif

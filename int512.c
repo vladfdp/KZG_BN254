@@ -66,7 +66,7 @@ int512 sub_512(int512 a, int512 b){       //on assume que a > b
     };
 
     ans.u1 -= (ans.u0 > a.u0) ? 1 : 0; //effectue la retenue inverse
-    ans.u2 -= (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 ) ? 1 : 0;
+    ans.u2 -= (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 ) ? 1 : 0; //le short circuit evaluation fait que la deuxieme condition n'est pas souvent verifié
     ans.u3 -= (ans.u2 > a.u2) || ((ans.u2 == a.u2) && b.u2 ) ? 1 : 0;
     ans.u4 -= (ans.u3 > a.u3) || ((ans.u3 == a.u3) && b.u3 ) ? 1 : 0;
     ans.u5 -= (ans.u4 > a.u4) || ((ans.u4 == a.u4) && b.u4 ) ? 1 : 0;
@@ -84,12 +84,15 @@ int512 zero_512(){
 
 int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit par un de 32
 
+    
     int512 even = {0,0,0,0,
-    x.u3 * slice,
-    x.u2 * slice,
-    x.u1 * slice,
-    x.u0 * slice,   
+    (x.u3 & 0x00000000FFFFFFFF) * slice,
+    (x.u2 & 0x00000000FFFFFFFF) * slice,
+    (x.u1 & 0x00000000FFFFFFFF) * slice,
+    (x.u0 & 0x00000000FFFFFFFF) * slice,   
     };
+
+
 
     int512 odd = {0,0,0,0,
     (x.u3 >> 32) * slice,
@@ -103,7 +106,8 @@ int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit pa
 }
 
 void print_512(int512 x){
-    printf("{%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu}\n",x.u7,x.u6,x.u5,x.u4,x.u3,x.u2,x.u1,x.u0);
+    //printf("{%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu}\n",x.u7,x.u6,x.u5,x.u4,x.u3,x.u2,x.u1,x.u0);
+    printf("{%lX,%lX,%lX,%lX,%lX,%lX,%lX,%lX}\n",x.u7,x.u6,x.u5,x.u4,x.u3,x.u2,x.u1,x.u0);
 }
 
 

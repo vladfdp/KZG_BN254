@@ -15,20 +15,39 @@
 
 int main(){
 
+
     uint64_t f = 0xFFFFFFFFFFFFFFFF;
-    Fp A1 = {{10,10,10,10}};
-    Fp B1 = {{0,f,f,0}};
-    Fp C1 = Fp_mul(A1,B1);
+    Fp A = {{0,0,0x706,0x0f9e24e6ffdbd05b}};
+    int256 e = {0,0,0x706,0x0f9e24e6ffdbd05d};
+    Fp B = Fp_exp(A,e);
+    Fp C = Fp_mul(A, A);
 
-    print_Fp(A1);
-    print_Fp(B1);
-    print_Fp(C1);
 
-    int512 A2 = {0,0,0,100,180,180,180,81};
-    int512 B2 = {0,0,0,80,80,80,80,0};
-    int512 C2 = sub_512(A2,B2);
-    printf("\n");
-    print_512(C2);
+    printf("\n\n");
+    print_Fp(A);
+    print_Fp(B);
+    print_Fp(C);
+
+    printf("\n\n");
+
+    int512 a = {0,0,0,0,0,1,0,0};
+    int256 p = {0,0,0x706,0x0f9e24e6ffdbd05d};
+    print_256(modulo(a,p));
+
+    // printf("\n\n");
+
+    // int256 x = {((uint64_t)1<<33),2,3,4};
+    // int256 y = {34,0,0,0};
+
+    // int512 z = mul_from_256(x,y);
+
+    // print_256(x);
+    // printf(" * ");
+    // print_256(y);
+    // printf("\n = ");
+    // print_512(z);
+
+
 
     
 
