@@ -42,3 +42,9 @@ Fp12 Fp12_mul(Fp12 a,Fp12 b)
 	c.x1 = Fp6_add(Fp6_mul(a.x0,b.x1),Fp6_mul(b.x0,a.x1));
 	return c; 
 }
+
+void print_Fp12(Fp12 a)
+{
+	print_Fp6(a.x0);printf("+ (");
+	print_Fp6(a.x1);printf(") w");
+}
