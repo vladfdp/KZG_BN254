@@ -8,15 +8,23 @@
 #include "int256.h"
 #include "int512.h"
   
-  
 
-int main(){
 
-    uint64_t f = 0xFFFFFFFFFFFFFFFF;
+void test_Fp_exp(){
 
-    Fp A1 = {{0,0,0,8}};
+    Fp x = {{6711165,67675,5004865,6767655}};
+    int256 e = {0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd45}; // P - 2
+    Fp y = Fp_exp(x,e);
+
+    print_Fp(Fp_mul(x,y));
+    
+}
+
+void test_Fp_ext(){
+
+    Fp A1 = {{0,0,0,10}};
     Fp B1 = {{0,0,0,0}};
-    Fp C1 = {{0,0,0,8}};
+    Fp C1 = {{0,0,0,10}};
     Fp D1 = {{0,0,0,0}};
   
     Fp2 A2 = {A1, B1};
@@ -59,6 +67,14 @@ int main(){
     print_Fp12(D4);printf("\n");
     print_Fp12(E4);printf("\n");
 
+}
+  
 
-    return 0;
+int main(){
+
+
+    test_Fp_exp();
+
+    uint64_t f = 0xFFFFFFFFFFFFFFFF;
+return 0;
 }

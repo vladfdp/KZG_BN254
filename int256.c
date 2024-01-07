@@ -95,12 +95,14 @@ int256 modulo(int512 x, int256 mod){ //on considere que x < mod*2^256
         mod.u0,
         0,0,0,0,
     };
-    for (int i = 0; i < 256 + 1; i++)
+
+    for (int i = 0; i < 256 + 1 ; i++)
     {
         if (cmp_512( x,mod_shifted)){
             x = sub_512(x, mod_shifted);
         }
         mod_shifted = shift_right_512(mod_shifted);
+        
     }
     int256 ans = {x.u3,x.u2,x.u1,x.u0};
     return ans;

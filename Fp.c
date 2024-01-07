@@ -4,7 +4,7 @@
 #include "int512.h"
 #include "Fp.h"
 
-const int256 P = {0,0,0x706,0x0f9e24e6ffdbd05d};//{0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd47};
+const int256 P = /**{0,0,0,104729};//{0,0,0x706,0x0f9e24e6ffdbd05d}; **/ {0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd47};
 
 Fp Fp_zero(){
     Fp zero = {{0,0,0,0}};
@@ -38,12 +38,11 @@ Fp Fp_exp(Fp base, int256 exponent){
 
     Fp ans = Fp_one();
 
-    while (exponent.u3  || exponent.u2 ||  exponent.u1 ||exponent.u0 )
+    while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3 )
     {
         if (exponent.u0 & 1){
             ans = Fp_mul(ans,base);
         }
-        print_Fp(base);
         base = Fp_mul(base, base);
         exponent = shift_right_256(exponent);
     }
