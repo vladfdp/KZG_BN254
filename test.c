@@ -22,13 +22,14 @@ void test_Fp_exp(){
 
 void test_Fp_Inv(){
 
-    Fp x = {{0,0,0,0}};
+    Fp x = {{0,0,0,2}};
 
     Fp y = Fp_inv(x);
     Fp y2 = Fp_opp(y);
     print_Fp(y);
     printf("\n");
     print_Fp(Fp_mul(x,y));
+
     //print_Fp(Fp_mul(x,y2));
     
 }

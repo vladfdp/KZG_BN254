@@ -26,4 +26,6 @@ void print_Fp(Fp x);
 
 Fp Fp_inv(Fp x);
 
+Fp Fp_div(Fp a,Fp b);
+
 #endif

@@ -80,7 +80,7 @@ Fp Fp_mul(Fp a, Fp b){
 
 void print_Fp(Fp x){
     int256 A = x.num;
-    printf("{%lx,%lx,%lx,%lx}",A.u3,A.u2,A.u1,A.u0);
+    printf("{%lx,%lx,%lx,%lx}", A.u3 ,A.u2,A.u1,A.u0);
     //print_256(A);
 }
 
@@ -99,24 +99,7 @@ Fp Fp_inv(Fp x){
         QR qr = euclidean_div_256(r, newr);
         
         int256 a = add_256(int512_to_256(mul_from_256(qr.quotient , newr)), qr.rest);
-        if (cmp_256(a,r) && cmp_256(r,a))
-        {
-;
-            printf("yesssss\n");
-            print_512(mul_from_256(qr.quotient , newt));
-            printf("\n");
-
-            print_256(newt);
-            printf("\n");
-            Fp f = {newt};
-            print_Fp(Fp_mul(f,x));
-            printf(" = ");
-            print_256(newr);
-            printf("\n");
-
-        }
         
-
         int256 tmp = t;
         t = newt;
         int256 mul = int512_to_256(mul_from_256(qr.quotient , newt));
@@ -124,8 +107,6 @@ Fp Fp_inv(Fp x){
         tmp = r;
         r = newr;
         newr = qr.rest;
-        printf("\n");printf("\n");
-        print_256(newr);printf("\n");printf("\n");
         i++;
     }
     Fp ans = {t};
@@ -135,6 +116,10 @@ Fp Fp_inv(Fp x){
     return Fp_opp(ans);
 
 
+}
+
+Fp Fp_div(Fp a,Fp b){
+    return Fp_mul(a,Fp_inv(b));
 }
 
 
