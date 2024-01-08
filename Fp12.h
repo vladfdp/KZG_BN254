@@ -1,3 +1,6 @@
+#ifndef FP12_H
+#define FP12_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Fp.h"
@@ -6,8 +9,7 @@
 #include "int256.h"
 #include "int512.h"
 
-#ifndef FP12_H
-#define FP12_H
+
 
 
 typedef struct Fp12
@@ -25,5 +27,10 @@ Fp12 Fp12_mul(Fp12 a,Fp12 b);
 
 void print_Fp12(Fp12 a);
 
+Fp12 Fp12_exp(Fp12 base, int256 exponent);
+
+Fp12 Fp12_one();
+
+Fp12 Fp12_inv(Fp12 a);
 
 #endif
