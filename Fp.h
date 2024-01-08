@@ -24,4 +24,6 @@ Fp Fp_exp(Fp base, int256 exponent);
 
 void print_Fp(Fp x);
 
+Fp Fp_inv(Fp x);
+
 #endif
