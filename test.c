@@ -12,12 +12,61 @@
 
 void test_Fp_exp(){
 
-    Fp x = {{6711165,67675,5004865,6767655}};
+    Fp x = {{6711165,900000000000,55,0}};
     int256 e = {0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd45}; // P - 2
     Fp y = Fp_exp(x,e);
 
     print_Fp(Fp_mul(x,y));
     
+}
+
+void test_Fp_Inv(){
+
+    Fp x = {{0,0,0,0}};
+
+    Fp y = Fp_inv(x);
+    Fp y2 = Fp_opp(y);
+    print_Fp(y);
+    printf("\n");
+    print_Fp(Fp_mul(x,y));
+    //print_Fp(Fp_mul(x,y2));
+    
+}
+
+void test_Euclid(){
+
+    int256 a = {0,0,0,58765856};
+    int256 b = {0,0,0,56};
+
+    QR qr = euclidean_div_256(a,b);
+    print_256(qr.quotient);
+    printf(" * ");
+    print_256(b);
+    printf(" + ");
+    print_256(qr.rest);
+    printf(" = ");
+    print_256(a);
+
+    printf("\n\n");
+
+
+    int256 a2 = {0,6979,654,58765856};
+    int256 b2 = {0,0,0,47};
+
+    QR qr2 = euclidean_div_256(a2,b2);
+    print_256(qr2.quotient);
+    printf(" * ");
+    print_256(b2);
+    printf(" + ");
+    print_256(qr2.rest);
+    printf(" = ");
+    print_256(a2);
+    printf(" = ");
+
+    int512 a3 = mul_from_256(qr2.quotient , b);
+    int256 a4 = {a3.u3, a3.u2 ,a3.u1 ,a3.u0};
+    a4 = add_256(a4, qr2.rest);
+    print_256(a4);
 }
 
 void test_Fp_ext(){
@@ -72,9 +121,9 @@ void test_Fp_ext(){
 
 int main(){
 
+    //test_Euclid();
+    //test_Fp_exp();
+    test_Fp_Inv();
 
-    test_Fp_exp();
-
-    uint64_t f = 0xFFFFFFFFFFFFFFFF;
 return 0;
 }
