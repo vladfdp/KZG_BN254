@@ -33,7 +33,7 @@ Fp6 Fp6_mul(Fp6 a, Fp6 b)
 	d.x1 = Fp_from_int(1);
 	c.x0 = Fp2_add(Fp2_mul(a.x0,b.x0), Fp2_mul(d,Fp2_add(Fp2_mul(a.x2,b.x1),Fp2_mul(a.x1,b.x2))));
 	c.x1 = Fp2_add(Fp2_add(Fp2_mul(a.x0,b.x1),Fp2_mul(a.x1,b.x0)),Fp2_mul(d,Fp2_mul(a.x2,b.x2)));
-	c.x2 = Fp2_add(Fp2_mul(a.x1,b.x1),Fp2_mul(a.x2,b.x0));
+	c.x2 = Fp2_add(Fp2_add(Fp2_mul(a.x1,b.x1),Fp2_mul(a.x2,b.x0)),Fp2_mul(a.x0,b.x2));
 	return c;
 }
 

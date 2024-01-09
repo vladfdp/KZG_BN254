@@ -60,6 +60,7 @@ Fp12 Fp12_mul(Fp12 a,Fp12 b)
 	v2.x1 = Fp_zero();
 	v.x0 = v1;
 	v.x1 = v2;
+	v.x2 = v1;
 	c.x0 = Fp6_add(Fp6_mul(a.x0,b.x0), Fp6_mul(Fp6_mul(a.x1,b.x1),v));
 	c.x1 = Fp6_add(Fp6_mul(a.x0,b.x1),Fp6_mul(b.x0,a.x1));
 	return c; 
