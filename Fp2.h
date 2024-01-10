@@ -14,11 +14,25 @@ typedef struct Fp2
 	
 }Fp2;  // Fp2 = Fp[u]/(u^2+1)
 
+Fp2 Fp2_zero();
+
+Fp2 Fp2_one();
+
+Fp2 Fp2_from_int(uint64_t a, uint64_t b);
+
+Fp2 Fp2_mul_by_scalar(Fp2 x, Fp alpha);
+
 Fp2 Fp2_add(Fp2 a,Fp2 b);
 
 Fp2 Fp2_sub(Fp2 a,Fp2 b);
 
+Fp2 Fp2_opp(Fp2 x);
+
 Fp2 Fp2_mul(Fp2 a,Fp2 b); 
+
+Fp2 Fp2_inv(Fp2 x);
+
+Fp2 Fp2_div(Fp2 a, Fp2 b);
 
 void print_Fp2(Fp2 a);
 

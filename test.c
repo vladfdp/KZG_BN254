@@ -25,12 +25,52 @@ void test_Fp_Inv(){
     Fp x = {{0,0,0,2}};
 
     Fp y = Fp_inv(x);
-    Fp y2 = Fp_opp(y);
     print_Fp(y);
     printf("\n");
     print_Fp(Fp_mul(x,y));
+    
+}
 
-    //print_Fp(Fp_mul(x,y2));
+void test_Fp_ext_Inv(){
+
+    Fp x = {{22223,67,75,53}};
+    Fp y = {{7656,95,15600,987}};
+
+    Fp2 a;
+
+    a.x0 = x;
+    a.x1 = y;
+
+    Fp2 a_inv = Fp2_inv(a);
+
+    
+    print_Fp2(a);
+    printf("\n");
+    print_Fp2(Fp2_mul(a,a_inv));printf("\n");printf("\n");
+
+    Fp6 jsp;
+    jsp.x0 = a;
+    jsp.x1 = a_inv;
+    jsp.x2 = a;
+
+    print_Fp6(jsp);printf("\n");
+
+    Fp6 jsp_inv = Fp6_inv(jsp);
+
+    print_Fp6( Fp6_mul(jsp, jsp_inv));
+
+    Fp12 jstjrp;
+    jstjrp.x0 = jsp_inv;
+    jstjrp.x1 = jsp_inv;
+    Fp12 jstjrp_inv = Fp12_inv(jstjrp);
+
+    printf("\n");printf("\n");printf("\n");
+    print_Fp12(jstjrp);
+    printf("\n");printf("\n");printf("\n");
+    print_Fp12(jstjrp_inv);
+
+    printf("\n");printf("\n");printf("\n");
+    print_Fp12(Fp12_mul(jstjrp,jstjrp_inv));
     
 }
 
@@ -124,7 +164,9 @@ int main(){
 
     //test_Euclid();
     //test_Fp_exp();
-    test_Fp_Inv();
+    //test_Fp_Inv();
+    //test_Fp_ext();
+    test_Fp_ext_Inv();
 
-return 0;
+    return 0;
 }

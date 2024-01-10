@@ -4,8 +4,6 @@
 #include "int512.h"
 #include "Fp.h"
 
-const int256 P = /**{0,0,0,104729};//{0,0,0x706,0x0f9e24e6ffdbd05d}; **/ {0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd47};
-
 Fp Fp_zero(){
     Fp zero = {{0,0,0,0}};
     return zero;
@@ -47,7 +45,6 @@ Fp Fp_exp(Fp base, int256 exponent){
         exponent = shift_right_256(exponent);
     }
     return ans;
-    
 }
 
 int256 int512_to_256(int512 x){

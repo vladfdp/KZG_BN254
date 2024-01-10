@@ -19,6 +19,10 @@ typedef struct Fp12
 	
 }Fp12; // Fp12 = Fp6[w]/(w^2-v)
 
+Fp12 Fp12_zero();
+
+Fp12 Fp12_one();
+
 Fp12 Fp12_add(Fp12 a,Fp12 b);
 
 Fp12 Fp12_sub(Fp12 a,Fp12 b);
@@ -28,8 +32,6 @@ Fp12 Fp12_mul(Fp12 a,Fp12 b);
 void print_Fp12(Fp12 a);
 
 Fp12 Fp12_exp(Fp12 base, int256 exponent);
-
-Fp12 Fp12_one();
 
 Fp12 Fp12_inv(Fp12 a);
 

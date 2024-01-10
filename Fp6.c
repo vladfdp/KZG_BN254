@@ -6,6 +6,24 @@
 #include "int256.h"
 #include "int512.h"
 
+Fp6 Fp6_zero(){
+	Fp6 zero = {
+		Fp2_zero(),
+		Fp2_zero(),
+		Fp2_zero()
+	};
+	return zero;
+}
+
+Fp6 Fp6_one(){
+	Fp6 one = {
+		Fp2_one(),
+		Fp2_zero(),
+		Fp2_zero()
+	};
+	return one;
+}
+
 
 Fp6 Fp6_add(Fp6 a,Fp6 b)
 {
@@ -25,6 +43,15 @@ Fp6 Fp6_sub(Fp6 a,Fp6 b)
 	return c;
 }
 
+Fp6 Fp6_opp(Fp6 x){
+	Fp6 ans = {
+		Fp2_opp(x.x0),
+		Fp2_opp(x.x1),
+		Fp2_opp(x.x2),
+	};
+	return ans;
+}
+
 Fp6 Fp6_mul(Fp6 a, Fp6 b)
 {
 	Fp6 c;
@@ -35,6 +62,46 @@ Fp6 Fp6_mul(Fp6 a, Fp6 b)
 	c.x1 = Fp2_add(Fp2_add(Fp2_mul(a.x0,b.x1),Fp2_mul(a.x1,b.x0)),Fp2_mul(d,Fp2_mul(a.x2,b.x2)));
 	c.x2 = Fp2_add(Fp2_add(Fp2_mul(a.x1,b.x1),Fp2_mul(a.x2,b.x0)),Fp2_mul(a.x0,b.x2));
 	return c;
+}
+
+Fp6 Fp6_mul_by_scalar(Fp6 x, Fp alpha){
+	Fp6 ans = {
+		Fp2_mul_by_scalar(x.x0, alpha),
+		Fp2_mul_by_scalar(x.x1, alpha),
+		Fp2_mul_by_scalar(x.x2, alpha),
+	};
+	return ans;
+}
+
+Fp6 Fp6_inv(Fp6 x){
+
+	Fp2 f = Fp2_from_int(9,1);
+	
+	Fp2 a2 = Fp2_mul(x.x2,x.x2);
+	Fp2 b2 = Fp2_mul(x.x1,x.x1);
+	Fp2 c2 = Fp2_mul(x.x0,x.x0);
+
+	Fp2 af = Fp2_mul(x.x2, f);
+	Fp2 bc = Fp2_mul(x.x1, x.x0);
+
+	Fp2 D1 = Fp2_mul( Fp2_mul(a2 , af), f );
+	Fp2 D2 = Fp2_mul_by_scalar( Fp2_mul( bc, af) ,Fp_from_int(3));
+	Fp2 D3 = Fp2_mul( Fp2_mul(b2, x.x1), f);
+	Fp2 D4 = Fp2_mul(c2, x.x0);
+
+	Fp2 K = Fp2_add( Fp2_sub(D1,D2), Fp2_add(D3, D4) );
+	K = Fp2_inv(K);
+
+	Fp2 T0 = Fp2_sub(c2 , Fp2_mul(af, x.x1));
+	Fp2 T1 = Fp2_sub(Fp2_mul(a2,f), bc);
+	Fp2 T2 = Fp2_sub(b2, Fp2_mul(x.x0, x.x2));
+
+	Fp6 ans = {
+		Fp2_mul(T0,K),
+		Fp2_mul(T1,K),
+		Fp2_mul(T2,K)
+	};
+	return ans;
 }
 
 
