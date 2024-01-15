@@ -7,6 +7,7 @@
 #include "Fp12.h"
 #include "int256.h"
 #include "int512.h"
+#include "Fr.h"
   
 
 
@@ -158,7 +159,17 @@ void test_Fp_ext(){
     print_Fp12(E4);printf("\n");
 
 }
-  
+
+
+void test_Fr(){
+    Fr x = {{6711165,900000000000,55,0}};
+    int256 e = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593EFFFFFFF}; // P - 2
+    Fr y = Fr_exp(x,e);
+    Fr z = Fr_inv(x);
+
+    print_Fr(Fr_mul(x,y));printf("\n");
+    print_Fr(Fr_mul(x,z));
+}
 
 int main(){
 
@@ -166,7 +177,8 @@ int main(){
     //test_Fp_exp();
     //test_Fp_Inv();
     //test_Fp_ext();
-    test_Fp_ext_Inv();
+    //test_Fp_ext_Inv();
+    test_Fr();
 
     return 0;
 }

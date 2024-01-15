@@ -4,6 +4,13 @@
 #include "int256.h"
 
 
+
+int256 int512_to_256(int512 x){
+    int256 ans = {x.u3,x.u2,x.u1,x.u0};
+    return ans;
+}
+
+
 int cmp_512(int512 a, int512 b){ // verifie si a est plus grand ou egal a b
     if (a.u7 == b.u7){
         if (a.u6 == b.u6){

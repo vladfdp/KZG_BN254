@@ -3,8 +3,6 @@
 #include "int256.h"
 #include "int512.h"
 
-
-
 int cmp_256(int256 a, int256 b){ // verifie si a est plus grand ou egal a b
     if (a.u3 == b.u3){
         if (a.u2 == b.u2){

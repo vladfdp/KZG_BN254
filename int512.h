@@ -16,6 +16,8 @@ typedef struct int512{
 }int512;
 
 
+int256 int512_to_256(int512 x);
+
 int512 add_512(int512 a, int512 b);
 
 int cmp_512(int512 a, int512 b);
