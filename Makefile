@@ -1,8 +1,8 @@
-main: main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o
-	gcc -o prog main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o
+main: main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o
+	gcc -o prog main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o
 
-test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o
-	gcc -o test test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o
+test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o
+	gcc -o test test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o
 	./test
 
 main.o: main.c 
@@ -11,6 +11,8 @@ main.o: main.c
 
 Fp.o: Fp.c
 	gcc -c Fp.c 
+Fr.o: Fr.c
+	gcc -c Fr.c 
 int256.o: int256.c
 	gcc -c int256.c 
 int512.o: int512.c

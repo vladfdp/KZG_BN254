@@ -24,6 +24,10 @@ Fp6 Fp6_one(){
 	return one;
 }
 
+int Fp6_equal(Fp6 a, Fp6 b){
+	return (Fp2_equal(a.x0, b.x0) && Fp2_equal(a.x1, b.x1) && Fp2_equal(a.x2, b.x2));
+}
+
 
 Fp6 Fp6_add(Fp6 a,Fp6 b)
 {

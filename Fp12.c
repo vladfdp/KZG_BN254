@@ -27,6 +27,9 @@ Fp12 Fp12_one(){
 	return one;
 }
 
+int Fp12_equal(Fp12 a, Fp12 b){
+	return (Fp6_equal(a.x0, b.x0) && Fp6_equal(a.x1, b.x1) );
+}
 
 Fp12 Fp12_add(Fp12 a,Fp12 b)
 {

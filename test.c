@@ -49,29 +49,31 @@ void test_Fp_ext_Inv(){
     printf("\n");
     print_Fp2(Fp2_mul(a,a_inv));printf("\n");printf("\n");
 
-    Fp6 jsp;
-    jsp.x0 = a;
-    jsp.x1 = a_inv;
-    jsp.x2 = a;
+    Fp6 b;
+    b.x0 = a;
+    b.x1 = a_inv;
+    b.x2 = a;
 
-    print_Fp6(jsp);printf("\n");
+    print_Fp6(b);printf("\n");
 
-    Fp6 jsp_inv = Fp6_inv(jsp);
+    Fp6 b_inv = Fp6_inv(b);
 
-    print_Fp6( Fp6_mul(jsp, jsp_inv));
+    print_Fp6( Fp6_mul(b, b_inv));
 
-    Fp12 jstjrp;
-    jstjrp.x0 = jsp_inv;
-    jstjrp.x1 = jsp_inv;
-    Fp12 jstjrp_inv = Fp12_inv(jstjrp);
-
-    printf("\n");printf("\n");printf("\n");
-    print_Fp12(jstjrp);
-    printf("\n");printf("\n");printf("\n");
-    print_Fp12(jstjrp_inv);
+    Fp12 c;
+    c.x0 = b_inv;
+    c.x1 = b_inv;
+    Fp12 c_inv = Fp12_inv(c);
 
     printf("\n");printf("\n");printf("\n");
-    print_Fp12(Fp12_mul(jstjrp,jstjrp_inv));
+    print_Fp12(c);
+    printf("\n");printf("\n");printf("\n");
+    print_Fp12(c_inv);
+
+    printf("\n");printf("\n");printf("\n");
+    Fp12 one = Fp12_mul(c,c_inv);
+    print_Fp12(one);printf("\n");
+    printf("%d",Fp12_equal(one, Fp12_one()));
     
 }
 
@@ -177,8 +179,8 @@ int main(){
     //test_Fp_exp();
     //test_Fp_Inv();
     //test_Fp_ext();
-    //test_Fp_ext_Inv();
-    test_Fr();
+    test_Fp_ext_Inv();
+    //test_Fr();
 
     return 0;
 }

@@ -21,6 +21,10 @@ Fp2 Fp2_one(){
 	return one;
 }
 
+int Fp2_equal(Fp2 a, Fp2 b){
+	return (Fp_equal(a.x0, b.x0) && Fp_equal(a.x1, b.x1) );
+}
+
 Fp2 Fp2_from_int(uint64_t a, uint64_t b){
 	Fp2 ans = {Fp_from_int(a), Fp_from_int(b)};
     return ans;

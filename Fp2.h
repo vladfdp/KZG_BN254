@@ -18,6 +18,8 @@ Fp2 Fp2_zero();
 
 Fp2 Fp2_one();
 
+int Fp2_equal(Fp2 a, Fp2 b);
+
 Fp2 Fp2_from_int(uint64_t a, uint64_t b);
 
 Fp2 Fp2_mul_by_scalar(Fp2 x, Fp alpha);

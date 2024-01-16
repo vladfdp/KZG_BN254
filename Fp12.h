@@ -23,6 +23,8 @@ Fp12 Fp12_zero();
 
 Fp12 Fp12_one();
 
+int Fp12_equal(Fp12 a, Fp12 b);
+
 Fp12 Fp12_add(Fp12 a,Fp12 b);
 
 Fp12 Fp12_sub(Fp12 a,Fp12 b);

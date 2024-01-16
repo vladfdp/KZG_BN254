@@ -14,6 +14,14 @@ Fp Fp_one(){
     return one;
 }
 
+int Fp_equal(Fp a, Fp b){
+    return (a.num.u0 == b.num.u0 &&
+    a.num.u1 == b.num.u1 &&
+    a.num.u2 == b.num.u2 &&
+    a.num.u3 == b.num.u3
+    );
+}
+
 Fp Fp_from_int(uint64_t n){
     Fp ans = {{
         0,0,0,n
@@ -77,8 +85,10 @@ void print_Fp(Fp x){
 }
 
 Fp Fp_inv(Fp x){
-    //int256 e = {0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd45};
-    //return Fp_exp(x, e);
+    
+    if (!x.num.u0 && !x.num.u1 && !x.num.u2 && !x.num.u3){
+        printf("Division par zero");
+    }
 
     int256 t = zero_256();
     int256 newt = {0,0,0,1};
