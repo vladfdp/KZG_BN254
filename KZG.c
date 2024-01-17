@@ -20,4 +20,6 @@ int verify(G1 commit, G1 proof, Fr index, Fr eval){
     return Fp12_equal(lhs, rhs);
 }
 
-G1 commit(polynomial poly)
+G1 commit(polynomial poly){
+    
+}
