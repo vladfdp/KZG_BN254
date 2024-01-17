@@ -205,5 +205,5 @@ int256 shift_left_256(int256 x){
 void print_256(int256 x){
     //printf("{%lu,%lu,%lu,%lu}",x.u3,x.u2,x.u1,x.u0);
 
-    printf("{%lx,%lx,%lx,%lx}",x.u3,x.u2,x.u1,x.u0);
+    printf("{%llx,%llx,%llx,%llx}",x.u3,x.u2,x.u1,x.u0);
 }

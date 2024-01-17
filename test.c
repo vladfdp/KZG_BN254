@@ -8,6 +8,7 @@
 #include "int256.h"
 #include "int512.h"
 #include "Fr.h"
+#include "Poly.h"
   
 
 
@@ -162,6 +163,38 @@ void test_Fp_ext(){
 
 }
 
+void test_poly(){
+
+    Poly poly = Poly_init(2);
+
+
+    poly.coeffs[2] = Fr_from_int(6);
+    poly.coeffs[1] = Fr_from_int(1);
+    poly.coeffs[0] = Fr_from_int(3);
+
+    Fr x = Fr_from_int(5);
+
+    print_Poly(poly);
+    print_Fr(Poly_eval(poly, x)); printf("\n");
+    free_Poly(poly);
+
+    Poly poly2 = Poly_init(7);
+
+    poly2.coeffs[7] = Fr_from_int(1);
+    poly2.coeffs[6] = Fr_from_int(2);
+    poly2.coeffs[5] = Fr_from_int(178);
+    poly2.coeffs[4] = Fr_from_int(32);
+
+    poly2.coeffs[2] = Fr_from_int(6);
+    poly2.coeffs[1] = Fr_from_int(1);
+    poly2.coeffs[0] = Fr_from_int(356);
+
+    Fr y = Fr_from_int(57);
+
+    print_Poly(poly2);
+    print_Fr(Poly_eval(poly2, y)); printf("\n");
+    free_Poly(poly2);
+}
 
 void test_Fr(){
     Fr x = {{6711165,900000000000,55,0}};
@@ -179,8 +212,9 @@ int main(){
     //test_Fp_exp();
     //test_Fp_Inv();
     //test_Fp_ext();
-    test_Fp_ext_Inv();
+    //test_Fp_ext_Inv();
     //test_Fr();
+    test_poly();
 
     return 0;
 }

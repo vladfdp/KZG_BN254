@@ -114,7 +114,7 @@ int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit pa
 
 void print_512(int512 x){
     //printf("{%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu}\n",x.u7,x.u6,x.u5,x.u4,x.u3,x.u2,x.u1,x.u0);
-    printf("{%lX,%lX,%lX,%lX,%lX,%lX,%lX,%lX}\n",x.u7,x.u6,x.u5,x.u4,x.u3,x.u2,x.u1,x.u0);
+    printf("{%llx,%llx,%llx,%llx,%llx,%llx,%llx,%llx}\n",x.u7,x.u6,x.u5,x.u4,x.u3,x.u2,x.u1,x.u0);
 }
 
 

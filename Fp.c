@@ -80,7 +80,7 @@ Fp Fp_mul(Fp a, Fp b){
 
 void print_Fp(Fp x){
     int256 A = x.num;
-    printf("{%lx,%lx,%lx,%lx}", A.u3 ,A.u2,A.u1,A.u0);
+    printf("{%llx,%llx,%llx,%llx}", A.u3 ,A.u2,A.u1,A.u0);
     //print_256(A);
 }
 
@@ -99,8 +99,6 @@ Fp Fp_inv(Fp x){
     while (newr.u0 || newr.u1 || newr.u2 || newr.u3) {
 
         QR qr = euclidean_div_256(r, newr);
-        
-        int256 a = add_256(int512_to_256(mul_from_256(qr.quotient , newr)), qr.rest);
         
         int256 tmp = t;
         t = newt;
