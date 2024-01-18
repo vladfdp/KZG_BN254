@@ -10,9 +10,13 @@ typedef struct Poly{
     int degree;
 }Poly;
 
-Poly Poly_init(unsigned int degree);
+Poly Poly_init(int degree);
+
+Poly vanish_Poly(Fr x);
 
 Fr Poly_eval(Poly poly, Fr x);
+
+Poly euclidean_div_Poly(Poly f, Poly g);
 
 void free_Poly(Poly poly);
 

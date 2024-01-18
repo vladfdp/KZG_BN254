@@ -196,6 +196,35 @@ void test_poly(){
     free_Poly(poly2);
 }
 
+void test_poly_euclid_div(){
+    Poly f = Poly_init(9);
+
+    f.coeffs[9] = Fr_from_int(6);
+    f.coeffs[8] = Fr_from_int(13);
+    f.coeffs[7] = Fr_from_int(1073);
+    f.coeffs[6] = Fr_from_int(376);
+    f.coeffs[5] = Fr_from_int(566);
+    f.coeffs[4] = Fr_from_int(132);
+    f.coeffs[3] = Fr_from_int(12);
+    f.coeffs[2] = Fr_from_int(2155);
+    f.coeffs[1] = Fr_from_int(359);
+    f.coeffs[0] = Fr_from_int(1068);
+
+    Poly g = Poly_init(2);
+
+    g.coeffs[2] = Fr_from_int(6);
+    g.coeffs[1] = Fr_from_int(1);
+    g.coeffs[0] = Fr_from_int(3);
+
+    Poly q = euclidean_div_Poly(f, g);
+    printf("\n\n\n");
+    print_Poly(q);
+    printf("\n\n\n");
+    print_Poly(g);
+    printf("\n\n\n");
+    print_Poly(f);
+}
+
 void test_Fr(){
     Fr x = {{6711165,900000000000,55,0}};
     int256 e = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593EFFFFFFF}; // P - 2
@@ -214,7 +243,8 @@ int main(){
     //test_Fp_ext();
     //test_Fp_ext_Inv();
     //test_Fr();
-    test_poly();
+    //test_poly();
+    test_poly_euclid_div();
 
     return 0;
 }

@@ -3,10 +3,16 @@
 #include "Fr.h"
 #include "Poly.h"
 
-Poly Poly_init(unsigned int degree){
+Poly Poly_init(int degree){
     Fr* coeffs = calloc(degree + 1, sizeof(Fr));
-    //assert(coeffs != NULL);
     Poly ans = {coeffs, degree};
+    return ans;
+}
+
+Poly vanish_Poly(Fr x){
+    Poly ans = Poly_init(1);
+    ans.coeffs[0] = Fr_opp(x);
+    ans.coeffs[1] = Fr_one();
     return ans;
 }
 
@@ -22,22 +28,29 @@ Fr Poly_eval(Poly poly, Fr x){
     
 }
 
-Poly euclidean_div_Poly(Poly f, Poly g){
+Fr leading_term(Poly poly){
+    return poly.coeffs[poly.degree];
+}
+
+Poly euclidean_div_Poly(Poly f, Poly g){ //renvoie le quotient de f/g, attention f devient son reste par la division
     int dif = f.degree - g.degree;
     Poly ans = Poly_init(dif);
     if (dif < 0)
     {
         return Poly_init(0);
     }
-    Fr pivot = Fr_inv(g.coeffs[g.degree]);
+    Fr lt_inv = Fr_inv(leading_term(g));
 
-    for (int i = 0; i < dif; i++)
+    for (int i = 0; i < dif + 1; i++)
     {
-
-        for (int j = 0; j < g.degree; j++)
+        Fr pivot = Fr_mul(lt_inv,f.coeffs[f.degree - i]);
+        for (int j = 0; j < g.degree + 1; j++)
         {
-            
+            Fr a = Fr_mul(pivot, g.coeffs[g.degree - j]);
+            f.coeffs[f.degree - i - j] = Fr_sub(f.coeffs[f.degree - i - j], a );
         }
+        print_Poly(f);printf("\n");
+        ans.coeffs[dif - i] = pivot;
     }
     return ans;  
 }
