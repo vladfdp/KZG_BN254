@@ -28,6 +28,17 @@ Fr Poly_eval(Poly poly, Fr x){
     
 }
 
+Poly clone_Poly(Poly poly){
+    Fr* coeffs = malloc((poly.degree + 1) * sizeof(Fr));
+    for (int i = 0; i < poly.degree + 1; i++)
+    {
+        coeffs[i] = poly.coeffs[i];
+    }
+    
+    Poly ans = {coeffs, poly.degree};
+    return ans;
+}
+
 Fr leading_term(Poly poly){
     return poly.coeffs[poly.degree];
 }
@@ -39,7 +50,7 @@ Poly euclidean_div_Poly(Poly f, Poly g){ //renvoie le quotient de f/g, attention
     {
         return Poly_init(0);
     }
-    Fr lt_inv = Fr_inv(leading_term(g));
+    Fr lt_inv = Fr_inv(g.coeffs[g.degree]);
 
     for (int i = 0; i < dif + 1; i++)
     {
@@ -49,7 +60,6 @@ Poly euclidean_div_Poly(Poly f, Poly g){ //renvoie le quotient de f/g, attention
             Fr a = Fr_mul(pivot, g.coeffs[g.degree - j]);
             f.coeffs[f.degree - i - j] = Fr_sub(f.coeffs[f.degree - i - j], a );
         }
-        print_Poly(f);printf("\n");
         ans.coeffs[dif - i] = pivot;
     }
     return ans;  

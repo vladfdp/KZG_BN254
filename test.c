@@ -194,6 +194,11 @@ void test_poly(){
     print_Poly(poly2);
     print_Fr(Poly_eval(poly2, y)); printf("\n");
     free_Poly(poly2);
+
+    printf("\n");
+    Poly van_poly = vanish_Poly(Fr_from_int(12654734));
+    print_Poly(van_poly);printf("\n");
+    print_Fr(Poly_eval(van_poly, Fr_from_int(12654734)));
 }
 
 void test_poly_euclid_div(){
@@ -243,8 +248,8 @@ int main(){
     //test_Fp_ext();
     //test_Fp_ext_Inv();
     //test_Fr();
-    //test_poly();
-    test_poly_euclid_div();
+    test_poly();
+    //test_poly_euclid_div();
 
     return 0;
 }
