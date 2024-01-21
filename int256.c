@@ -15,7 +15,7 @@ int cmp_256(int256 a, int256 b){ // verifie si a est plus grand ou egal a b
     }
     return a.u3 > b.u3;
 }
-int cmp_strict_256(int256 a, int256 b){ // verifie si a est plus grand ou egal a b
+int cmp_strict_256(int256 a, int256 b){ // verifie si a est strictement plus grand que b
     if (a.u3 == b.u3){
         if (a.u2 == b.u2){
             if (a.u1 == b.u1){
@@ -36,7 +36,7 @@ int256 add_256(int256 a, int256 b){
     a.u0 + b.u0,
     };
     
-    ans.u1 += (ans.u0 < a.u0) ? 1 : 0; //effectue la retenue, si c.u0 < a.u0 alors a.u0 + b.u0 overflow donc on ajoute 1 a c.u1
+    ans.u1 += (ans.u0 < a.u0) ? 1 : 0; //effectue la retenue, si c.u0 < a.u0 alors a.u0 + b.u0 overflow donc on ajoute 1 a ans.u1
     ans.u2 += (ans.u1 < a.u1) || (ans.u1 < b.u1) ? 1 : 0;
     ans.u3 += (ans.u2 < a.u2) || (ans.u2 < b.u2) ? 1 : 0;
 

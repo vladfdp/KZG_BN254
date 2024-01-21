@@ -43,7 +43,7 @@ Fr leading_term(Poly poly){
     return poly.coeffs[poly.degree];
 }
 
-Poly euclidean_div_Poly(Poly f, Poly g){ //renvoie le quotient de f/g, attention f devient son reste par la division
+Poly euclidean_div_Poly(Poly f, Poly g){ //renvoie le quotient de f par g
     int dif = f.degree - g.degree;
     Poly ans = Poly_init(dif);
     if (dif < 0)
@@ -51,17 +51,19 @@ Poly euclidean_div_Poly(Poly f, Poly g){ //renvoie le quotient de f/g, attention
         return Poly_init(0);
     }
     Fr lt_inv = Fr_inv(g.coeffs[g.degree]);
+    Poly f2 = clone_Poly(f);            //on clone f pour que f reste inchangé
 
     for (int i = 0; i < dif + 1; i++)
     {
-        Fr pivot = Fr_mul(lt_inv,f.coeffs[f.degree - i]);
+        Fr pivot = Fr_mul(lt_inv,f2.coeffs[f2.degree - i]);
         for (int j = 0; j < g.degree + 1; j++)
         {
             Fr a = Fr_mul(pivot, g.coeffs[g.degree - j]);
-            f.coeffs[f.degree - i - j] = Fr_sub(f.coeffs[f.degree - i - j], a );
+            f2.coeffs[f2.degree - i - j] = Fr_sub(f2.coeffs[f2.degree - i - j], a );
         }
         ans.coeffs[dif - i] = pivot;
     }
+    free_Poly(f2);                      //f2 correspond au reste, il n'est pas necessaire pour le protocole
     return ans;  
 }
 

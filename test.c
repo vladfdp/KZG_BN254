@@ -9,6 +9,7 @@
 #include "int512.h"
 #include "Fr.h"
 #include "Poly.h"
+#include "EC.h"
   
 
 
@@ -240,6 +241,37 @@ void test_Fr(){
     print_Fr(Fr_mul(x,z));
 }
 
+void test_setup(){
+    FILE *srs_g1;
+    FILE *srs_g2;
+
+   if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
+
+       exit(1);
+    }
+
+   for(int i = 0; i < 10; i++)
+    {
+        G1 srs;
+        fread(&srs, sizeof(G1), 1, srs_g1); 
+        printf("\n");
+        print_Fp(srs.x);print_Fp(srs.y);
+    }
+   fclose(srs_g1); 
+
+   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
+
+       exit(1);
+    }
+    G2 srs2;
+    fread(&srs2, sizeof(G2), 1, srs_g2); 
+    printf("\n");
+    print_Fp12(srs2.x);print_Fp12(srs2.y);
+
+}
+
 int main(){
 
     //test_Euclid();
@@ -248,8 +280,9 @@ int main(){
     //test_Fp_ext();
     //test_Fp_ext_Inv();
     //test_Fr();
-    test_poly();
+    //test_poly();
     //test_poly_euclid_div();
+    test_setup();
 
     return 0;
 }

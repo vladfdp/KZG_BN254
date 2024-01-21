@@ -7,6 +7,11 @@ test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o
 	rm *.o
 	rm test
 
+setup: setup.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o
+	gcc -Wall -o setup setup.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o
+	./setup
+	rm setup
+
 main.o: main.c 
 	gcc -c main.c
 
