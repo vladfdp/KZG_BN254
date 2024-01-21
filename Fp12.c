@@ -27,6 +27,8 @@ Fp12 Fp12_one(){
 	return one;
 }
 
+
+
 int Fp12_equal(Fp12 a, Fp12 b){
 	return (Fp6_equal(a.x0, b.x0) && Fp6_equal(a.x1, b.x1) );
 }
@@ -117,6 +119,29 @@ Fp12 Fp12_inv(Fp12 x)
 
 }
 
+Fp12 Fp12_mul_by_Fp6(Fp12 a, Fp6 b)
+{	
+	Fp12 c;
+	c.x0 = Fp6_mul(a.x0,b);
+	c.x1 = Fp6_mul(a.x1,b);
+	return c;
+}
+
+
+Fp6 Fp12_to_Fp6(Fp12 a)
+{
+	return a.x0;
+}
+
+
+
+Fp12 Fp6_to_Fp12(Fp6 a)
+{
+	Fp12 b;
+	b.x0 = a;
+	b.x1 = Fp6_zero();
+	return b;
+}
 
 
 
