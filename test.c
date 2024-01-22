@@ -272,17 +272,33 @@ void test_setup(){
 
 }
 
+void test_EC_gen(){
+
+    Fp x = {0x187CC1E6F77C59DD,0x29AC8214D5733697,0xB33601F06D087C26,0xC1D8F343FA92FFC2};
+    Fp y = {0x197C3E3702A874C3,0x424634A83761F37A,0xD8E8E8E4BE86082B,0xC8D9C9E6FE14275E};
+
+    Fp x2 = Fp_mul(x,x);
+    Fp x3 = Fp_mul(x2, x);
+    Fp x3pb = Fp_add(x3, Fp_from_int(3));
+
+    Fp y2 = Fp_mul(y,y);
+
+    printf("\n");
+    print_Fp(Fp_sub(y2,x3pb));
+}
+
 int main(){
 
     //test_Euclid();
     //test_Fp_exp();
     //test_Fp_Inv();
     //test_Fp_ext();
-    //test_Fp_ext_Inv();
+    test_Fp_ext_Inv();
     //test_Fr();
     //test_poly();
     //test_poly_euclid_div();
-    test_setup();
+    //test_setup();
+    //test_EC_gen();
 
     return 0;
 }

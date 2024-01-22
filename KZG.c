@@ -66,5 +66,9 @@ G1 create_proof_at_point(Poly poly, Fr index, Fr eval){
 
     Poly quotient = euclidean_div_Poly(poly, van_poly);
 
-    return commit(quotient);
+    G1 proof = commit(quotient);
+
+    free_Poly(quotient);
+
+    return proof;
 }

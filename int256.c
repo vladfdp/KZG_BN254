@@ -36,9 +36,9 @@ int256 add_256(int256 a, int256 b){
     a.u0 + b.u0,
     };
     
-    ans.u1 += (ans.u0 < a.u0) ? 1 : 0; //effectue la retenue, si c.u0 < a.u0 alors a.u0 + b.u0 overflow donc on ajoute 1 a ans.u1
-    ans.u2 += (ans.u1 < a.u1) || (ans.u1 < b.u1) ? 1 : 0;
-    ans.u3 += (ans.u2 < a.u2) || (ans.u2 < b.u2) ? 1 : 0;
+    (ans.u0 < a.u0) ? ans.u1++ : 0 ; //effectue la retenue, si c.u0 < a.u0 alors a.u0 + b.u0 overflow donc on ajoute 1 a ans.u1
+    (ans.u1 < a.u1) || (ans.u1 < b.u1) ? ans.u2 ++ : 0;
+    (ans.u2 < a.u2) || (ans.u2 < b.u2) ? ans.u3 ++ : 0;
 
     return ans;  
 }
@@ -51,9 +51,9 @@ int256 sub_256(int256 a, int256 b){       //on assume que a >= b
     a.u1 - b.u1,
     a.u0 - b.u0,
     };
-    ans.u1 -= (ans.u0 > a.u0) ? 1 : 0; //effectue la retenue inverse
-    ans.u2 -= (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 )  ? 1 : 0;
-    ans.u3 -= (ans.u2 > a.u2) || ((ans.u2 == a.u2) && b.u2 )  ? 1 : 0;
+    (ans.u0 > a.u0) ? ans.u1-- : 0; //effectue la retenue inverse
+    (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 )  ? ans.u2 -- : 0;
+    (ans.u2 > a.u2) || ((ans.u2 == a.u2) && b.u2 )  ? ans.u3 -- : 0;
 
     return ans;
 

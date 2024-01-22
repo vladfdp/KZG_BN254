@@ -48,13 +48,13 @@ int512 add_512(int512 a, int512 b){
     a.u0 + b.u0,
     };
     
-    ans.u1 += (ans.u0 < a.u0) ? 1 : 0;                          //les retenues
-    ans.u2 += (ans.u1 < a.u1) || (ans.u1 < b.u1) ? 1 : 0;
-    ans.u3 += (ans.u2 < a.u2) || (ans.u2 < b.u2) ? 1 : 0;
-    ans.u4 += (ans.u3 < a.u3) || (ans.u3 < b.u3) ? 1 : 0;
-    ans.u5 += (ans.u4 < a.u4) || (ans.u4 < b.u4) ? 1 : 0;
-    ans.u6 += (ans.u5 < a.u5) || (ans.u5 < b.u5) ? 1 : 0;
-    ans.u7 += (ans.u6 < a.u6) || (ans.u6 < b.u6) ? 1 : 0;
+    (ans.u0 < a.u0) ? ans.u1 ++ : 0;                          //les retenues
+    (ans.u1 < a.u1) || (ans.u1 < b.u1) ? ans.u2 ++ : 0;
+    (ans.u2 < a.u2) || (ans.u2 < b.u2) ? ans.u3 ++ : 0;
+    (ans.u3 < a.u3) || (ans.u3 < b.u3) ? ans.u4 ++ : 0;
+    (ans.u4 < a.u4) || (ans.u4 < b.u4) ? ans.u5 ++ : 0;
+    (ans.u5 < a.u5) || (ans.u5 < b.u5) ? ans.u6 ++ : 0;
+    (ans.u6 < a.u6) || (ans.u6 < b.u6) ? ans.u7 ++ : 0;
 
 
     return ans;  
@@ -72,13 +72,13 @@ int512 sub_512(int512 a, int512 b){       //on assume que a > b
     a.u0 - b.u0,
     };
 
-    ans.u1 -= (ans.u0 > a.u0) ? 1 : 0; //effectue la retenue inverse
-    ans.u2 -= (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 ) ? 1 : 0; //le short circuit evaluation fait que la deuxieme condition n'est pas souvent verifié
-    ans.u3 -= (ans.u2 > a.u2) || ((ans.u2 == a.u2) && b.u2 ) ? 1 : 0;
-    ans.u4 -= (ans.u3 > a.u3) || ((ans.u3 == a.u3) && b.u3 ) ? 1 : 0;
-    ans.u5 -= (ans.u4 > a.u4) || ((ans.u4 == a.u4) && b.u4 ) ? 1 : 0;
-    ans.u6 -= (ans.u5 > a.u5) || ((ans.u5 == a.u5) && b.u5 ) ? 1 : 0;
-    ans.u7 -= (ans.u6 > a.u6) || ((ans.u6 == a.u6) && b.u6 ) ? 1 : 0;
+    (ans.u0 > a.u0) ? ans.u1 -- : 0; //effectue la retenue inverse
+    (ans.u1 > a.u1) || ((ans.u1 == a.u1) && b.u1 ) ? ans.u2 -- : 0; //le short circuit evaluation fait que la deuxieme condition n'est pas souvent verifié
+    (ans.u2 > a.u2) || ((ans.u2 == a.u2) && b.u2 ) ? ans.u3 -- : 0;
+    (ans.u3 > a.u3) || ((ans.u3 == a.u3) && b.u3 ) ? ans.u4 -- : 0;
+    (ans.u4 > a.u4) || ((ans.u4 == a.u4) && b.u4 ) ? ans.u5 -- : 0;
+    (ans.u5 > a.u5) || ((ans.u5 == a.u5) && b.u5 ) ? ans.u6 -- : 0;
+    (ans.u6 > a.u6) || ((ans.u6 == a.u6) && b.u6 ) ? ans.u7 -- : 0;
 
     return ans;
 
