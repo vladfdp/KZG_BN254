@@ -19,9 +19,13 @@ typedef struct G1
 
 typedef struct G2
 {
-	Fp12 x;
+	Fp6 x;
 	Fp12 y;
 } G2;
+
+G1 G1_zero();
+
+G2 G2_zero();
 
 int G1_equal(G1 P1,G1 P2);
 
@@ -34,6 +38,10 @@ int G2_equal(G2 P1,G2 P2);
 G2 G2_add(G2 P1, G2 P2);
 
 G2 G2_oppo(G2 P0);
+
+G1 G1_mul_by_int(G1 base, int256 exponent);
+
+G2 G2_mul_by_int(G2 base, int256 exponent);
 
 
 
