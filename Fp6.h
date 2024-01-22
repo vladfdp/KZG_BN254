@@ -25,6 +25,8 @@ int Fp6_equal(Fp6 a, Fp6 b);
 
 Fp6 Fp6_add(Fp6 a,Fp6 b);
 
+Fp6 Fp6xFp_add(Fp6 a, Fp b);
+
 Fp6 Fp6_sub(Fp6 a,Fp6 b);
 
 Fp6 Fp6_opp(Fp6 x);

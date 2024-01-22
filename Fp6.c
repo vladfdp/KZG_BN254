@@ -108,6 +108,11 @@ Fp6 Fp6_inv(Fp6 x){
 	return ans;
 }
 
+Fp6 Fp6xFp_add(Fp6 a, Fp b)
+{
+	Fp6 c = {{Fp_add((a.x0).x0, b)}, a.x1, a.x2};
+	return c;
+}
 
 void print_Fp6(Fp6 a)
 {

@@ -119,6 +119,12 @@ Fp12 Fp12_inv(Fp12 x)
 
 }
 
+Fp12 Fp12_div(Fp12 a,Fp12 b)
+{	
+	Fp12 ans = Fp12_mul(a, Fp12_inv(b));
+	return ans;
+}
+
 Fp12 Fp12_mul_by_Fp6(Fp12 a, Fp6 b)
 {	
 	Fp12 c;
@@ -141,6 +147,12 @@ Fp12 Fp6_to_Fp12(Fp6 a)
 	b.x0 = a;
 	b.x1 = Fp6_zero();
 	return b;
+}
+
+Fp12 Fp12xFp_add(Fp12 a,Fp b)
+{
+	Fp12 c = {Fp6xFp_add(a.x0,b), a.x1};
+	return c;
 }
 
 

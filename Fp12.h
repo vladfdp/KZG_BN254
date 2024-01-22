@@ -31,16 +31,22 @@ Fp12 Fp12_sub(Fp12 a,Fp12 b);
 
 Fp12 Fp12_mul(Fp12 a,Fp12 b);
 
+Fp12 Fp12_mul_by_scalar(Fp12 a, Fp alpha);
+
 void print_Fp12(Fp12 a);
 
 Fp12 Fp12_exp(Fp12 base, int256 exponent);
 
 Fp12 Fp12_inv(Fp12 a);
 
+Fp12 Fp12_div(Fp12 a,Fp12 b);
+
 Fp12 Fp12_mul_by_Fp6(Fp12 a, Fp6 b);
 
 Fp6 Fp12_to_Fp6(Fp12 a);
 
 Fp12 Fp6_to_Fp12(Fp6 a);
+
+Fp12 Fp12xFp_add(Fp12 a,Fp b);
 
 #endif
