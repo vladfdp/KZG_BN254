@@ -51,4 +51,6 @@ Fp12 Fp12xFp_add(Fp12 a,Fp b);
 
 Fp12 Fp12xFp6_add(Fp12 a, Fp6 b);
 
+Fp12 Fp12_mul_by_Fp2(Fp12 a,Fp2 b);
+
 #endif
