@@ -140,7 +140,6 @@ Fp6 Fp12_to_Fp6(Fp12 a)
 }
 
 
-
 Fp12 Fp6_to_Fp12(Fp6 a)
 {
 	Fp12 b;
@@ -153,6 +152,14 @@ Fp12 Fp12xFp_add(Fp12 a,Fp b)
 {
 	Fp12 c = {Fp6xFp_add(a.x0,b), a.x1};
 	return c;
+}
+
+Fp12 Fp12xFp6_add(Fp12 a, Fp6 b)
+{
+	Fp12 ans;
+	ans.x0 = Fp6_add(a.x0,b);
+	ans.x1 = a.x1;
+	return ans;
 }
 
 

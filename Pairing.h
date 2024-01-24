@@ -11,8 +11,6 @@
 #include "int512.h"
 #include "EC.h"
 
-
-
 Fp12 Tate_pairing(G1 P, G2 Q, int256 r);
 
 

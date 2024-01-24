@@ -9,7 +9,7 @@
 #include "EC.h"
 #include "Pairing.h"
 
-const int OK = 0x8000000000000000;
+const unsigned_int OK = 0x8000000000000000;
 const int256 megaOK = {OK, 0, 0, 0};
 
 Fp12 Tate_pairing(G1 P, G2 Q, int256 r)
