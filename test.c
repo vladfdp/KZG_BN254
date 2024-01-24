@@ -268,7 +268,7 @@ void test_setup(){
     G2 srs2;
     fread(&srs2, sizeof(G2), 1, srs_g2); 
     printf("\n");
-    print_Fp12(srs2.x);print_Fp12(srs2.y);
+    print_Fp6(srs2.x);print_Fp12(srs2.y);
 
 }
 
@@ -285,6 +285,96 @@ void test_EC_gen(){
 
     printf("\n");
     print_Fp(Fp_sub(y2,x3pb));
+    printf("\n");printf("\n");
+
+
+    Fp12 x1 = Fp12_zero();
+    Fp12 y1 = Fp12_zero();
+
+    Fp x10 = {0x2351A862F99A2E05,0x202DB891D078A76E,0x4316B508B69C17DE,0x69B71BDCEEA9943F};
+    Fp x11 = {0x1B09333D8FFAF56,0x702D0CDB0C731DC1,0xE806C87EAC937733,0xC82BD78D428F66CE};
+
+    Fp y10 = {0x2C6977D27D199BA8,0xBB2A4FFC86E57425,0x04B88246B19977D4,0xC52C2436273F7DF1};
+    Fp y11 = {0x2D5991DC9820B9CB,0xEAB5AA224869A316,0x859C7B603A8EFF71,0x6670A2DCA426B521};
+
+
+    x1.x0.x0.x0 = x10;
+    x1.x0.x0.x1 = x11;
+
+    y1.x0.x0.x0 = y10;
+    y1.x0.x0.x1 = y11;
+
+
+    Fp12 y1sq = Fp12_mul(y1, y1);
+
+    Fp12 x1sq = Fp12_mul(x1,x1);
+    Fp12 x1cub = Fp12_mul(x1, x1sq);
+
+    Fp12 three = Fp12_zero();
+    three.x0.x0.x0 = Fp_from_int(3);
+
+    Fp12 zeta = Fp12_zero();
+    zeta.x0.x0.x0 = Fp_from_int(9);
+    zeta.x0.x0.x1 = Fp_one();
+
+    Fp12 x1cubpB = Fp12_add(x1cub, Fp12_div(three, zeta));
+
+    print_Fp12(Fp12_sub(y1sq, x1cubpB));
+    printf("\n\n");
+
+
+    Fp12 omega = Fp12_zero();
+    omega.x1 = Fp6_one();
+
+    Fp12 omesq = Fp12_mul(omega, omega);
+    Fp12 omecub = Fp12_mul(omesq, omega);
+
+    Fp12 untx = Fp12_mul(omesq, x1);
+    Fp12 unty = Fp12_mul(omecub, y1);
+
+    //print_Fp12(untx);printf("\n");
+    //print_Fp12(unty);printf("\n\n");
+
+
+    Fp12 untysq = Fp12_mul(unty, unty);
+    Fp12 untxsq = Fp12_mul(untx, untx);
+    Fp12 untxcub = Fp12_mul(untxsq, untx);
+    Fp12 untxcubp3 = Fp12_add(untxcub, three);
+
+    print_Fp12(Fp12_sub(untysq, untxcubp3));
+
+
+    Fp6 H_x;
+    Fp12 H_y;
+
+
+    Fp x_a = {0x2351a862f99a2e05,0x202db891d078a76e,0x4316b508b69c17de,0x69b71bdceea9943f};
+    Fp x_b = {0x1b09333d8ffaf56,0x702d0cdb0c731dc1,0xe806c87eac937733,0xc82bd78d428f66ce};
+
+    Fp y_c = {0x2c6977d27d199ba8,0xbb2a4ffc86e57425,0x4b88246b19977d4,0xc52c2436273f7df1};
+    Fp y_d = {0x2d5991dc9820b9cb,0xeab5aa224869a316,0x859c7b603a8eff71,0x6670a2dca426b521};
+
+
+    H_x.x0 = Fp2_zero();
+    H_x.x2 = Fp2_zero();
+    H_x.x1.x0 = x_a;
+    H_x.x1.x1 = x_b;
+
+    H_y.x0 = Fp6_zero();
+    H_y.x1.x0 = Fp2_zero();
+    H_y.x1.x2 = Fp2_zero();
+
+    H_y.x1.x1.x0 = y_c;
+    H_y.x1.x1.x1 = y_d;
+
+    Fp12 H_ysq = Fp12_mul(H_y, H_y);
+    Fp6 H_xsq = Fp6_mul(H_x, H_x);
+    Fp6 H_xcub = Fp6_mul(H_xsq, H_x);
+
+
+    printf("\n\n\n");
+    print_Fp12(Fp12_sub(H_ysq, Fp6_to_Fp12(H_xcub)));
+
 }
 
 int main(){
@@ -293,12 +383,12 @@ int main(){
     //test_Fp_exp();
     //test_Fp_Inv();
     //test_Fp_ext();
-    test_Fp_ext_Inv();
+    //test_Fp_ext_Inv();
     //test_Fr();
     //test_poly();
     //test_poly_euclid_div();
     //test_setup();
-    //test_EC_gen();
+    test_EC_gen();
 
     return 0;
 }
