@@ -9,14 +9,13 @@
 #include "EC.h"
 #include "Pairing.h"
 
-const unsigned_int OK = 0x8000000000000000;
-const int256 megaOK = {OK, 0, 0, 0};
+const long unsigned int OK = 0x8000000000000000;
 
 Fp12 Tate_pairing(G1 P, G2 Q, int256 r)
 {	
 	int i = 255;
 	
-	while ((r & megaOK) == 0)
+	while ((r.u3 && OK) == 0)
 	{
 		r = shift_left_256(r);
 		i = i-1;
@@ -29,26 +28,27 @@ Fp12 Tate_pairing(G1 P, G2 Q, int256 r)
 
 	while (i)
 	{	
-		if (equal_G1(G1_add(T,T),G1_zero))
+		if (G1_equal(G1_add(T,T),G1_zero()))
 		{
 			f1 = Fp12_mul(f1,Fp6_to_Fp12(Fp6xFp_add(Q.x,T.x)));
 		}
 		else {
-		Fp m = Fp_div(Fp_mul(Fp_from_int(3),Fp_mul(P1.x,P1.x)), (Fp_from_int(2),P1.y));
-		f1 = Fp12_mul(Fp12_mul(f1,f1),Fp12_add(Fp12xFp_add(Q.y,Fp_opp(T.y),Fp6_to_Fp12(Fp6_mul_by_scalar(Fp6xFp_add(Q.x,Fp_opp(T.x),Fp_opp(m)))))));
-		f2 = Fp12_mul(Fp12_mul(f2,f2),Fp6_to_Fp12(Fp6xFp_add(Q.x,Fp_add(Fp_add(T.x,T.x),Fp_opp(Fp_mul(m,m))))));
+		Fp m = Fp_div(Fp_mul(Fp_from_int(3),Fp_mul(P.x,P.x)), (Fp_from_int(2),P.y));
+		f1 = Fp12_mul(Fp12_mul(f1,f1), Fp12xFp6_add(Q.y,Fp6xFp_add(Fp6_mul_by_scalar(Fp6xFp_add(Q.x,Fp_opp(T.x)), Fp_opp(m)),Fp_opp(T.y))));
+		f2 = Fp12_mul_by_Fp6(Fp12_mul(f2,f2),Fp6xFp_add(Q.x,Fp_add(Fp_add(T.x,T.x),Fp_opp(Fp_mul(m,m)))));
 		T = G1_add(T,T);
 		}
 
-		if (r & i){
-		if (equal_G1(G1_add(T,P),G1_zero))
+		if (r.u3 & OK){
+		if (G1_equal(G1_add(T,P),G1_zero()))
 		{
 			f1 = Fp12_mul(f1,Fp6_to_Fp12(Fp6xFp_add(Q.x,T.x)));
 		}
-		
-			f1 = Fp12_mul(Fp12_mul(f1,f1),Fp12_add(Fp12xFp_add(Q.y,Fp_opp(T.y),Fp6_to_Fp12(Fp6_mul_by_scalar(Fp6xFp_add(Q.x,Fp_opp(T.x),Fp_opp(m)))))));
-			f2 = Fp12_mul(Fp12_mul(f2,f2),Fp6_to_Fp12(Fp6xFp_add(Q.x,Fp_add(Fp_add(P.x,T.x),Fp_opp(Fp_mul(m,m))))));
-			T = G1_add(T,P);
+		else {
+			Fp m1 = Fp_div(Fp_sub(T.y,P.y),Fp_sub(T.x, P.x));
+			f1 = Fp12_mul(f1,Fp12xFp6_add(Q.y,Fp6xFp_add(Fp6_mul_by_scalar(Fp6xFp_add(Q.x,Fp_opp(T.x)), Fp_opp(m1)),Fp_opp(T.y))));
+			f2 = Fp12_mul_by_Fp6(f2,Fp6xFp_add(Q.x,Fp_add(Fp_add(P.x,T.x),Fp_opp(Fp_mul(m1,m1)))));
+			T = G1_add(T,P); }
 		}
 		r = shift_left_256(r);
 		i = i-1;
