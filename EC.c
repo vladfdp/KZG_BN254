@@ -43,7 +43,7 @@ G1 G1_add(G1 P1, G1 P2)
 		return P2;
 	}
 	
-	if (G1_equal(P2, G1_zero())
+	if (G1_equal(P2, G1_zero()))
 	{
 		return P1;
 	}
@@ -90,7 +90,7 @@ G2 G2_add(G2 P1, G2 P2)
 		G2 P;
 		if (G2_equal(P1, G2_opp(P2)))
 		{
-			G2 ans = {Fp12_zero(),Fp12_zero()};
+			G2 ans = {Fp6_zero(),Fp12_zero()};
 			return ans;
 		}
 
@@ -98,14 +98,14 @@ G2 G2_add(G2 P1, G2 P2)
 		{
 			if (G2_equal(P1, P2))
 				{
-					m = Fp12_mul_by_Fp6(Fp6_mul_by_scalar(Fp6_mul(P1.x,P1.x),Fp_from_int(3)), Fp12_inv(Fp12_mul_by_scalar(P1.y, Fp_from_int(2))));
+					m = Fp12_mul_by_Fp6(Fp12_inv(Fp12_mul_by_scalar(P1.y, Fp_from_int(2))),Fp6_mul_by_scalar(Fp6_mul(P1.x,P1.x),Fp_from_int(3)));
 				}
 			else 
 			{
 				m = Fp12_mul_by_Fp6(Fp12_sub(P2.y,P1.y),Fp6_inv(Fp6_sub(P2.x,P1.x)));
 			}
-		P.x = Fp12_to_Fp6(Fp12_sub(Fp12_sub(Fp12_mul(m,m),P1.x),P2.x));
-		P.y = Fp12_sub(Fp12_mul(m, Fp12_sub(P1.x,P.x)),P1.y);
+		P.x = Fp12_to_Fp6(Fp12xFp6_add(Fp12xFp6_add(Fp12_mul(m,m),Fp6_opp(P1.x)),Fp6_opp(P2.x)));
+		P.y = Fp12_sub(Fp12_mul_by_Fp6(m, Fp6_sub(P1.x,P.x)),P1.y);
 		return P;
 		}
 
@@ -114,7 +114,7 @@ G2 G2_add(G2 P1, G2 P2)
 
 G1 G1_mul_by_int(G1 base, int256 exponent){
 
-    Fp ans = G1_zero();
+    G1 ans = G1_zero();
 
     while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3)
     {
@@ -132,7 +132,7 @@ G1 G1_mul_by_int(G1 base, int256 exponent){
 
 G2 G2_mul_by_int(G2 base, int256 exponent){
 
-    Fp ans = G2_zero();
+    G2 ans = G2_zero();
 
     while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3)
     {

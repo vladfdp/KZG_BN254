@@ -49,4 +49,6 @@ Fp12 Fp6_to_Fp12(Fp6 a);
 
 Fp12 Fp12xFp_add(Fp12 a,Fp b);
 
+Fp12 Fp12xFp6_add(Fp12 a, Fp6 b);
+
 #endif
