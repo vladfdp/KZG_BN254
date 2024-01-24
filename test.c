@@ -251,7 +251,7 @@ void test_setup(){
        exit(1);
     }
 
-   for(int i = 0; i < 10; i++)
+   for(int i = 0; i < 100; i++)
     {
         G1 srs;
         fread(&srs, sizeof(G1), 1, srs_g1); 
@@ -332,8 +332,12 @@ void test_EC_gen(){
     Fp12 untx = Fp12_mul(omesq, x1);
     Fp12 unty = Fp12_mul(omecub, y1);
 
-    //print_Fp12(untx);printf("\n");
-    //print_Fp12(unty);printf("\n\n");
+    // print_Fp12(omega);printf("\n");
+    // print_Fp12(omesq);printf("\n");
+    // print_Fp12(omecub);printf("\n\n");
+
+    print_Fp12(Fp12_inv(omesq));printf("\n");
+    print_Fp12(Fp12_inv(omecub));printf("\n");
 
 
     Fp12 untysq = Fp12_mul(unty, unty);
@@ -373,7 +377,7 @@ void test_EC_gen(){
 
 
     printf("\n\n\n");
-    print_Fp12(Fp12_sub(H_ysq, Fp6_to_Fp12(H_xcub)));
+    //print_Fp12(Fp12_sub(H_ysq, Fp6_to_Fp12(H_xcub)));
 
 }
 

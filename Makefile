@@ -7,8 +7,8 @@ test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o
 	rm *.o
 	rm test
 
-setup: setup.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o Pairing.o
-	gcc -Wall -o setup setup.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o Pairing.o
+setup: setup.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o
+	gcc -Wall -o setup setup.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o
 	./setup
 	rm setup
 
