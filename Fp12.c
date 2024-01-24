@@ -162,6 +162,11 @@ Fp12 Fp12xFp6_add(Fp12 a, Fp6 b)
 	return ans;
 }
 
+Fp12 Fp12_mul_by_Fp2(Fp12 a,Fp2 b)
+{
+	Fp12 c = { {Fp2_mul((a.x0).x0,b),Fp2_mul((a.x0).x1,b),Fp2_mul((a.x0).x2,b)} , {Fp2_mul((a.x1).x0,b),Fp2_mul((a.x1).x1,b),Fp2_mul((a.x1).x2,b)} };
+	return c;
+}
 
 
 
