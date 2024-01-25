@@ -58,7 +58,7 @@ G1 G1_add(G1 P1, G1 P2)
 	{
 		if (G1_equal(P1, P2))
 			{
-				m = Fp_div(Fp_mul(Fp_from_int(3),Fp_mul(P1.x,P1.x)), (Fp_from_int(2),P1.y));
+				m = Fp_div(Fp_mul(Fp_from_int(3),Fp_mul(P1.x,P1.x)), Fp_mul(Fp_from_int(2),P1.y));
 			}
 		else 
 		{
