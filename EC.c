@@ -30,7 +30,7 @@ G1 G1_opp(G1 P0)
 
 int G1_equal(G1 P1, G1 P2)
 {
-	return (Fp_equal(P1.x,P2.x) & Fp_equal(P1.y,P2.y));
+	return (Fp_equal(P1.x,P2.x) && Fp_equal(P1.y,P2.y));
 
 }
 
@@ -145,5 +145,18 @@ G2 G2_mul_by_int(G2 base, int256 exponent){
     return ans;
 }
 
+void print_G1(G1 P)
+{
+	printf("(");
+	print_Fp(P.x); printf(",");
+	print_Fp(P.y); printf(")\n");
+}
+
+void print_G2(G2 P)
+{
+	printf("(");
+	print_Fp6(P.x); printf(",");
+	print_Fp12(P.y); printf(")\n");
+}
 
 

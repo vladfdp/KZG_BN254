@@ -43,6 +43,10 @@ G1 G1_mul_by_int(G1 base, int256 exponent);
 
 G2 G2_mul_by_int(G2 base, int256 exponent);
 
+void print_G1(G1 P);
+
+void print_G2(G2 P);
+
 
 
 

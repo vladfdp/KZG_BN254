@@ -10,6 +10,7 @@
 #include "Fr.h"
 #include "Poly.h"
 #include "EC.h"
+#include "Pairing.h"
   
 
 
@@ -381,6 +382,19 @@ void test_EC_gen(){
 
 }
 
+// 268FF4DCF71C97A2C4C5275F368914E0D7FAAEDF79B9414190409DBBE802D801
+
+void test_G1()
+{  
+   G1 A = {{{0x1083588805634D3F,0x51C50FEF5D4A71C5,0x877415191FFD2C46,0x923028175C2F45D3}}, {{0x1604C841A2B0A4BC,0x6A6FBFBFC45B2A46,0xAD0F7EE20A1F99BC,0xB13154224160F996}}};
+   G1 B = {{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}, {{0x7060D04CA61EA2345,0xFEABA976434E792E,0x93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
+   int256 a = {0,0,0,1100110010100};
+   G1 C = G1_add (A, B);
+   G1 D = G1_mul_by_int(A,a);
+   print_G1(C);
+   print_G1(D);
+}
+
 int main(){
 
     //test_Euclid();
@@ -392,7 +406,9 @@ int main(){
     //test_poly();
     //test_poly_euclid_div();
     //test_setup();
-    test_EC_gen();
+    test_G1();
 
+    
+    
     return 0;
 }
