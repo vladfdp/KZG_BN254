@@ -11,7 +11,8 @@
 #include "Poly.h"
 #include "EC.h"
 #include "Pairing.h"
-  
+#include "KZG.h"
+#include "TwistedG2.h"
 
 
 void test_Fp_exp(){
@@ -256,8 +257,8 @@ void test_setup(){
     {
         G1 srs;
         fread(&srs, sizeof(G1), 1, srs_g1); 
+        print_G1(srs);
         printf("\n");
-        print_Fp(srs.x);print_Fp(srs.y);
     }
    fclose(srs_g1); 
 
@@ -268,8 +269,9 @@ void test_setup(){
     }
     G2 srs2;
     fread(&srs2, sizeof(G2), 1, srs_g2); 
+    print_G2(srs2);
     printf("\n");
-    print_Fp6(srs2.x);print_Fp12(srs2.y);
+    
 
 }
 
@@ -334,11 +336,11 @@ void test_EC_gen(){
     Fp12 unty = Fp12_mul(omecub, y1);
 
     // print_Fp12(omega);printf("\n");
-    // print_Fp12(omesq);printf("\n");
-    // print_Fp12(omecub);printf("\n\n");
+    print_Fp12(omesq);printf("\n");
+    print_Fp12(omecub);printf("\n\n");
 
-    print_Fp12(Fp12_inv(omesq));printf("\n");
-    print_Fp12(Fp12_inv(omecub));printf("\n");
+    //print_Fp12(Fp12_inv(omesq));printf("\n");
+    //print_Fp12(Fp12_inv(omecub));printf("\n");
 
 
     Fp12 untysq = Fp12_mul(unty, unty);
@@ -395,6 +397,39 @@ void test_G1()
    print_G1(D);             
 }
 
+void test_KZG_commit(){
+
+    Poly p = Poly_init(2);
+    p.coeffs[2] = Fr_one();
+    p.coeffs[0] = Fr_sub(Fr_zero(), Fr_from_int(4));
+
+    print_G1(commit(p));
+}
+
+void test_twist(){
+
+    Fp2 x;
+    Fp2 y;
+
+    Fp x0 = {0x2351A862F99A2E05,0x202DB891D078A76E,0x4316B508B69C17DE,0x69B71BDCEEA9943F};
+    Fp x1 = {0x1B09333D8FFAF56,0x702D0CDB0C731DC1,0xE806C87EAC937733,0xC82BD78D428F66CE};
+
+    Fp y0 = {0x2C6977D27D199BA8,0xBB2A4FFC86E57425,0x04B88246B19977D4,0xC52C2436273F7DF1};
+    Fp y1 = {0x2D5991DC9820B9CB,0xEAB5AA224869A316,0x859C7B603A8EFF71,0x6670A2DCA426B521};
+
+    x.x0 = x0;
+    x.x1 = x1;
+    y.x0 = y0;
+    y.x1 = y1;
+
+    TwistedG2 TP = {x,y};
+
+    G2 P = G2_untwist(TP);
+    
+    printf("\n\n\n %d",G2_is_on_curve(P));
+}
+
+
 int main(){
 
     //test_Euclid();
@@ -406,7 +441,10 @@ int main(){
     //test_poly();
     //test_poly_euclid_div();
     //test_setup();
-    test_G1();
+    //test_G1();
+    //test_EC_gen();
+    //test_KZG_commit();
+    test_twist();
 
     
     

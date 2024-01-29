@@ -14,7 +14,7 @@ const unsigned int MAX_DEGREE = 100;
 
 int main(){
 
-    Fr alpha = Fr_from_int(54870987);//rendre ca random
+    Fr alpha = Fr_from_int(2);//rendre ca random
 
     Fp G_x = {0x187CC1E6F77C59DD,0x29AC8214D5733697,0xB33601F06D087C26,0xC1D8F343FA92FFC2};
     Fp G_y = {0x197C3E3702A874C3,0x424634A83761F37A,0xD8E8E8E4BE86082B,0xC8D9C9E6FE14275E};

@@ -2,3 +2,5 @@
 .vscode/
 test
 main
+Makefile
+*.bin

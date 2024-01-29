@@ -15,6 +15,10 @@ Fp6 Fp6_zero(){
 	return zero;
 }
 
+Fp6_is_zero(Fp6 x){
+	return Fp2_is_zero(x.x0) && Fp2_is_zero(x.x1) && Fp2_is_zero(x.x2);
+}
+
 Fp6 Fp6_one(){
 	Fp6 one = {
 		Fp2_one(),
@@ -77,6 +81,15 @@ Fp6 Fp6_mul_by_scalar(Fp6 x, Fp alpha){
 	return ans;
 }
 
+Fp6 Fp6_mul_by_Fp2(Fp6 a, Fp2 b){
+	Fp6 ans = {
+		Fp2_mul(a.x0, b),
+		Fp2_mul(a.x1, b),
+		Fp2_mul(a.x2, b),
+	};
+	return ans;
+}
+
 Fp6 Fp6_inv(Fp6 x){
 
 	Fp2 f = Fp2_from_int(9,1);
@@ -110,8 +123,8 @@ Fp6 Fp6_inv(Fp6 x){
 
 Fp6 Fp6xFp_add(Fp6 a, Fp b)
 {
-	Fp6 c = {{Fp_add((a.x0).x0, b)}, a.x1, a.x2};
-	return c;
+	a.x0.x0 = Fp_add(a.x0.x0 , b);
+	return a;
 }
 
 void print_Fp6(Fp6 a)

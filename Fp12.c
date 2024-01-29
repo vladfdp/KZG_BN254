@@ -19,6 +19,10 @@ Fp12 Fp12_zero(){
 	return zero;
 }
 
+int Fp12_is_zero(Fp12 x){
+	return Fp6_is_zero(x.x0) && Fp6_is_zero(x.x0);
+}
+
 Fp12 Fp12_one(){
 	Fp12 one = {
 		Fp6_one(),

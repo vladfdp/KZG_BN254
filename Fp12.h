@@ -47,6 +47,8 @@ Fp6 Fp12_to_Fp6(Fp12 a);
 
 Fp12 Fp6_to_Fp12(Fp6 a);
 
+int Fp12_is_zero(Fp12 x);
+
 
 Fp12 Fp12xFp_add(Fp12 a,Fp b);
 

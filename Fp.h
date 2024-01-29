@@ -15,6 +15,8 @@ Fp Fp_from_int(uint64_t n);
 
 Fp Fp_zero();
 
+int Fp_is_zero(Fp x);
+
 Fp Fp_one();
 
 int Fp_equal(Fp a, Fp b);

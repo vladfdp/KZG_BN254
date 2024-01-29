@@ -13,6 +13,10 @@ Fp2 Fp2_zero(){
 	return zero;
 }
 
+int Fp2_is_zero(Fp2 x){
+	return Fp_is_zero(x.x0) && Fp_is_zero(x.x1);
+}
+
 Fp2 Fp2_one(){
 	Fp2 one = {
 		Fp_one(),

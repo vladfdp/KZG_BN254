@@ -39,6 +39,8 @@ G2 G2_add(G2 P1, G2 P2);
 
 G2 G2_oppo(G2 P0);
 
+int G2_is_on_curve(G2 P);
+
 G1 G1_mul_by_int(G1 base, int256 exponent);
 
 G2 G2_mul_by_int(G2 base, int256 exponent);

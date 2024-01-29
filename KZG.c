@@ -8,33 +8,33 @@
 #include "Poly.h"
 #include "EC.h"
 
-int verify(G1 commit, G1 proof, Fr index, Fr eval){
+// int verify(G1 commit, G1 proof, Fr index, Fr eval){
 
-    FILE *srs_g2;
+//     FILE *srs_g2;
 
-   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
-       printf("Missing SRS, run setup using 'make setup'");
+//    if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+//        printf("Missing SRS, run setup using 'make setup'");
 
-       exit(1);
-    }
+//        exit(1);
+//     }
 
-    G2 H;
-    G2 alpha_H;
-    fread(&H, sizeof(G2), 1, srs_g2);
-    fread(&alpha_H, sizeof(G2), 1, srs_g2); 
+//     G2 H;
+//     G2 alpha_H;
+//     fread(&H, sizeof(G2), 1, srs_g2);
+//     fread(&alpha_H, sizeof(G2), 1, srs_g2); 
 
 
-    G2 ind_H = G2_mul_scal(Fr_opp(index), H);
-    G2 cofactor = G2_add( SRS_G2[1] , ind_H); // (alpha - index) * H
+//     G2 ind_H = G2_mul_scal(Fr_opp(index), H);
+//     G2 cofactor = G2_add( SRS_G2[1] , ind_H); // (alpha - index) * H
 
-    Fp12 exp_eval = Fp12_exp(e_gh, eval.num); // e(G,H)^eval
-    Fp12 pairing = EC_pairing(proof, cofactor);
+//     Fp12 exp_eval = Fp12_exp(e_gh, eval.num); // e(G,H)^eval
+//     Fp12 pairing = EC_pairing(proof, cofactor);
 
-    Fp12 lhs = EC_pairing(commit, H);
-    Fp12 rhs = Fp12_mul(pairing, exp_eval);
+//     Fp12 lhs = EC_pairing(commit, H);
+//     Fp12 rhs = Fp12_mul(pairing, exp_eval);
 
-    return Fp12_equal(lhs, rhs);
-}
+//     return Fp12_equal(lhs, rhs);
+// }
 
 G1 commit(Poly poly){
 
@@ -53,7 +53,7 @@ G1 commit(Poly poly){
     for (int i = 0; i < poly.degree + 1; i++)
     {
         fread(&alpha_i_G, sizeof(G1), 1, srs_g1);
-        ans = G1_add(ans, G1_mul_scal( poly.coeffs[i], alpha_i_G));
+        ans = G1_add(ans, G1_mul_by_int(alpha_i_G, poly.coeffs[i].num ));
     }
     return ans;
 }

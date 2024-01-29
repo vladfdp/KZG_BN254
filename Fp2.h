@@ -16,6 +16,8 @@ typedef struct Fp2
 
 Fp2 Fp2_zero();
 
+int Fp2_is_zero(Fp2 x);
+
 Fp2 Fp2_one();
 
 int Fp2_equal(Fp2 a, Fp2 b);

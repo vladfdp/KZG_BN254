@@ -19,6 +19,8 @@ typedef struct Fp6
 
 Fp6 Fp6_zero();
 
+int Fp6_is_zero(Fp6 x);
+
 Fp6 Fp6_one();
 
 int Fp6_equal(Fp6 a, Fp6 b);
@@ -34,6 +36,8 @@ Fp6 Fp6_opp(Fp6 x);
 Fp6 Fp6_mul(Fp6 a,Fp6 b);
 
 Fp6 Fp6_mul_by_scalar(Fp6 x, Fp alpha);
+
+Fp6 Fp6_mul_by_Fp2(Fp6 a, Fp2 b);
 
 Fp6 Fp6_inv(Fp6 x);
 

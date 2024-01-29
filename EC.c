@@ -160,3 +160,13 @@ void print_G2(G2 P)
 }
 
 
+int G2_is_on_curve(G2 P){
+
+	Fp12 y_sq = Fp12_mul(P.y, P.y);
+	Fp6 fx = Fp6_mul(P.x,Fp6_mul(P.x,P.x));
+	fx = Fp6xFp_add(fx, Fp_from_int(3));
+
+	Fp12 ans = Fp12xFp6_add(y_sq, Fp6_opp(fx));
+
+	return Fp12_is_zero(ans);
+}

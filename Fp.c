@@ -9,6 +9,10 @@ Fp Fp_zero(){
     return zero;
 }
 
+int Fp_is_zero(Fp x){
+    return !(x.num.u0 || x.num.u1 || x.num.u2 || x.num.u3);
+}
+
 Fp Fp_one(){
     Fp one = {{0,0,0,1}};
     return one;
