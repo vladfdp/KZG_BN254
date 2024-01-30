@@ -88,23 +88,32 @@ G2 G2_add(G2 P1, G2 P2)
 	{
 		Fp12 m;
 		G2 P;
+		if (G2_equal(P1, G2_zero()))
+		{
+			return P2;
+		}
+	
+		if (G2_equal(P2, G2_zero()))
+		{
+			return P1;
+		}
+
 		if (G2_equal(P1, G2_opp(P2)))
 		{
 			G2 ans = {Fp6_zero(),Fp12_zero()};
 			return ans;
 		}
-
 		else 
 		{
 			if (G2_equal(P1, P2))
 				{
-					m = Fp12_mul_by_Fp6(Fp12_inv(Fp12_mul_by_scalar(P1.y, Fp_from_int(2))),Fp6_mul_by_scalar(Fp6_mul(P1.x,P1.x),Fp_from_int(3)));
+					m = Fp12_mul_by_Fp6(Fp12_inv(Fp12_mul_by_scalar(P1.y, Fp_from_int(2))) , Fp6_mul_by_scalar(Fp6_mul(P1.x,P1.x),Fp_from_int(3)));
 				}
 			else 
 			{
 				m = Fp12_mul_by_Fp6(Fp12_sub(P2.y,P1.y),Fp6_inv(Fp6_sub(P2.x,P1.x)));
 			}
-		P.x = Fp12_to_Fp6(Fp12xFp6_add(Fp12xFp6_add(Fp12_mul(m,m),Fp6_opp(P1.x)),Fp6_opp(P2.x)));
+		P.x = Fp12_to_Fp6(Fp12xFp6_add(Fp12_mul(m,m),Fp6_add(Fp6_opp(P1.x),Fp6_opp(P2.x))));
 		P.y = Fp12_sub(Fp12_mul_by_Fp6(m, Fp6_sub(P1.x,P.x)),P1.y);
 		return P;
 		}
@@ -126,8 +135,6 @@ G1 G1_mul_by_int(G1 base, int256 exponent){
     }
     return ans;
 }
-
-
 
 
 G2 G2_mul_by_int(G2 base, int256 exponent){

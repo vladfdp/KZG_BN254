@@ -11,8 +11,8 @@
 #include "Poly.h"
 #include "EC.h"
 #include "Pairing.h"
-#include "KZG.h"
 #include "TwistedG2.h"
+  
 
 
 void test_Fp_exp(){
@@ -257,8 +257,8 @@ void test_setup(){
     {
         G1 srs;
         fread(&srs, sizeof(G1), 1, srs_g1); 
-        print_G1(srs);
         printf("\n");
+        print_Fp(srs.x);print_Fp(srs.y);
     }
    fclose(srs_g1); 
 
@@ -269,9 +269,8 @@ void test_setup(){
     }
     G2 srs2;
     fread(&srs2, sizeof(G2), 1, srs_g2); 
-    print_G2(srs2);
     printf("\n");
-    
+    print_Fp6(srs2.x);print_Fp12(srs2.y);
 
 }
 
@@ -336,11 +335,11 @@ void test_EC_gen(){
     Fp12 unty = Fp12_mul(omecub, y1);
 
     // print_Fp12(omega);printf("\n");
-    print_Fp12(omesq);printf("\n");
-    print_Fp12(omecub);printf("\n\n");
+    // print_Fp12(omesq);printf("\n");
+    // print_Fp12(omecub);printf("\n\n");
 
-    //print_Fp12(Fp12_inv(omesq));printf("\n");
-    //print_Fp12(Fp12_inv(omecub));printf("\n");
+    print_Fp12(Fp12_inv(omesq));printf("\n");
+    print_Fp12(Fp12_inv(omecub));printf("\n");
 
 
     Fp12 untysq = Fp12_mul(unty, unty);
@@ -368,6 +367,7 @@ void test_EC_gen(){
     H_x.x1.x1 = x_b;
 
     H_y.x0 = Fp6_zero();
+
     H_y.x1.x0 = Fp2_zero();
     H_y.x1.x2 = Fp2_zero();
 
@@ -397,36 +397,66 @@ void test_G1()
    print_G1(D);             
 }
 
-void test_KZG_commit(){
+void test_G2()
+{
+    int256 a = {0,0,0,6548};
+    
+    Fp A1 = {{0x2CFC7B2345E6401B,0x2DF4923F8058718B,0x51C50FEF5D4A71C5,0xDC845E570A1AE9B1}};
+    Fp A2 = {{0x22FA50A8B9951CDC,0x8E56E8C770EA498F,0x225F22168BD7A679,0x3E79F935033EAB3C}};
+    Fp A3 = {{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}};
+    Fp A4 = {{0x7060D04CA61EA23 ,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}};
 
-    Poly p = Poly_init(2);
-    p.coeffs[2] = Fr_one();
-    p.coeffs[0] = Fr_sub(Fr_zero(), Fr_from_int(4));
+    Fp A5 = {{0x1650A85142F8CEE5,0xE1D8B4B4AE11EEEF,0xB4406E46024046C5,0x4D88F3B4B14D549E}};
+    Fp A6 = {{0x2D48C1D0A657BB  ,0x9EFB5DD8AD575255,0x5362E03A1F55A30A,0x231406A465C755CF}};
+    Fp A7 = {{0x141B8C7873B0A503,0x839FC1EA94EE725B,0xA30D73F6BE08A9E7,0xC56AEE0FCB56256F}};
+    Fp A8 = {{0x20E75024288235A5,0x0B21481D4D7D2F8B,0xDA0FE1CA51650623,0x405F651A8C6C1EB8}};
+    
+    Fp2 B1 = {A1,A2};
+    Fp2 B2 = {A3,A4};
+    Fp2 B3 = {A5,A6};
+    Fp2 B4 = {A7,A8};
+    
+    TwistedG2 C = {B1, B2};
+    TwistedG2 D = {B3, B4};
+    
+    G2 P = G2_untwist(C);
+    G2 Q = G2_untwist(D);
 
-    print_G1(commit(p));
+    print_G2(P);printf("\n \n");
+    print_G2(Q);printf("\n \n");
+
+    G2 R = G2_add(P,Q);
+    print_G2(R);printf("\n \n");
+    G2 R2 = G2_mul_by_int(P,a);
+    print_G2(R2);printf("\n \n");
+
+    Fp C1 = {{0x296A6F157EC84CF2,0x99D22CAB1377ACA8,0xB936AC1F2F726BD7,0x4D8ABCE3F5F89068}};
+    Fp C2 = {{0x160F7D3E620A1007,0xB39641ED1D294460,0x21EE4B88782E12D8,0x5C1521DD3483B52F}};
+    Fp C3 = {{0x182898BEBA3CDACD,0x20030F41DD3D276A,0x6DFA6068D99D29B9,0x74A8E6D3C0086E9A}};
+    Fp C4 = {{0x1C75D5282EF3D1CA,0x225F3B37E38CF6A1,0x80721D5E3BF5A373,0xBCD40F5B0010581A}};
+    Fp C5 = {{0xBF20BD5CA4914BB ,0xEC563EC25DB01045,0x052010E91C4F3B8E,0xD83A0975E4F045A3}};
+    Fp C6 = {{0xD87F9AD9BB68000 ,0x144DBA44C32E9F73,0xB152FA1EAA969C80,0xF3C1AB0EF2F24EC2}};
+    Fp C7 = {{0x26BAB2D581F7E3A5,0x5CA4ACA8CB5DB8D5,0x4193BD9A06302B10,0xE729263093E710AB}};
+    Fp C8 = {{0x1A769663CD216DCE,0x4E50CC54B1A990CA,0x1CAF86CADA5B59C2,0x28DC3BC379FFF0B4}};
+
+    Fp2 E1 = {C1,C2};
+    Fp2 E2 = {C3,C4};
+    Fp2 E3 = {C5,C6};
+    Fp2 E4 = {C7,C8};
+
+    TwistedG2 E = {E1, E2};
+    TwistedG2 F = {E3, E4};
+
+    G2 X = G2_untwist(E);
+    G2 Y = G2_untwist(F);
+
+    print_G2(X);printf("\n \n");
+    print_G2(Y);printf("\n \n");
 }
 
-void test_twist(){
+void test_Pairing()
+{
 
-    Fp2 x;
-    Fp2 y;
-
-    Fp x0 = {0x2351A862F99A2E05,0x202DB891D078A76E,0x4316B508B69C17DE,0x69B71BDCEEA9943F};
-    Fp x1 = {0x1B09333D8FFAF56,0x702D0CDB0C731DC1,0xE806C87EAC937733,0xC82BD78D428F66CE};
-
-    Fp y0 = {0x2C6977D27D199BA8,0xBB2A4FFC86E57425,0x04B88246B19977D4,0xC52C2436273F7DF1};
-    Fp y1 = {0x2D5991DC9820B9CB,0xEAB5AA224869A316,0x859C7B603A8EFF71,0x6670A2DCA426B521};
-
-    x.x0 = x0;
-    x.x1 = x1;
-    y.x0 = y0;
-    y.x1 = y1;
-
-    TwistedG2 TP = {x,y};
-
-    G2 P = G2_untwist(TP);
-    
-    printf("\n\n\n %d",G2_is_on_curve(P));
 }
 
 
@@ -435,16 +465,13 @@ int main(){
     //test_Euclid();
     //test_Fp_exp();
     //test_Fp_Inv();
-    //test_Fp_ext();
+    //test_Fp_ext();    
     //test_Fp_ext_Inv();
     //test_Fr();
     //test_poly();
     //test_poly_euclid_div();
     //test_setup();
-    //test_G1();
-    //test_EC_gen();
-    //test_KZG_commit();
-    test_twist();
+    test_G2();
 
     
     
