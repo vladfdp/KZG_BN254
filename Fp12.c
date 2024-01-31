@@ -9,8 +9,6 @@
 
 
 
-
-
 Fp12 Fp12_zero(){
 	Fp12 zero = {
 		Fp6_zero(),

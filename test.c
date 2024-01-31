@@ -1,6 +1,8 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <gmp.h>
 #include "Fp.h"
 #include "Fp2.h"
 #include "Fp6.h"
@@ -12,7 +14,7 @@
 #include "EC.h"
 #include "Pairing.h"
 #include "TwistedG2.h"
-  
+
 
 
 void test_Fp_exp(){
@@ -419,21 +421,27 @@ void test_G2()
     TwistedG2 C = {B1, B2};
     TwistedG2 D = {B3, B4};
     
-    G2 P = G2_untwist(C);
+    G2 P1 = G2_untwist(C);
     G2 Q = G2_untwist(D);
 
-    print_G2(P);printf("\n \n");
+    print_G2(P1);printf("\n \n");
     print_G2(Q);printf("\n \n");
 
-    G2 R = G2_add(P,Q);
+    G2 R = G2_add(P1,Q);
     print_G2(R);printf("\n \n");
-    G2 R2 = G2_mul_by_int(P,a);
+    G2 R2 = G2_mul_by_int(P1,a);
     print_G2(R2);printf("\n \n");
+
+    G2 H = G2_frobenius(R);
+    G2 I = G2_mul_by_int(R,P);
+    int i = G2_equal(H,I);
+    printf("%d \n \n", i);
 
     Fp C1 = {{0x296A6F157EC84CF2,0x99D22CAB1377ACA8,0xB936AC1F2F726BD7,0x4D8ABCE3F5F89068}};
     Fp C2 = {{0x160F7D3E620A1007,0xB39641ED1D294460,0x21EE4B88782E12D8,0x5C1521DD3483B52F}};
     Fp C3 = {{0x182898BEBA3CDACD,0x20030F41DD3D276A,0x6DFA6068D99D29B9,0x74A8E6D3C0086E9A}};
     Fp C4 = {{0x1C75D5282EF3D1CA,0x225F3B37E38CF6A1,0x80721D5E3BF5A373,0xBCD40F5B0010581A}};
+    
     Fp C5 = {{0xBF20BD5CA4914BB ,0xEC563EC25DB01045,0x052010E91C4F3B8E,0xD83A0975E4F045A3}};
     Fp C6 = {{0xD87F9AD9BB68000 ,0x144DBA44C32E9F73,0xB152FA1EAA969C80,0xF3C1AB0EF2F24EC2}};
     Fp C7 = {{0x26BAB2D581F7E3A5,0x5CA4ACA8CB5DB8D5,0x4193BD9A06302B10,0xE729263093E710AB}};
@@ -452,11 +460,60 @@ void test_G2()
 
     print_G2(X);printf("\n \n");
     print_G2(Y);printf("\n \n");
+
+
 }
 
 void test_Pairing()
 {
+    int256 a = {0,0,0,6548};
+    
+    Fp A1 = {{0x2CFC7B2345E6401B,0x2DF4923F8058718B,0xDC845E570A1AE9B1,0x3D97853E6C2B269A}};
+    Fp A2 = {{0x22FA50A8B9951CDC,0x8E56E8C770EA498F,0x225F22168BD7A679,0x3E79F935033EAB3C}};
+    Fp A3 = {{0x1BCD7A83D05A4D3A,0x42DD04CAC74CCE26,0x10D93BD12665F7BA,0x0877ECC24C99D7A4}};
+    Fp A4 = {{0x143A32995F90A654,0x200AB4F5024C410D,0xC142282BA5475705,0x3C0B53E2EE2F6CF0}};
 
+    Fp A5 = {{0x1650A85142F8CEE5,0xE1D8B4B4AE11EEEF,0xB4406E46024046C5,0x4D88F3B4B14D549E}};
+    Fp A6 = {{0x2D48C1D0A657BB  ,0x9EFB5DD8AD575255,0x5362E03A1F55A30A,0x231406A465C755CF}};
+    Fp A7 = {{0x141B8C7873B0A503,0x839FC1EA94EE725B,0xA30D73F6BE08A9E7,0xC56AEE0FCB56256F}};
+    Fp A8 = {{0x20E75024288235A5,0x0B21481D4D7D2F8B,0xDA0FE1CA51650623,0x405F651A8C6C1EB8}};
+    
+    Fp2 B1 = {A1,A2};
+    Fp2 B2 = {A3,A4};
+    Fp2 B3 = {A5,A6};
+    Fp2 B4 = {A7,A8};
+    
+    TwistedG2 C = {B1, B2};
+    TwistedG2 D = {B3, B4};
+    
+    G2 P = G2_untwist(C);
+    G2 Q = G2_untwist(D);
+
+    G2 PplusQ = G2_add(P,Q);
+
+    G1 A = {{{0x1083588805634D3F,0x51C50FEF5D4A71C5,0x877415191FFD2C46,0x923028175C2F45D3}}, {{0x1604C841A2B0A4BC,0x6A6FBFBFC45B2A46,0xAD0F7EE20A1F99BC,0xB13154224160F996}}};
+   G1 B = {{{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}}, {{0x7060D04CA61EA23,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
+   
+   G1 AplusB = G1_add (A, B);
+
+}
+
+void calculdelexposant()
+{
+    unsigned long int k = 12;
+    mpz_t p,y,z,w;
+    mpz_init(p);
+    mpz_init(y);
+    mpz_init(z);
+    mpz_init(w);
+    mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
+    mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
+    mpz_pow_ui(z,p,k);
+    mpz_sub_ui(z,z,1);
+    mpz_cdiv_r(w,z,y);
+    mpz_cdiv_q(z,z,y);
+    mpz_out_str(stdout,16,z); printf("\n");printf("\n");
+    mpz_out_str(stdout,16,w);printf("\n");
 }
 
 
@@ -471,9 +528,10 @@ int main(){
     //test_poly();
     //test_poly_euclid_div();
     //test_setup();
+    //test_G1();
+    //test_G2();
+
     test_G2();
 
-    
-    
     return 0;
 }

@@ -152,6 +152,14 @@ G2 G2_mul_by_int(G2 base, int256 exponent){
     return ans;
 }
 
+G2 G2_frobenius(G2 A)
+{	
+	G2 B;
+	B.x = Fp6_frobenius(A.x);
+	B.y = Fp12_frobenius(A.y);
+	return B;
+}
+
 void print_G1(G1 P)
 {
 	printf("(");
@@ -165,6 +173,7 @@ void print_G2(G2 P)
 	print_Fp6(P.x); printf(",");
 	print_Fp12(P.y); printf(")\n");
 }
+
 
 
 int G2_is_on_curve(G2 P){

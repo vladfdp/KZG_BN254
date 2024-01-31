@@ -43,5 +43,9 @@ Fp6 Fp6_inv(Fp6 x);
 
 void print_Fp6(Fp6 a);
 
+Fp6 Fp6_frobenius(Fp6 x);
+
+Fp6 Fp6_exp(Fp6 base, int256 exponent);
+
 #endif
 

@@ -49,6 +49,8 @@ void print_G1(G1 P);
 
 void print_G2(G2 P);
 
+G2 G2_frobenius(G2 A);
+
 
 
 

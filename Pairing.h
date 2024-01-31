@@ -13,5 +13,10 @@
 
 Fp12 Tate_pairing(G1 P, G2 Q, int256 r);
 
+Fp12 exp_par_un_mega_int(Fp12 base);
+
+Fp Millerloop(G1 P, G1 Q, int256 r);
+
+Fp Weil_pairing(G1 P, G1 Q, int256 r);
 
 #endif

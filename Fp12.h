@@ -49,11 +49,15 @@ Fp12 Fp6_to_Fp12(Fp6 a);
 
 int Fp12_is_zero(Fp12 x);
 
-
 Fp12 Fp12xFp_add(Fp12 a,Fp b);
 
 Fp12 Fp12xFp6_add(Fp12 a, Fp6 b);
 
 Fp12 Fp12_mul_by_Fp2(Fp12 a,Fp2 b);
+
+Fp12 Fp12_frobenius(Fp12 x);
+
+
+
 
 #endif

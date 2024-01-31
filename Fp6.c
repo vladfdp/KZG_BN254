@@ -123,7 +123,7 @@ Fp6 Fp6_inv(Fp6 x){
 
 Fp6 Fp6xFp_add(Fp6 a, Fp b)
 {
-	a.x0.x0 = Fp_add(a.x0.x0 , b);
+	a.x0.x0 = Fp_add(a.x0.x0, b);
 	return a;
 }
 
@@ -132,4 +132,23 @@ void print_Fp6(Fp6 a)
 	print_Fp2(a.x0); printf("+ (");
 	print_Fp2(a.x1); printf(") v + (");
 	print_Fp2(a.x2); printf (") v^2");
+}
+
+Fp6 Fp6_exp(Fp6 base, int256 exponent)
+{
+	Fp6 ans = Fp6_one();
+
+    while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3)
+    {
+        if (exponent.u0 & 1){
+            ans = Fp6_mul(ans,base);
+        }
+        base = Fp6_mul(base, base);
+        exponent = shift_right_256(exponent);
+    }
+    return ans;
+}
+
+ Fp6 Fp6_frobenius(Fp6 x){
+	return Fp6_exp(x,P);
 }
