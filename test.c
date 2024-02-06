@@ -17,6 +17,7 @@
 
 const int256 r = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593F0000001};
 
+
 void test_Fp_exp(){
 
     Fp x = {{6711165,900000000000,55,0}};
@@ -395,8 +396,10 @@ void test_G1()
    int256 a = {0,0,0,6548};
    G1 C = G1_add (A, B);
    G1 D = G1_mul_by_int(A,a);
+   G1 E = G1_mul_by_int(A,r);
    print_G1(C);
-   print_G1(D);             
+   print_G1(D);
+   print_G1(E);               
 }
 
 void test_G2()
@@ -412,6 +415,7 @@ void test_G2()
     Fp A6 = {{0x2D48C1D0A657BB  ,0x9EFB5DD8AD575255,0x5362E03A1F55A30A,0x231406A465C755CF}};
     Fp A7 = {{0x141B8C7873B0A503,0x839FC1EA94EE725B,0xA30D73F6BE08A9E7,0xC56AEE0FCB56256F}};
     Fp A8 = {{0x20E75024288235A5,0x0B21481D4D7D2F8B,0xDA0FE1CA51650623,0x405F651A8C6C1EB8}};
+
     
     Fp2 B1 = {A1,A2};
     Fp2 B2 = {A3,A4};
@@ -429,6 +433,7 @@ void test_G2()
 
     G2 R = G2_add(P1,Q);
     print_G2(R);printf("\n \n");
+    
     G2 R2 = G2_mul_by_int(P1,a);
     print_G2(R2);printf("\n \n");
 
@@ -446,6 +451,7 @@ void test_G2()
     Fp C6 = {{0xD87F9AD9BB68000 ,0x144DBA44C32E9F73,0xB152FA1EAA969C80,0xF3C1AB0EF2F24EC2}};
     Fp C7 = {{0x26BAB2D581F7E3A5,0x5CA4ACA8CB5DB8D5,0x4193BD9A06302B10,0xE729263093E710AB}};
     Fp C8 = {{0x1A769663CD216DCE,0x4E50CC54B1A990CA,0x1CAF86CADA5B59C2,0x28DC3BC379FFF0B4}};
+    
 
     Fp2 E1 = {C1,C2};
     Fp2 E2 = {C3,C4};
@@ -493,11 +499,12 @@ void test_pairing()
 
     G1 A = {{{0x1083588805634D3F,0x51C50FEF5D4A71C5,0x877415191FFD2C46,0x923028175C2F45D3}}, {{0x1604C841A2B0A4BC,0x6A6FBFBFC45B2A46,0xAD0F7EE20A1F99BC,0xB13154224160F996}}};
     G1 B = {{{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}}, {{0x7060D04CA61EA23,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
-   
-   G1 AplusB = G1_add (A, B);
 
-   Fp12 K = Tate_pairing(A,PplusQ,r);
-   Fp12 K2 = Fp12_mul(Tate_pairing(A,P,r),Tate_pairing(A,Q,r));
+   
+   // G1 AplusB = G1_add (A, B);
+
+   Fp12 K = Tate_pairing(A,PplusQ);
+   Fp12 K2 = Fp12_mul(Tate_pairing(A,P),Tate_pairing(A,Q));
 
    print_Fp12(K) ;printf("\n \n");
    print_Fp12(K2);printf("\n \n");
@@ -514,8 +521,8 @@ void calculdelexposant()
     mpz_init(w);
     mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
     mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
-    mpz_pow_ui(z,p,k);
-    mpz_sub_ui(z,z,1);
+    mpz_pow_ui(z,p,k); mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
+    mpz_sub_ui(z,z,1); mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
     mpz_cdiv_r(w,z,y);
     mpz_cdiv_q(z,z,y);
     mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
@@ -524,7 +531,7 @@ void calculdelexposant()
 
 
 int main(){
-
+   
     //test_Euclid();
     //test_Fp_exp();
     //test_Fp_Inv();
@@ -537,7 +544,8 @@ int main(){
     //test_G1();
     //test_G2();
 
-char chaine[]= "coucou";
-printf("%c",chaine[0]);
+    test_pairing();
+
     return 0;
 }
+
