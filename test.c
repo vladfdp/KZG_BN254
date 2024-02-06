@@ -15,7 +15,7 @@
 #include "Pairing.h"
 #include "TwistedG2.h"
 
-
+const int256 r = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593F0000001};
 
 void test_Fp_exp(){
 
@@ -465,7 +465,7 @@ void test_G2()
 
 }
 
-void test_Pairing()
+void test_pairing()
 {
     int256 a = {0,0,0,6548};
     
@@ -493,29 +493,35 @@ void test_Pairing()
     G2 PplusQ = G2_add(P,Q);
 
     G1 A = {{{0x1083588805634D3F,0x51C50FEF5D4A71C5,0x877415191FFD2C46,0x923028175C2F45D3}}, {{0x1604C841A2B0A4BC,0x6A6FBFBFC45B2A46,0xAD0F7EE20A1F99BC,0xB13154224160F996}}};
-   G1 B = {{{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}}, {{0x7060D04CA61EA23,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
+    G1 B = {{{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}}, {{0x7060D04CA61EA23,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
    
    G1 AplusB = G1_add (A, B);
 
+   Fp12 K = Tate_pairing(A,PplusQ,r);
+   Fp12 K2 = Fp12_mul(Tate_pairing(A,P,r),Tate_pairing(A,Q,r));
+
+   print_Fp12(K) ;printf("\n \n");
+   print_Fp12(K2);printf("\n \n");
+
 }
 
-// void calculdelexposant()
-// {
-//     unsigned long int k = 12;
-//     mpz_t p,y,z,w;
-//     mpz_init(p);
-//     mpz_init(y);
-//     mpz_init(z);
-//     mpz_init(w);
-//     mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
-//     mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
-//     mpz_pow_ui(z,p,k);
-//     mpz_sub_ui(z,z,1);
-//     mpz_cdiv_r(w,z,y);
-//     mpz_cdiv_q(z,z,y);
-//     mpz_out_str(stdout,16,z); printf("\n");printf("\n");
-//     mpz_out_str(stdout,16,w);printf("\n");
-// }
+void calculdelexposant()
+{
+    unsigned long int k = 12;
+    mpz_t p,y,z,w;
+    mpz_init(p);
+    mpz_init(y);
+    mpz_init(z);
+    mpz_init(w);
+    mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
+    mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
+    mpz_pow_ui(z,p,k);
+    mpz_sub_ui(z,z,1);
+    mpz_cdiv_r(w,z,y);
+    mpz_cdiv_q(z,z,y);
+    mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
+    mpz_out_str(stdout,16,w); printf("\n");
+}
 
 void test_frobenius(){
 
@@ -584,7 +590,7 @@ int main(){
     //test_G2();
     //test_frobenius();
 
-    test_TwistedG2();
-
+char chaine[]= "coucou";
+printf("%c",chaine[0]);
     return 0;
 }
