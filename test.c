@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <gmp.h>
+//#include <gmp.h>
 #include "Fp.h"
 #include "Fp2.h"
 #include "Fp6.h"
@@ -273,6 +273,7 @@ void test_setup(){
     fread(&srs2, sizeof(G2), 1, srs_g2); 
     printf("\n");
     print_Fp6(srs2.x);print_Fp12(srs2.y);
+    fclose(srs_g2); 
 
 }
 
@@ -498,24 +499,75 @@ void test_Pairing()
 
 }
 
-void calculdelexposant()
-{
-    unsigned long int k = 12;
-    mpz_t p,y,z,w;
-    mpz_init(p);
-    mpz_init(y);
-    mpz_init(z);
-    mpz_init(w);
-    mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
-    mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
-    mpz_pow_ui(z,p,k);
-    mpz_sub_ui(z,z,1);
-    mpz_cdiv_r(w,z,y);
-    mpz_cdiv_q(z,z,y);
-    mpz_out_str(stdout,16,z); printf("\n");printf("\n");
-    mpz_out_str(stdout,16,w);printf("\n");
+// void calculdelexposant()
+// {
+//     unsigned long int k = 12;
+//     mpz_t p,y,z,w;
+//     mpz_init(p);
+//     mpz_init(y);
+//     mpz_init(z);
+//     mpz_init(w);
+//     mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
+//     mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
+//     mpz_pow_ui(z,p,k);
+//     mpz_sub_ui(z,z,1);
+//     mpz_cdiv_r(w,z,y);
+//     mpz_cdiv_q(z,z,y);
+//     mpz_out_str(stdout,16,z); printf("\n");printf("\n");
+//     mpz_out_str(stdout,16,w);printf("\n");
+// }
+
+void test_frobenius(){
+
+    FILE *srs_g2;
+
+
+   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
+
+       exit(1);
+    }
+    G2 H;
+    fread(&H, sizeof(G2), 1, srs_g2); 
+    printf("\n");
+    G2 pH = G2_mul_by_int(H, P);
+    G2 froH = G2_frobenius(H);
+
+    printf("\n%d",G2_equal(pH,froH));
+    
+
+    fclose(srs_g2); 
+
 }
 
+void test_TwistedG2(){
+
+
+    FILE *srs_g2;
+
+
+   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
+
+       exit(1);
+    }
+    G2 H;
+    fread(&H, sizeof(G2), 1, srs_g2); 
+    
+    TwistedG2 tH = G2_twist(H);
+    G2 H2 = G2_untwist(tH);
+    
+    printf("%d\n\n",G2_equal(H,H2));
+    print_G2(H);printf("\n\n\n");
+    print_G2(H2);
+    
+
+
+
+
+
+    fclose(srs_g2); 
+}
 
 int main(){
 
@@ -530,8 +582,9 @@ int main(){
     //test_setup();
     //test_G1();
     //test_G2();
+    //test_frobenius();
 
-    test_G2();
+    test_TwistedG2();
 
     return 0;
 }

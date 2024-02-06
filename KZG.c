@@ -7,6 +7,7 @@
 #include "Fp12.h"
 #include "Poly.h"
 #include "EC.h"
+#include "Pairing.h"
 
 // int verify(G1 commit, G1 proof, Fr index, Fr eval){
 
@@ -24,13 +25,13 @@
 //     fread(&alpha_H, sizeof(G2), 1, srs_g2); 
 
 
-//     G2 ind_H = G2_mul_scal(Fr_opp(index), H);
-//     G2 cofactor = G2_add( SRS_G2[1] , ind_H); // (alpha - index) * H
+//     G2 ind_H = G2_mul_by_int(H, Fr_opp(index).num);
+//     G2 cofactor = G2_add( alpha_H , ind_H); // (alpha - index) * H
 
 //     Fp12 exp_eval = Fp12_exp(e_gh, eval.num); // e(G,H)^eval
-//     Fp12 pairing = EC_pairing(proof, cofactor);
+//     Fp12 pairing = Tate_pairing(proof, cofactor);
 
-//     Fp12 lhs = EC_pairing(commit, H);
+//     Fp12 lhs = Tate_pairing(commit, H);
 //     Fp12 rhs = Fp12_mul(pairing, exp_eval);
 
 //     return Fp12_equal(lhs, rhs);
