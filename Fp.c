@@ -90,9 +90,6 @@ void print_Fp(Fp x){
 
 Fp Fp_inv(Fp x){
     
-    if (!x.num.u0 && !x.num.u1 && !x.num.u2 && !x.num.u3){
-        printf("Division par zero");
-    }
 
     int256 t = zero_256();
     int256 newt = {0,0,0,1};

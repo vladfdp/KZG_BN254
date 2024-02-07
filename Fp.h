@@ -8,7 +8,7 @@ typedef struct Fp{
     int256 num;
 }Fp;
 
-const static int256 P = /**{0,0,0,104729};//{0,0,0x706,0x0f9e24e6ffdbd05d}; **/ {0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd47};
+const static int256 P = {0x30644e72e131a029,0xb85045b68181585d,0x97816a916871ca8d,0x3c208c16d87cfd47};
 
 
 Fp Fp_from_int(uint64_t n);

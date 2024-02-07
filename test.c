@@ -498,9 +498,10 @@ void test_pairing()
 
     G2 PplusQ = G2_add(P,Q);
 
-    G1 A = {{{0x1083588805634D3F,0x51C50FEF5D4A71C5,0x877415191FFD2C46,0x923028175C2F45D3}}, {{0x1604C841A2B0A4BC,0x6A6FBFBFC45B2A46,0xAD0F7EE20A1F99BC,0xB13154224160F996}}};
-    G1 B = {{{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}}, {{0x7060D04CA61EA23,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
+    Fp G_x = {0x187CC1E6F77C59DD,0x29AC8214D5733697,0xB33601F06D087C26,0xC1D8F343FA92FFC2};
+    Fp G_y = {0x197C3E3702A874C3,0x424634A83761F37A,0xD8E8E8E4BE86082B,0xC8D9C9E6FE14275E};
 
+    G1 A = {G_x, G_y};
    
    // G1 AplusB = G1_add (A, B);
 
@@ -510,25 +511,33 @@ void test_pairing()
    print_Fp12(K) ;printf("\n \n");
    print_Fp12(K2);printf("\n \n");
 
+
+   Fp12 F = Tate_pairing(A,G2_mul_by_int(P,a));
+   Fp12 F2 = Tate_pairing(G1_mul_by_int(A,a),P);
+
+   print_Fp12(F) ;printf("\n \n");
+   print_Fp12(F2);printf("\n \n");
+
+
 }
 
-void calculdelexposant()
-{
-    unsigned long int k = 12;
-    mpz_t p,y,z,w;
-    mpz_init(p);
-    mpz_init(y);
-    mpz_init(z);
-    mpz_init(w);
-    mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
-    mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
-    mpz_pow_ui(z,p,k); mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
-    mpz_sub_ui(z,z,1); mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
-    mpz_cdiv_r(w,z,y);
-    mpz_cdiv_q(z,z,y);
-    mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
-    mpz_out_str(stdout,16,w); printf("\n");
-}
+// void calculdelexposant()
+// {
+//     unsigned long int k = 12;
+//     mpz_t p,y,z,w;
+//     mpz_init(p);
+//     mpz_init(y);
+//     mpz_init(z);
+//     mpz_init(w);
+//     mpz_set_str(p, "30644e72e131a029b85045b68181585d97816a916871ca8d3c208c16d87cfd47", 16);
+//     mpz_set_str(y, "30644E72E131A029B85045B68181585D2833E84879B9709143E1F593F0000001", 16);
+//     mpz_pow_ui(z,p,k); mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
+//     mpz_sub_ui(z,z,1); mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
+//     mpz_cdiv_r(w,z,y);
+//     mpz_cdiv_q(z,z,y);
+//     mpz_out_str(stdout,2,z); printf("\n"); printf("\n");
+//     mpz_out_str(stdout,16,w); printf("\n");
+// }
 
 void test_frobenius(){
 
@@ -549,7 +558,26 @@ void test_frobenius(){
     printf("\n%d",G2_equal(pH,froH));
     
 
-    fclose(srs_g2); 
+    fclose(srs_g2);
+
+
+    Fp A5 = {{0x1650A85142F8CEE5,0xE1D8B4B4AE11EEEF,0xB4406E46024046C5,0x4D88F3B4B14D549E}};
+    Fp A6 = {{0x2D48C1D0A657BB  ,0x9EFB5DD8AD575255,0x5362E03A1F55A30A,0x231406A465C755CF}};
+    Fp A7 = {{0x141B8C7873B0A503,0x839FC1EA94EE725B,0xA30D73F6BE08A9E7,0xC56AEE0FCB56256F}};
+    Fp A8 = {{0x20E75024288235A5,0x0B21481D4D7D2F8B,0xDA0FE1CA51650623,0x405F651A8C6C1EB8}};
+    
+    Fp2 B3 = {A5,A6};
+    Fp2 B4 = {A7,A8};
+    
+    TwistedG2 D = {B3, B4};
+    
+    G2 Q = G2_untwist(D);
+
+    printf("\n");
+    G2 pQ = G2_mul_by_int(Q, P);
+    G2 froQ = G2_frobenius(Q);
+
+    printf("\n%d",G2_equal(pQ,froQ));
 
 }
 
@@ -582,6 +610,22 @@ void test_TwistedG2(){
     fclose(srs_g2); 
 }
 
+void test_final_exp(){
+    Fp12 x = Fp12_zero();
+    x.x0.x0.x0 = Fp_from_int(7597);
+    //x.x1.x2.x1 = Fp_from_int(6);
+
+    x = Fp12_exp(x, R);
+
+    
+    printf("\n\n\n");
+
+    print_Fp12(final_exp(x));printf("\n\n\n");
+
+    print_Fp12(x);
+}
+
+
 int main(){
    
     //test_Euclid();
@@ -596,8 +640,10 @@ int main(){
     //test_G1();
     //test_G2();
     //test_frobenius();
+    //test_final_exp();
 
     test_pairing();
+    //test_test();
 
     return 0;
 }

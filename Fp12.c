@@ -152,16 +152,14 @@ Fp12 Fp6_to_Fp12(Fp6 a)
 
 Fp12 Fp12xFp_add(Fp12 a,Fp b)
 {
-	Fp12 c = {Fp6xFp_add(a.x0,b), a.x1};
-	return c;
+	a.x0 = Fp6xFp_add(a.x0,b);
+	return a;
 }
 
 Fp12 Fp12xFp6_add(Fp12 a, Fp6 b)
 {
-	Fp12 ans;
-	ans.x0 = Fp6_add(a.x0,b);
-	ans.x1 = a.x1;
-	return ans;
+	a.x0 = Fp6_add(a.x0,b);
+	return a;
 }
 
 Fp12 Fp12_mul_by_Fp2(Fp12 a,Fp2 b)

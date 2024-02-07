@@ -15,7 +15,7 @@ Fp6 Fp6_zero(){
 	return zero;
 }
 
-Fp6_is_zero(Fp6 x){
+int Fp6_is_zero(Fp6 x){
 	return Fp2_is_zero(x.x0) && Fp2_is_zero(x.x1) && Fp2_is_zero(x.x2);
 }
 

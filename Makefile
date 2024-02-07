@@ -1,8 +1,8 @@
 main: main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o Ec.o Pairing.o
 	gcc -Wall -o prog main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o Ec.o Pairing.o
 
-test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o
-	gcc -Wall -o test test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o
+test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o Pairing.o
+	gcc -Wall -o test test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o Pairing.o
 	./test
 	rm *.o
 	rm test
@@ -15,7 +15,8 @@ setup: setup.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o
 main.o: main.c 
 	gcc -c main.c
 
-
+Pairing.o: Pairing.c
+	gcc -Wall -c Pairing.c
 TwistedG2.o: TwistedG2.c
 	gcc -Wall -c TwistedG2.c
 KZG.o: KZG.c 
@@ -39,9 +40,6 @@ EC.o: EC.c
 
 Poly.o:
 	gcc -Wall -c Poly.c
-
-Pairing.o: Pairing.c
-	gcc -c Pairing.c 
 
 clean:
 	rm *.o

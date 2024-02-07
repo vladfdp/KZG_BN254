@@ -12,9 +12,16 @@
 
 const unsigned int MAX_DEGREE = 100;
 
+
+Fr get_rand_Fr(){
+
+    return Fr_from_int(76564);
+}
+
+
 int main(){
 
-    Fr alpha = Fr_from_int(2);//rendre ca random
+    Fr alpha = get_rand_Fr();
 
     Fp G_x = {0x187CC1E6F77C59DD,0x29AC8214D5733697,0xB33601F06D087C26,0xC1D8F343FA92FFC2};
     Fp G_y = {0x197C3E3702A874C3,0x424634A83761F37A,0xD8E8E8E4BE86082B,0xC8D9C9E6FE14275E};
@@ -49,7 +56,7 @@ int main(){
     srs_g2 = fopen("SRS_G2.bin","wb");
 
 
-    G2 H = {H_x, H_y}; //trouver un H dans G2
+    G2 H = {H_x, H_y};
     fwrite(&H, sizeof(G2), 1, srs_g2); 
     G2 alpha_H = G2_mul_by_int(H, alpha.num);
     fwrite(&alpha_H, sizeof(G2), 1, srs_g2); 
