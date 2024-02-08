@@ -33,7 +33,6 @@ Fp12 final_exp(Fp12 x)
 
 	Fp12 ans = Fp12_one();
 	Fp12 base = x;
-	int k=0;
 	for (int i = 0 ; i<11; i++)
 	{
 		for (int j = 0; j < 256; j++)

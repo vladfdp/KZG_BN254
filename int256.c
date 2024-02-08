@@ -1,7 +1,23 @@
 #include <stdint.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "int256.h"
 #include "int512.h"
+
+int256 rand_256(){
+
+    srand(time(NULL)); 
+
+    int256 random;
+    random.u0 = ((uint64_t)rand() << 32) | rand(); //la fonction rand donne un nombre de 32 bit donc on concatene 2 appel de fonction
+    random.u1 = ((uint64_t)rand() << 32) | rand(); // pour avoir 64 bit.
+    random.u2 = ((uint64_t)rand() << 32) | rand();
+    random.u3 = ((uint64_t)rand() << 32) | rand(); //note: RAND_MAX peut parfois etre moins que 2^32 mais on va faire comme si
+
+    return random;
+
+}
 
 int cmp_256(int256 a, int256 b){ // verifie si a est plus grand ou egal a b
     if (a.u3 == b.u3){
@@ -29,7 +45,7 @@ int cmp_strict_256(int256 a, int256 b){ // verifie si a est strictement plus gra
     return a.u3 > b.u3;
 }
 
-int256 add_256(int256 a, int256 b){
+int256 add_256(int256 a, int256 b){ //l'operation est fait modulo 2^256
     
     int256 ans = {a.u3 + b.u3,
     a.u2 + b.u2,
@@ -45,7 +61,7 @@ int256 add_256(int256 a, int256 b){
 }
 
 
-int256 sub_256(int256 a, int256 b){       //on assume que a >= b
+int256 sub_256(int256 a, int256 b){ //l'operation est fait modulo 2^256
 
     int256 ans = {a.u3 - b.u3,
     a.u2 - b.u2,
@@ -61,7 +77,7 @@ int256 sub_256(int256 a, int256 b){       //on assume que a >= b
 }
 
 
-uint64_t get_32_slice(int256 x, int i){
+uint64_t get_32_slice(int256 x, int i){ //on recupere un extrait de 32 bits
     switch (i)
     {
     case 0:
@@ -98,7 +114,7 @@ uint64_t get_32_slice(int256 x, int i){
 
 int256 modulo(int512 x, int256 mod){ //on considere que x < mod*2^256
 
-    int512 mod_shifted = {
+    int512 mod_shifted = { //mod*2^256
         mod.u3,
         mod.u2,
         mod.u1,
@@ -106,7 +122,7 @@ int256 modulo(int512 x, int256 mod){ //on considere que x < mod*2^256
         0,0,0,0,
     };
 
-    for (int i = 0; i < 256 + 1 ; i++)
+    for (int i = 0; i < 256 + 1 ; i++)      //on shift a droite mod_shifted et on le soustrait a x quand c'est possible
     {
         if (cmp_512( x,mod_shifted)){
             x = sub_512(x, mod_shifted);
@@ -134,7 +150,7 @@ QR euclidean_div_256(int256 a ,int256 b){
     
     while (cmp_256(a,b))
     {
-        b = shift_left_256(b);
+        b = shift_left_256(b);          //on shift b (equivalent a le multiplier par 2) jusqu'a ce que b > a
         i++;
     }
     b = shift_right_256(b);
@@ -145,9 +161,9 @@ QR euclidean_div_256(int256 a ,int256 b){
 
     while( i >= 0)
     {
-        if (cmp_256(a,b)){
+        if (cmp_256(a,b)){          //si a > b*2^i on soustrait le membre de droite a a et on met le i-eme bit du quotient a 1
             a = sub_256(a, b);
-            switch (i >> 6)
+            switch (i >> 6) // on place le bit correspondant au bon endroit
             {
             case 0:
                 quotient.u0 ^= ((uint64_t)1<<i);
@@ -183,7 +199,7 @@ int256 zero_256(){
 int256 shift_right_256(int256 x){
 
     x.u0 >>= 1;
-    x.u0 ^= x.u1 << 63;
+    x.u0 ^= x.u1 << 63;     // on met le dernier bit de u1 a la place du premier bit de u0 et ainsi de suite
     x.u1 >>=1;
     x.u1 ^= x.u2 << 63;
     x.u2 >>=1;

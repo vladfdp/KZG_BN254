@@ -12,6 +12,10 @@ const static int256 R = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B9709
 
 Fr Fr_from_int(uint64_t n);
 
+Fr Fr_from_4_int(uint64_t n1, uint64_t n2, uint64_t n3, uint64_t n4);
+
+Fr get_rand_Fr();
+
 Fr Fr_zero();
 
 Fr Fr_one();

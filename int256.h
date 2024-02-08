@@ -15,6 +15,8 @@ typedef struct QR{
     int256 rest;
 }QR;
 
+int256 rand_256();
+
 
 int256 add_256(int256 a, int256 b);
 

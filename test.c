@@ -593,18 +593,35 @@ void test_TwistedG2(){
        exit(1);
     }
     G2 H;
-    fread(&H, sizeof(G2), 1, srs_g2); 
+    fread(&H, sizeof(G2), 1, srs_g2);
+
+    Fr lambda = Fr_from_4_int(765,657543,109763,1111);
+    G2 lamH = G2_mul_by_int(H, lambda.num);
     
     TwistedG2 tH = G2_twist(H);
-    G2 H2 = G2_untwist(tH);
+    TwistedG2 lamTH = TwistedG2_mul_by_int(tH, lambda.num);
+
+    G2 lamH2 = G2_untwist(lamTH);
+
+
+    // Fp A1 = {{0x2CFC7B2345E6401B,0x2DF4923F8058718B,0xDC845E570A1AE9B1,0x3D97853E6C2B269A}};
+    // Fp A2 = {{0x22FA50A8B9951CDC,0x8E56E8C770EA498F,0x225F22168BD7A679,0x3E79F935033EAB3C}};
+    // Fp A3 = {{0x1BCD7A83D05A4D3A,0x42DD04CAC74CCE26,0x10D93BD12665F7BA,0x0877ECC24C99D7A4}};
+    // Fp A4 = {{0x143A32995F90A654,0x200AB4F5024C410D,0xC142282BA5475705,0x3C0B53E2EE2F6CF0}};
     
-    printf("%d\n\n",G2_equal(H,H2));
-    print_G2(H);printf("\n\n\n");
-    print_G2(H2);
+    // Fp2 B1 = {A1,A2};
+    // Fp2 B2 = {A3,A4};
     
+    // TwistedG2 C = {B1, B2};
+    
+    // G2 P = G2_untwist(C);
 
+    // TwistedG2 C2 = G2_twist(P);
+    
+    // printf("\n\n%d\n\n",TwistedG2_equal(C,C2));
 
-
+    printf("pls be 1: %d",G2_equal(lamH, lamH2));
+    
 
 
     fclose(srs_g2); 
@@ -642,8 +659,10 @@ int main(){
     //test_frobenius();
     //test_final_exp();
 
-    test_pairing();
+    //test_pairing();
     //test_test();
+
+    test_TwistedG2();
 
     return 0;
 }

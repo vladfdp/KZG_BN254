@@ -93,7 +93,7 @@ int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit pa
 
     
     int512 even = {0,0,0,0,
-    (x.u3 & 0x00000000FFFFFFFF) * slice,
+    (x.u3 & 0x00000000FFFFFFFF) * slice,   //on separe les slices pair et impair de a pour eviter tout chevauchement
     (x.u2 & 0x00000000FFFFFFFF) * slice,
     (x.u1 & 0x00000000FFFFFFFF) * slice,
     (x.u0 & 0x00000000FFFFFFFF) * slice,   
@@ -108,7 +108,7 @@ int512 mul_by_32( int256 x, uint64_t slice){ //multiplie un entier de 256 bit pa
     (x.u0 >> 32) * slice,   
     };
 
-    return add_512(even , shift_left_by_32(odd));
+    return add_512(even , shift_left_by_32(odd));  //on additionne le resultat sans oublier le shift
 
 }
 
@@ -124,14 +124,14 @@ int512 mul_from_256(int256 a, int256 b){
 
     for (int i = 0; i < 8; i++)
     {
-        uint64_t slice = get_32_slice(b,i);
-        int512 cur = mul_by_32(a,slice);
+        uint64_t slice = get_32_slice(b,i); // on prend des slices de 32 bits de b
+        int512 cur = mul_by_32(a,slice);    //on les multiplies par a
         for (int j = 0; j < i; j++)
         {
-            cur = shift_left_by_32(cur);
+            cur = shift_left_by_32(cur);    //on shift le resultat
         }
         
-        sum = add_512(sum, cur);
+        sum = add_512(sum, cur);            //on additionne
     }
     return sum;
 }

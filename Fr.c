@@ -4,6 +4,8 @@
 #include "int512.h"
 #include "Fr.h"
 
+
+
 Fr Fr_zero(){
     Fr zero = {{0,0,0,0}};
     return zero;
@@ -18,6 +20,25 @@ Fr Fr_from_int(uint64_t n){
     Fr ans = {{
         0,0,0,n
     }};
+    return ans;
+}
+
+Fr Fr_from_4_int(uint64_t n1, uint64_t n2, uint64_t n3, uint64_t n4){
+    Fr ans = {{
+        n1, n2, n3, n4
+    }};
+    return ans;
+}
+
+Fr get_rand_Fr(){
+
+    int256 random;
+    do{
+        random = rand_256();
+
+    } while (cmp_256(R, random));       //on recommence au lieu de reduire pour pas perdre l'uniformité de la distribution
+    
+    Fr ans = {random};
     return ans;
 }
 
@@ -50,7 +71,7 @@ Fr Fr_exp(Fr base, int256 exponent){
 
 
 
-Fr Fr_opp(Fr x){   //retourne -x dans Fr
+Fr Fr_opp(Fr x){
 
     if (x.num.u0 || x.num.u1 || x.num.u2 || x.num.u3)
     {
@@ -67,7 +88,6 @@ Fr Fr_sub(Fr a,Fr b){
 Fr Fr_mul(Fr a, Fr b){
 
     int512 prod = mul_from_256(a.num , b.num);
-    //print_512(prod);
     Fr ans = {modulo(prod , R)};
     return ans;
 }
@@ -75,7 +95,7 @@ Fr Fr_mul(Fr a, Fr b){
 void print_Fr(Fr x){
     int256 A = x.num;
     printf("{%llx,%llx,%llx,%llx}", A.u3 ,A.u2,A.u1,A.u0);
-    //print_256(A);
+
 }
 
 Fr Fr_inv(Fr x){

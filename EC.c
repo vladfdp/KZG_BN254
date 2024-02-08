@@ -7,6 +7,7 @@
 #include "Fr.h"
 #include "int256.h"
 #include "int512.h"
+#include "TwistedG2.h"
 #include "EC.h"
 
 G1 G1_zero()
@@ -158,6 +159,12 @@ G2 G2_frobenius(G2 A)
 	B.x = Fp6_frobenius(A.x);
 	B.y = Fp12_frobenius(A.y);
 	return B;
+}
+
+G2 G2_mul_by_int_twist(G2 base, int256 exponent){
+	TwistedG2 t_base = G2_twist(base);
+	TwistedG2 t_ans = TwistedG2_mul_by_int(t_base, exponent);
+	return G2_untwist(t_ans);
 }
 
 void print_G1(G1 P)

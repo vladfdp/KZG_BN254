@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <time.h>
 #include "Fp.h"
 #include "Fp2.h"
 #include "Fp6.h"
@@ -10,16 +11,18 @@
 #include "Fr.h"
 #include "EC.h"
 
-const unsigned int MAX_DEGREE = 100;
+
+const unsigned int MAX_DEGREE = 1000;
 
 
-Fr get_rand_Fr(){
 
-    return Fr_from_int(76564);
-}
 
 
 int main(){
+
+    clock_t start, end;
+    double setup_time;
+    start = clock();
 
     Fr alpha = get_rand_Fr();
 
@@ -72,7 +75,12 @@ int main(){
     }
 
     fclose(srs_g1);
-    fclose(srs_g2); 
+    fclose(srs_g2);
+
+
+    end = clock();
+    setup_time = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("le setup pour un degré max d = %d prend %f secondes\n", MAX_DEGREE, setup_time);
   
     return 0;
 

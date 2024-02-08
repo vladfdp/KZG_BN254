@@ -9,33 +9,45 @@
 #include "EC.h"
 #include "Pairing.h"
 
-// int verify(G1 commit, G1 proof, Fr index, Fr eval){
+int verify(G1 commit, G1 proof, Fr index, Fr eval){
 
-//     FILE *srs_g2;
+    FILE *srs_g2;
 
-//    if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
-//        printf("Missing SRS, run setup using 'make setup'");
+    if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
 
-//        exit(1);
-//     }
+       exit(1);
+    }
 
-//     G2 H;
-//     G2 alpha_H;
-//     fread(&H, sizeof(G2), 1, srs_g2);
-//     fread(&alpha_H, sizeof(G2), 1, srs_g2); 
+    FILE *srs_g1;
 
+    if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
 
-//     G2 ind_H = G2_mul_by_int(H, Fr_opp(index).num);
-//     G2 cofactor = G2_add( alpha_H , ind_H); // (alpha - index) * H
+       exit(1);
+    }
 
-//     Fp12 exp_eval = Fp12_exp(e_gh, eval.num); // e(G,H)^eval
-//     Fp12 pairing = Tate_pairing(proof, cofactor);
+    G2 H;
+    G2 alpha_H;
+    fread(&H, sizeof(G2), 1, srs_g2);
+    fread(&alpha_H, sizeof(G2), 1, srs_g2); 
 
-//     Fp12 lhs = Tate_pairing(commit, H);
-//     Fp12 rhs = Fp12_mul(pairing, exp_eval);
+    G1 G;
+    fread(&G, sizeof(G1), 1, srs_g1);
 
-//     return Fp12_equal(lhs, rhs);
-// }
+    Fp12 e_gh = Tate_pairing(G, H);
+
+    G2 ind_H = G2_mul_by_int(H, Fr_opp(index).num);
+    G2 cofactor = G2_add( alpha_H , ind_H); // (alpha - index) * H
+
+    Fp12 exp_eval = Fp12_exp(e_gh, eval.num); // e(G,H)^eval
+    Fp12 pairing = Tate_pairing(proof, cofactor);
+
+    Fp12 lhs = Tate_pairing(commit, H);
+    Fp12 rhs = Fp12_mul(pairing, exp_eval);
+
+    return Fp12_equal(lhs, rhs);
+}
 
 G1 commit(Poly poly){
 
@@ -46,7 +58,6 @@ G1 commit(Poly poly){
 
        exit(1);
     }
-
 
     G1 ans = G1_zero();
     G1 alpha_i_G;
@@ -61,9 +72,9 @@ G1 commit(Poly poly){
 
 G1 create_proof_at_point(Poly poly, Fr index, Fr eval){
 
-    poly.coeffs[0] = Fr_add(poly.coeffs[0], Fr_opp(eval));
+    poly.coeffs[0] = Fr_sub(poly.coeffs[0], eval);
 
-    Poly van_poly = vanish_Poly(eval);
+    Poly van_poly = vanish_Poly(index);
 
     Poly quotient = euclidean_div_Poly(poly, van_poly);
 

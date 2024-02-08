@@ -10,7 +10,7 @@
 
 const Fp12 e_gh = {};
 
-//int verify(G1 commit, G1 proof, Fr index, Fr eval);
+int verify(G1 commit, G1 proof, Fr index, Fr eval);
 
 G1 commit(Poly poly);
 

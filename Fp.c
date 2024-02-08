@@ -88,8 +88,7 @@ void print_Fp(Fp x){
     //print_256(A);
 }
 
-Fp Fp_inv(Fp x){
-    
+Fp Fp_inv(Fp x){            //algo d'euclide etendu
 
     int256 t = zero_256();
     int256 newt = {0,0,0,1};
