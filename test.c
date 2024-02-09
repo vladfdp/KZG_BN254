@@ -14,6 +14,7 @@
 #include "EC.h"
 #include "Pairing.h"
 #include "TwistedG2.h"
+#include "KZG.h"
 
 const int256 r = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593F0000001};
 
@@ -642,6 +643,33 @@ void test_final_exp(){
     print_Fp12(x);
 }
 
+void get_e_GH(){
+    FILE *srs_g1;
+
+
+   if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
+
+       exit(1);
+    }
+    G1 G;
+    fread(&G, sizeof(G1), 1, srs_g1);
+
+    FILE *srs_g2;
+
+
+   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+       printf("Missing SRS, run setup using 'make setup'");
+
+       exit(1);
+    }
+    G2 H;
+    fread(&H, sizeof(G2), 1, srs_g2);
+
+    Fp12 e = Tate_pairing(G, H);
+    Fp12 e2 = e_GH();
+    printf("%d",Fp12_equal(e,e2));
+}
 
 int main(){
    
@@ -662,7 +690,8 @@ int main(){
     //test_pairing();
     //test_test();
 
-    test_TwistedG2();
+    //test_TwistedG2();
+    get_e_GH();
 
     return 0;
 }

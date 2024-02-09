@@ -9,9 +9,9 @@ Poly Poly_init(int degree){
     return ans;
 }
 
-Poly vanish_Poly(Fr x){
+Poly vanish_Poly(Fr a){     //renvoie X - a
     Poly ans = Poly_init(1);
-    ans.coeffs[0] = Fr_opp(x);
+    ans.coeffs[0] = Fr_opp(a);
     ans.coeffs[1] = Fr_one();
     return ans;
 }
@@ -55,8 +55,8 @@ Poly euclidean_div_Poly(Poly f, Poly g){ //renvoie le quotient de f par g
 
     for (int i = 0; i < dif + 1; i++)
     {
-        Fr pivot = Fr_mul(lt_inv,f2.coeffs[f2.degree - i]);
-        for (int j = 0; j < g.degree + 1; j++)
+        Fr pivot = Fr_mul(lt_inv,f2.coeffs[f2.degree - i]);     //lc(f)/lc(g)
+        for (int j = 0; j < g.degree + 1; j++)                  //on parcours f pour soustraire g*pivot
         {
             Fr a = Fr_mul(pivot, g.coeffs[g.degree - j]);
             f2.coeffs[f2.degree - i - j] = Fr_sub(f2.coeffs[f2.degree - i - j], a );

@@ -10,6 +10,7 @@
 #include "int512.h"
 #include "Fr.h"
 #include "EC.h"
+#include "TwistedG2.h"
 
 
 const unsigned int MAX_DEGREE = 1000;
@@ -61,7 +62,7 @@ int main(){
 
     G2 H = {H_x, H_y};
     fwrite(&H, sizeof(G2), 1, srs_g2); 
-    G2 alpha_H = G2_mul_by_int(H, alpha.num);
+    G2 alpha_H = G2_mul_by_int_twist(H, alpha.num);
     fwrite(&alpha_H, sizeof(G2), 1, srs_g2); 
 
 

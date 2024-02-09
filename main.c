@@ -19,7 +19,7 @@ void protocol(){
 
     clock_t start, end;
 
-    for (int size = 10; size < 100 + 1 ; size += 10) // on test le protocole pour des poly de differents degrées
+    for (int size = 10; size < 200 + 1 ; size += 10) // on teste le protocole pour des poly de differents degrées
     {
     
     
@@ -45,15 +45,15 @@ void protocol(){
 
         Fr index = Fr_from_int(668);
         Fr eval = Poly_eval(poly, index);       //on evalue le polynome a index
-        Fr eval2 = Fr_add(eval, Fr_from_int(1));
+        Fr eval2 = Fr_add(eval, Fr_from_int(1));// fausse evaluation
 
         
         double prove_time;
 
         start = clock();
 
-        G1 proof = create_proof_at_point(poly, index, eval);    //on crée une preuve
-        G1 proof2 = create_proof_at_point(poly, index, eval2);
+        G1 proof = create_witness(poly, index, eval);    //on crée une preuve
+        G1 proof2 = create_witness(poly, index, eval2);  //et une fausse
 
         end = clock();
         prove_time = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -67,7 +67,7 @@ void protocol(){
         start = clock();
 
         printf("verifier une preuve valable donne: %d\n",verify(comm, proof, index, eval));        //on verifie la preuve
-        printf("verifier une preuve non valable donne: %d\n",verify(comm, proof2, index, eval2));  
+        printf("verifier une preuve non valable donne: %d\n",verify(comm, proof2, index, eval2));  //et la fausse preuve
 
         end = clock();
         verify_time = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -76,6 +76,8 @@ void protocol(){
         printf("\nTemps de mise en gage: %f sec \n", commit_time);
         printf("Temps de preuve: %f sec \n", prove_time/2);
         printf("Temps de verification: %f sec \n\n\n", verify_time/2);
+
+        free_Poly(poly);
 
     }
 }
@@ -110,6 +112,7 @@ void benchmark(){
     double G1_mul_time = 0;
     double G2_mul_time = 0;
     double G2_mul_twist_time = 0;
+    double final_exp_time = 0;
 
     int sample_size = 100;
 
@@ -140,17 +143,22 @@ void benchmark(){
         
 
         start = clock();
-        Tate_pairing(P,Q);
+        Fp12 pairing = Tate_pairing(P,Q);
         end = clock();
         Pairing_time += ((double) (end - start)) / CLOCKS_PER_SEC;
 
 
+        start = clock();
+        final_exp(pairing);
+        end = clock();
+        final_exp_time += ((double) (end - start)) / CLOCKS_PER_SEC;
     }
     
     printf("\nTemps de multiplication moyen dans G1: %f sec \n", G1_mul_time/sample_size);
     printf("Temps de multiplication moyen dans G2: %f sec \n", G2_mul_time/sample_size);
     printf("Temps de multiplication moyen dans G2 avec twist: %f sec \n", G2_mul_twist_time/sample_size);
     printf("Temps moyen de calcul du Pairing de Tate: %f sec \n", Pairing_time/sample_size);
+    printf("Dont exponentiation finale: %f sec \n", final_exp_time/sample_size);
 }
 
 
@@ -158,9 +166,9 @@ void benchmark(){
 
 int main(){
 
-    //protocol();
+    protocol();
 
-    benchmark();
+    //benchmark();
 
     return 0;
 }

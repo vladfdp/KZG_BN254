@@ -8,10 +8,10 @@
 #include "Poly.h"
 #include "EC.h"
 
-const Fp12 e_gh = {};
-
 int verify(G1 commit, G1 proof, Fr index, Fr eval);
 
 G1 commit(Poly poly);
 
-G1 create_proof_at_point(Poly poly, Fr index, Fr eval);
+G1 create_witness(Poly poly, Fr index, Fr eval);
+
+Fp12 e_GH();
