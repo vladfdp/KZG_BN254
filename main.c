@@ -19,7 +19,7 @@ void protocol(){
 
     clock_t start, end;
 
-    for (int size = 10; size < 200 + 1 ; size += 10) // on teste le protocole pour des poly de differents degrées
+    for (int size = 10; size < 100 + 1 ; size += 10) // on teste le protocole pour des poly de differents degrées
     {
     
     
@@ -168,7 +168,7 @@ int main(){
 
     protocol();
 
-    //benchmark();
+    benchmark();
 
     return 0;
 }

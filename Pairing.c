@@ -29,13 +29,13 @@ Fp12 final_exp(Fp12 x)
 	int256 A10 = {0xc230974d83561841,0xd766f9c9d570bb7f,0xbe04c7e8a6c3c760,0xc0de81def35692da};
 	int256 A11 = {0x361102b6b9b2b918,0x837fa97896e84abb,0x40a4efb7e54523a4,0x86964b64ca86f120};
 
-	int256 tab[11] = {A11,A10,A9,A8,A7,A6,A5,A4,A3,A2,A1};
+	int256 tab[11] = {A11,A10,A9,A8,A7,A6,A5,A4,A3,A2,A1};		//(p^12-1)/r
 
 	Fp12 ans = Fp12_one();
 	Fp12 base = x;
-	for (int i = 0 ; i<11; i++)
+	for (int i = 0 ; i<10; i++)
 	{
-		for (int j = 0; j < 256; j++)
+		for (int j = 0; j < 256; j++)							//square and multiply
 		{
 			if (tab[i].u0 & 1){
 				ans = Fp12_mul(ans,base);
@@ -45,6 +45,15 @@ Fp12 final_exp(Fp12 x)
 		}
 	
 	}
+
+	for (int j = 0; j < 230; j++)
+		{
+			if (tab[10].u0 & 1){
+				ans = Fp12_mul(ans,base);
+			}
+			base = Fp12_mul(base, base);
+			tab[10] = shift_right_256(tab[10]);
+		}
 	
 
 	return ans; 
@@ -58,7 +67,7 @@ Fp12 Tate_pairing(G1 P, G2 Q){
 
 	int256 r = shift_left_256(shift_left_256(shift_left_256(R)));
 
-	for (int i = 0; i < 253; i++)
+	for (int i = 0; i < 253; i++)										//Miller loop
 	{
 		Fp x_sq_times_a = Fp_mul( Fp_mul(T.x, T.x), Fp_from_int(3) );
 		Fp y2 = Fp_mul(T.y, Fp_from_int(2));
@@ -88,9 +97,9 @@ Fp12 Tate_pairing(G1 P, G2 Q){
 		{
 			
 
-			slope = Fp_div( Fp_sub(T.y, P.y), Fp_sub(T.x, P.x));
-			slope_sq = Fp_mul(slope, slope);
-
+			slope = Fp_div( Fp_sub(T.y, P.y), Fp_sub(T.x, P.x));		//dans la derniere iteration on divise par zero
+			slope_sq = Fp_mul(slope, slope);							//ce n'est pas un probleme du a la facon dont l'inversion est codé
+																		// comme inv(0) = 0 on obtient exactement le resultat voulu
 			Fp x_TP = Fp_sub( Fp_sub(slope_sq, T.x), P.x);
 
 			slope_times_dif = Fp_mul(slope, Fp_sub(T.x, x_TP));

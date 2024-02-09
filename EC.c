@@ -59,13 +59,13 @@ G1 G1_add(G1 P1, G1 P2)
 	{
 		if (G1_equal(P1, P2))
 			{
-				m = Fp_div(Fp_mul(Fp_from_int(3),Fp_mul(P1.x,P1.x)), Fp_mul(Fp_from_int(2),P1.y));
+				m = Fp_div(Fp_mul(Fp_from_int(3),Fp_mul(P1.x,P1.x)), Fp_mul(Fp_from_int(2),P1.y)); //tangeante au point
 			}
 		else 
 		{
-			m = Fp_div(Fp_sub(P2.y,P1.y),Fp_sub(P2.x,P1.x));
+			m = Fp_div(Fp_sub(P2.y,P1.y),Fp_sub(P2.x,P1.x));									//droite passant par les deux points	
 		}
-	P.x = Fp_sub(Fp_sub(Fp_mul(m,m),P1.x),P2.x);
+	P.x = Fp_sub(Fp_sub(Fp_mul(m,m),P1.x),P2.x);				//nouvelle coordonnées
 	P.y = Fp_sub(Fp_mul(m, Fp_sub(P1.x,P.x)),P1.y);
 	return P;
 	}
@@ -108,13 +108,13 @@ G2 G2_add(G2 P1, G2 P2)
 		{
 			if (G2_equal(P1, P2))
 				{
-					m = Fp12_mul_by_Fp6(Fp12_inv(Fp12_mul_by_scalar(P1.y, Fp_from_int(2))) , Fp6_mul_by_scalar(Fp6_mul(P1.x,P1.x),Fp_from_int(3)));
+					m = Fp12_mul_by_Fp6(Fp12_inv(Fp12_mul_by_scalar(P1.y, Fp_from_int(2))) , Fp6_mul_by_scalar(Fp6_mul(P1.x,P1.x),Fp_from_int(3)));		//tangeante
 				}
 			else 
 			{
-				m = Fp12_mul_by_Fp6(Fp12_sub(P2.y,P1.y),Fp6_inv(Fp6_sub(P2.x,P1.x)));
+				m = Fp12_mul_by_Fp6(Fp12_sub(P2.y,P1.y),Fp6_inv(Fp6_sub(P2.x,P1.x)));				//droite
 			}
-		P.x = Fp12_to_Fp6(Fp12xFp6_add(Fp12_mul(m,m),Fp6_add(Fp6_opp(P1.x),Fp6_opp(P2.x))));
+		P.x = Fp12_to_Fp6(Fp12xFp6_add(Fp12_mul(m,m),Fp6_add(Fp6_opp(P1.x),Fp6_opp(P2.x))));		//nouvelle coord
 		P.y = Fp12_sub(Fp12_mul_by_Fp6(m, Fp6_sub(P1.x,P.x)),P1.y);
 		return P;
 		}
@@ -122,7 +122,7 @@ G2 G2_add(G2 P1, G2 P2)
 	}
 
 
-G1 G1_mul_by_int(G1 base, int256 exponent){
+G1 G1_mul_by_int(G1 base, int256 exponent){		//double and add
 
     G1 ans = G1_zero();
 
@@ -138,7 +138,7 @@ G1 G1_mul_by_int(G1 base, int256 exponent){
 }
 
 
-G2 G2_mul_by_int(G2 base, int256 exponent){
+G2 G2_mul_by_int(G2 base, int256 exponent){		//double and add
 
     G2 ans = G2_zero();
 
@@ -161,10 +161,11 @@ G2 G2_frobenius(G2 A)
 	return B;
 }
 
-G2 G2_mul_by_int_twist(G2 base, int256 exponent){
-	TwistedG2 t_base = G2_twist(base);
-	TwistedG2 t_ans = TwistedG2_mul_by_int(t_base, exponent);
-	return G2_untwist(t_ans);
+G2 G2_mul_by_int_twist(G2 base, int256 exponent){ //equivalent a G2_mul_by_int, plus rapide
+
+	TwistedG2 t_base = G2_twist(base);							//on transforme le point en TwistedG2
+	TwistedG2 t_ans = TwistedG2_mul_by_int(t_base, exponent);	//on fait un double-and-add dans TwistedG2
+	return G2_untwist(t_ans);									//on retransforme en point de G2
 }
 
 void print_G1(G1 P)
@@ -183,13 +184,18 @@ void print_G2(G2 P)
 
 
 
-int G2_is_on_curve(G2 P){
+int G2_is_on_curve(G2 P){		//verifie qu'un couple est bien sur la courbe
 
+	if (Fp6_is_zero(P.x) && Fp12_is_zero(P.y))
+	{
+		return 1;
+	}
+	
 	Fp12 y_sq = Fp12_mul(P.y, P.y);
 	Fp6 fx = Fp6_mul(P.x,Fp6_mul(P.x,P.x));
 	fx = Fp6xFp_add(fx, Fp_from_int(3));
 
-	Fp12 ans = Fp12xFp6_add(y_sq, Fp6_opp(fx));
+	Fp12 ans = Fp12xFp6_add(y_sq, Fp6_opp(fx));		//on calcule juste y^2 - x^3 - 3
 
-	return Fp12_is_zero(ans);
+	return Fp12_is_zero(ans);						//verifie que c'est bien nul
 }

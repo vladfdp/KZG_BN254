@@ -13,7 +13,7 @@
 #include "TwistedG2.h"
 
 
-const unsigned int MAX_DEGREE = 1000;
+const unsigned int MAX_DEGREE = 100;
 
 
 
@@ -25,15 +25,15 @@ int main(){
     double setup_time;
     start = clock();
 
-    Fr alpha = get_rand_Fr();
+    Fr alpha = get_rand_Fr();           //On prend alpha au hasard
 
-    Fp G_x = {0x187CC1E6F77C59DD,0x29AC8214D5733697,0xB33601F06D087C26,0xC1D8F343FA92FFC2};
+    Fp G_x = {0x187CC1E6F77C59DD,0x29AC8214D5733697,0xB33601F06D087C26,0xC1D8F343FA92FFC2}; // Coordonnées de G
     Fp G_y = {0x197C3E3702A874C3,0x424634A83761F37A,0xD8E8E8E4BE86082B,0xC8D9C9E6FE14275E};
 
     Fp6 H_x;
     Fp12 H_y;
 
-    Fp x_a = {0x2351a862f99a2e05,0x202db891d078a76e,0x4316b508b69c17de,0x69b71bdceea9943f};
+    Fp x_a = {0x2351a862f99a2e05,0x202db891d078a76e,0x4316b508b69c17de,0x69b71bdceea9943f};     //et H
     Fp x_b = {0x1b09333d8ffaf56,0x702d0cdb0c731dc1,0xe806c87eac937733,0xc82bd78d428f66ce};
 
     Fp y_c = {0x2c6977d27d199ba8,0xbb2a4ffc86e57425,0x4b88246b19977d4,0xc52c2436273f7df1};
@@ -61,9 +61,9 @@ int main(){
 
 
     G2 H = {H_x, H_y};
-    fwrite(&H, sizeof(G2), 1, srs_g2); 
+    fwrite(&H, sizeof(G2), 1, srs_g2);                      //SRS de G2: H, alpha * H                                
     G2 alpha_H = G2_mul_by_int_twist(H, alpha.num);
-    fwrite(&alpha_H, sizeof(G2), 1, srs_g2); 
+    fwrite(&alpha_H, sizeof(G2), 1, srs_g2);
 
 
     G1 G = {G_x, G_y};
@@ -72,7 +72,7 @@ int main(){
     for(unsigned int i = 0; i < MAX_DEGREE; i++)
     {
     G = G1_mul_by_int(G, alpha.num);
-    fwrite(&G, sizeof(G1), 1, srs_g1); 
+    fwrite(&G, sizeof(G1), 1, srs_g1);                      //SRS de G1: alpha^i * G
     }
 
     fclose(srs_g1);

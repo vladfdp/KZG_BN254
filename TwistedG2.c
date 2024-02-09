@@ -10,7 +10,7 @@
 #include "EC.h"
 #include "TwistedG2.h"
 
-TwistedG2 G2_twist(G2 P){
+TwistedG2 G2_twist(G2 P){	//iso G2->TwistedG2
 
     Fp6 omega_squared_inv = Fp6_zero();
     Fp12 omega_cubed_inv = Fp12_zero();
@@ -34,7 +34,7 @@ TwistedG2 G2_twist(G2 P){
     return ans;
 }
 
-G2 G2_untwist(TwistedG2 P){
+G2 G2_untwist(TwistedG2 P){			//iso TwistedG2->G2
 
     Fp6 omega_squared = Fp6_zero();
     Fp12 omega_cubed = Fp12_zero();
@@ -69,7 +69,7 @@ int TwistedG2_equal(TwistedG2 P1, TwistedG2 P2)
 
 }
 
-TwistedG2 TwistedG2_add(TwistedG2 P1, TwistedG2 P2)
+TwistedG2 TwistedG2_add(TwistedG2 P1, TwistedG2 P2)		//algorithme d'addition similaire a G1 et G2
 {
 	Fp2 m;
 	TwistedG2 P;
@@ -106,7 +106,7 @@ TwistedG2 TwistedG2_add(TwistedG2 P1, TwistedG2 P2)
 }
 
 
-TwistedG2 TwistedG2_mul_by_int(TwistedG2 base, int256 exponent){
+TwistedG2 TwistedG2_mul_by_int(TwistedG2 base, int256 exponent){		//double and add
 
     TwistedG2 ans = TwistedG2_zero();
 

@@ -37,7 +37,6 @@ Fp12.o: Fp12.c
 	gcc -Wall -c Fp12.c 
 EC.o: EC.c 
 	gcc -Wall -c EC.c 
-
 Poly.o:
 	gcc -Wall -c Poly.c
 

@@ -47,16 +47,8 @@ int verify(G1 commit, G1 proof, Fr index, Fr eval){
 
     FILE *srs_g2;
 
-    if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+    if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){       //on ouvre le SRS
        printf("Missing SRS, run setup using 'make setup'");
-
-       exit(1);
-    }
-
-    FILE *srs_g1;
-
-    if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
-       printf("Missing SRS, run setup using 'make setup'");         //On ouvre le SRS
 
        exit(1);
     }
@@ -66,8 +58,6 @@ int verify(G1 commit, G1 proof, Fr index, Fr eval){
     fread(&H, sizeof(G2), 1, srs_g2);
     fread(&alpha_H, sizeof(G2), 1, srs_g2); 
 
-    G1 G;
-    fread(&G, sizeof(G1), 1, srs_g1);
 
     Fp12 e_gh = e_GH();
 
