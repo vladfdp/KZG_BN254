@@ -10,30 +10,19 @@
 #include "EC.h"
 #include "Pairing.h"
 
+Fp12 final_exp_hard_part(Fp12 x){
 
+	int256 A1 = {0x1BAAA710B0759AD,0x331EC15183177FAF,0x6C0EB522D5B12278,0x4E529A5861876F6B};
+	int256 A2 = {0x3B1B1355D189227D,0x79581E16F3FD90C6,0x6B887D56D5095F23,0xAAA441E3954BCF8A};
+	int256 A3 = {0xDCC7B44C87CDBACF,0xF1154E7E1DA014FD,0x5ABF5CC4F49C36D4,0xE81BB482CCDF42B1};
+	
+	
 
-
-
-Fp12 final_exp(Fp12 x)
-{
-
-	int256 A1 = {0x2f4b6dc970	   ,0x20fddadf107d20bc,0x842d43bf6369b1ff,0x6a1c71015f3f7be2};
-	int256 A2 = {0xe1e30a73bb94fec0,0xdaf15466b2383a5d,0x3ec3d15ad524d8f7,0x0c54efee1bd8c3b2};
-	int256 A3 = {0x1377e563a09a1b70,0x5887e72eceaddea3,0x790364a61f676baa,0xf977870e88d5c6c8};
-	int256 A4 = {0xfef0781361e443ae,0x77f5b63a2a226448,0x7f2940a8b1ddb3d1,0x5062cd0fb2015dfc};
-	int256 A5 = {0x6668449aed3cc48a,0x82d0d602d268c7da,0xab6a41294c0cc4eb,0xe5664568dfc50e16};
-	int256 A6 = {0x48a45a4a1e3a5195,0x846a3ed011a337a0,0x2088ec80e0ebae87,0x55cfe107acf3aafb};
-	int256 A7 = {0x40494e406f804216,0xbb10cf430b0f3785,0x6b42db8dc5514724,0xee93dfb10826f0dd};
-	int256 A8 = {0x4a0364b9580291d2,0xcd65664814fde37c,0xa80bb4ea44eacc5e,0x641bbadf423f9a2c};
-	int256 A9 = {0xbf813b8d145da900,0x29baee7ddadda71c,0x7f3811c410526294,0x5bba1668c3be69a3};
-	int256 A10 = {0xc230974d83561841,0xd766f9c9d570bb7f,0xbe04c7e8a6c3c760,0xc0de81def35692da};
-	int256 A11 = {0x361102b6b9b2b918,0x837fa97896e84abb,0x40a4efb7e54523a4,0x86964b64ca86f120};
-
-	int256 tab[11] = {A11,A10,A9,A8,A7,A6,A5,A4,A3,A2,A1};		//(p^12-1)/r
+	int256 tab[3] = {A3,A2,A1};		//(p^12-1)/r
 
 	Fp12 ans = Fp12_one();
 	Fp12 base = x;
-	for (int i = 0 ; i<10; i++)
+	for (int i = 0 ; i<3; i++)
 	{
 		for (int j = 0; j < 256; j++)							//square and multiply
 		{
@@ -45,18 +34,24 @@ Fp12 final_exp(Fp12 x)
 		}
 	
 	}
+	return ans;
+}
 
-	for (int j = 0; j < 230; j++)
-		{
-			if (tab[10].u0 & 1){
-				ans = Fp12_mul(ans,base);
-			}
-			base = Fp12_mul(base, base);
-			tab[10] = shift_right_256(tab[10]);
-		}
+Fp12 final_exp(Fp12 x){
+
+	Fp12 x_inv = Fp12_inv(x);
+	for (int i = 0; i < 6; i++)
+	{
+		x = Fp12_frobenius(x);
+	}
+	x = Fp12_mul(x,x_inv);
+	Fp12 x1 = x;
+	x = Fp12_frobenius(x);
+	x = Fp12_frobenius(x);
+	x = Fp12_mul(x, x1);
+
+	return final_exp_hard_part(x);
 	
-
-	return ans; 
 }
 
 

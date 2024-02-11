@@ -36,7 +36,7 @@ Fr get_rand_Fr(){
     do{
         random = rand_256();
 
-    } while (cmp_256(R, random));       //on recommence au lieu de reduire pour pas perdre l'uniformité de la distribution
+    }while (cmp_256(R, random));       //on recommence au lieu de reduire pour pas perdre l'uniformité de la distribution
     
     Fr ans = {random};
     return ans;
@@ -68,8 +68,31 @@ Fr Fr_exp(Fr base, int256 exponent){
     return ans;
 }
 
+int Fr_equal(Fr a, Fr b){
+    return (a.num.u0 == b.num.u0 &&
+    a.num.u1 == b.num.u1 &&
+    a.num.u2 == b.num.u2 &&
+    a.num.u3 == b.num.u3
+    );
+}
 
+Fr Fr_mul_daa(Fr a, Fr b){
 
+    Fr base = a;
+    int256 exponent = b.num;
+
+    Fr ans = Fr_zero();
+
+    while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3 )
+    {
+        if (exponent.u0 & 1){
+            ans = Fr_add(ans,base);
+        }
+        base = Fr_add(base, base);
+        exponent = shift_right_256(exponent);
+    }
+    return ans;
+}
 
 Fr Fr_opp(Fr x){
 

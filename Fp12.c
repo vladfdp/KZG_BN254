@@ -100,7 +100,19 @@ Fp12 Fp12_exp(Fp12 base, int256 exponent)
 }
 
 Fp12 Fp12_frobenius(Fp12 x){
-	return Fp12_exp(x,P);
+
+	x.x0 = Fp6_frobenius(x.x0);
+
+	Fp2 t;
+	Fp tx0 = {{0x1284b71c2865a7df,0xe8b99fdd76e68b60,0x5c521e08292f2176,0xd60b35dadcc9e470}};
+	Fp tx1 = {{0x246996f3b4fae7e6,0xa6327cfe12150b8e,0x747992778eeec7e5,0xca5cf05f80f362ac}};
+
+	t.x0 = tx0;
+	t.x1 = tx1;
+
+	x.x1 = Fp6_mul_by_Fp2(Fp6_frobenius(x.x1), t);
+
+	return x;
 }
 
 

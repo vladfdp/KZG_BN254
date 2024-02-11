@@ -20,6 +20,10 @@ Fr Fr_zero();
 
 Fr Fr_one();
 
+int Fr_equal(Fr a, Fr b);
+
+Fr Fr_mul_daa(Fr a, Fr b);
+
 Fr Fr_add(Fr a, Fr b);
 
 Fr Fr_mul(Fr a, Fr b);

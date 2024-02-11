@@ -14,6 +14,6 @@
 Fp12 Tate_pairing(G1 P, G2 Q);
 
 
-Fp12 final_exp(Fp12 base);
+Fp12 final_exp(Fp12 x);
 
 #endif

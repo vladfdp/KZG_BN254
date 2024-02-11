@@ -32,7 +32,11 @@ Fp2 Fp2_sub(Fp2 a,Fp2 b);
 
 Fp2 Fp2_opp(Fp2 x);
 
-Fp2 Fp2_mul(Fp2 a,Fp2 b); 
+Fp2 Fp2_mul(Fp2 a,Fp2 b);
+
+Fp2 Fp2_exp(Fp2 base, int256 exponent);
+
+Fp2 Fp2_frobenius(Fp2 x);
 
 Fp2 Fp2_inv(Fp2 x);
 

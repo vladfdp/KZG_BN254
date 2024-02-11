@@ -114,7 +114,7 @@ void benchmark(){
     double G2_mul_twist_time = 0;
     double final_exp_time = 0;
 
-    int sample_size = 100;
+    int sample_size = 5;
 
     for (int i = 0; i < sample_size; i++)
     {
@@ -166,7 +166,7 @@ void benchmark(){
 
 int main(){
 
-    protocol();
+    //protocol();
 
     benchmark();
 

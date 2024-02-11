@@ -74,6 +74,26 @@ Fp2 Fp2_opp(Fp2 x){
 	return ans;
 }
 
+Fp2 Fp2_exp(Fp2 base, int256 exponent){
+
+    Fp2 ans = Fp2_one();
+
+    while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3 )
+    {
+        if (exponent.u0 & 1){
+            ans = Fp2_mul(ans,base);
+        }
+        base = Fp2_mul(base, base);
+        exponent = shift_right_256(exponent);
+    }
+    return ans;
+}
+
+Fp2 Fp2_frobenius(Fp2 x){
+	x.x1 = Fp_opp(x.x1);
+	return x;
+}
+
 Fp2 Fp2_inv(Fp2 x){
 	Fp norm = Fp_add( Fp_mul(x.x0, x.x0), Fp_mul(x.x1, x.x1));
 	Fp norm_inv = Fp_inv(norm);

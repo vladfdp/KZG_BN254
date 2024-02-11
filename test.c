@@ -15,6 +15,7 @@
 #include "Pairing.h"
 #include "TwistedG2.h"
 #include "KZG.h"
+#include <time.h>
 
 const int256 r = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593F0000001};
 
@@ -640,7 +641,7 @@ void test_final_exp(){
 
     print_Fp12(final_exp(x));printf("\n\n\n");
 
-    print_Fp12(x);
+    print_Fp12(final_exp2(x));printf("\n\n\n");
 }
 
 void get_e_GH(){
@@ -671,6 +672,67 @@ void get_e_GH(){
     printf("%d",Fp12_equal(e,e2));
 }
 
+void test_test(){
+
+    clock_t start, end;
+
+    double mul_time = 0;
+    double daa_mul_time = 0;
+
+    int sample_size = 100;
+
+    for (int i = 0; i < sample_size; i++)
+    {
+        Fr A = get_rand_Fr();
+        int256 pm2 = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593F0000001 - 2};
+
+        start = clock();
+        Fr C = Fr_inv(A);
+        end = clock();
+        mul_time += ((double) (end - start))/CLOCKS_PER_SEC;
+
+
+        start = clock();
+        Fr C2 = Fr_exp(A, pm2);  
+        end = clock();
+        daa_mul_time += ((double) (end - start))/CLOCKS_PER_SEC;
+
+
+        if (!Fr_equal(C, C2))
+        {
+            printf("erreur");
+        }
+        
+    }
+    
+    printf("\nTemps de multiplication moyen: %f sec \n", mul_time/sample_size);
+    printf("Temps de multiplication moyen avec double-and-add: %f sec \n", daa_mul_time/sample_size);
+
+    Fr five = get_rand_Fr();
+    print_Fr(five);
+
+    printf("\n\n\n");
+    print_Fr(Fr_mul(five,five));
+    print_Fr(Fr_mul_daa(five,five));
+
+    printf("\n\n\n");
+    Fp6 x; 
+    x.x0 = Fp2_from_int(54356,1112);
+    x.x1 = Fp2_from_int(5156,1072);
+    x.x2 = Fp2_from_int(2,10000);
+
+    Fp12 x2;
+
+    x2.x0 = x;
+    int256 e = {0,0,0,45};
+    x2.x1 = Fp6_exp(x,e);
+
+
+    print_Fp12(Fp12_exp(x2,P));printf("\n\n\n");
+    print_Fp12(Fp12_frobenius(x2));
+
+}
+
 int main(){
    
     //test_Euclid();
@@ -685,13 +747,13 @@ int main(){
     //test_G1();
     //test_G2();
     //test_frobenius();
-    //test_final_exp();
+    test_final_exp();
 
     //test_pairing();
     //test_test();
 
     //test_TwistedG2();
-    get_e_GH();
+    //get_e_GH();
 
     return 0;
 }

@@ -149,6 +149,27 @@ Fp6 Fp6_exp(Fp6 base, int256 exponent)
     return ans;
 }
 
- Fp6 Fp6_frobenius(Fp6 x){
-	return Fp6_exp(x,P);
+Fp6 Fp6_frobenius(Fp6 x){
+
+	x.x0 = Fp2_frobenius(x.x0);
+
+	Fp2 t1;
+	Fp t1x0 = {{0x2fb347984f7911f7,0x4c0bec3cf559b143,0xb78cc310c2c3330c,0x99e39557176f553d}};
+	Fp t1x1 = {{0x16c9e55061ebae20,0x4ba4cc8bd75a0794,0x32ae2a1d0b7c9dce,0x1665d51c640fcba2}};
+
+	t1.x0 = t1x0;
+	t1.x1 = t1x1;
+
+	x.x1 = Fp2_mul(Fp2_frobenius(x.x1), t1);
+
+	Fp2 t2;
+	Fp t2x0 = {{0x5b54f5e64eea801,0x80f3c0b75a181e84,0xd33365f7be94ec72,0x848a1f55921ea762}};
+	Fp t2x1 = {{0x2c145edbe7fd8aee,0x9f3a80b03b0b1c92,0x3685d2ea1bdec763,0xc13b4711cd2b8126}};
+
+	t2.x0 = t2x0;
+	t2.x1 = t2x1;
+
+	x.x2 = Fp2_mul(Fp2_frobenius(x.x2), t2);
+
+	return x;
 }
