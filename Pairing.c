@@ -10,36 +10,33 @@
 #include "EC.h"
 #include "Pairing.h"
 
+
+
 Fp12 final_exp_hard_part(Fp12 x){
 
-	int256 A1 = {0x1BAAA710B0759AD,0x331EC15183177FAF,0x6C0EB522D5B12278,0x4E529A5861876F6B};
-	int256 A2 = {0x3B1B1355D189227D,0x79581E16F3FD90C6,0x6B887D56D5095F23,0xAAA441E3954BCF8A};
-	int256 A3 = {0xDCC7B44C87CDBACF,0xF1154E7E1DA014FD,0x5ABF5CC4F49C36D4,0xE81BB482CCDF42B1};
+	int256 lambda_0 = {0x30644E72E131A029,0x048B6E193FD84104,0x5CEA24F6FD736BEA,0x85989436D0F9FA91};
+	int256 lambda_1 = {0x30644E72E131A029,0x048B6E193FD84105,0x3B852988DAE41FE4,0x138F3176606A30C5};
+	int256 lambda_2 = {0,0,0x6F4D8248EEB859FB,0xF83E9682E87CFD46};
 	
+	
+	Fp12 x0 = Fp12_exp(x,lambda_0);
+	x = Fp12_frobenius(x);
+	Fp12 x1 = Fp12_exp(x,lambda_1);
+	x = Fp12_frobenius(x);
+	Fp12 x2 = Fp12_exp(x,lambda_2);
+	x = Fp12_frobenius(x);
+
+	Fp12 ans = Fp12_mul(x,x0);
+	ans = Fp12_mul(ans, x1);
+	ans = Fp12_mul(ans, x2);
 	
 
-	int256 tab[3] = {A3,A2,A1};		//(p^12-1)/r
-
-	Fp12 ans = Fp12_one();
-	Fp12 base = x;
-	for (int i = 0 ; i<3; i++)
-	{
-		for (int j = 0; j < 256; j++)							//square and multiply
-		{
-			if (tab[i].u0 & 1){
-				ans = Fp12_mul(ans,base);
-			}
-			base = Fp12_mul(base, base);
-			tab[i] = shift_right_256(tab[i]);
-		}
-	
-	}
 	return ans;
 }
 
 Fp12 final_exp(Fp12 x){
 
-	Fp12 x_inv = Fp12_inv(x);
+	Fp12 x_inv = Fp12_inv(x);				//on fait d'abord la partie facile
 	for (int i = 0; i < 6; i++)
 	{
 		x = Fp12_frobenius(x);
