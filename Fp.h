@@ -25,6 +25,8 @@ Fp Fp_add(Fp a, Fp b);
 
 Fp Fp_mul(Fp a, Fp b);
 
+Fp Fp_mul_original(Fp a, Fp b);
+
 Fp Fp_sub(Fp a, Fp b);
 
 Fp Fp_opp(Fp x);

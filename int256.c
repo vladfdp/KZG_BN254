@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "int256.h"
+#include "int320.h"
 #include "int512.h"
 
 int256 rand_256(){
@@ -14,6 +15,8 @@ int256 rand_256(){
     random.u1 = ((uint64_t)rand() << 32) | rand(); // pour avoir 64 bit.
     random.u2 = ((uint64_t)rand() << 32) | rand();
     random.u3 = ((uint64_t)rand() << 32) | rand(); //note: RAND_MAX peut parfois etre moins que 2^32 mais on va faire comme si
+
+
 
     return random;
 
@@ -45,7 +48,7 @@ int cmp_strict_256(int256 a, int256 b){ // verifie si a est strictement plus gra
     return a.u3 > b.u3;
 }
 
-int256 add_256(int256 a, int256 b){ //l'operation est fait modulo 2^256
+int256 add_256(int256 a, int256 b){ //l'operation est fait modulo 2^256 //TODO: fix this
     
     int256 ans = {a.u3 + b.u3,
     a.u2 + b.u2,
@@ -222,5 +225,10 @@ int256 shift_left_256(int256 x){
 void print_256(int256 x){
     //printf("{%lu,%lu,%lu,%lu}",x.u3,x.u2,x.u1,x.u0);
 
-    printf("{%llx,%llx,%llx,%llx}",x.u3,x.u2,x.u1,x.u0);
+    printf("{0x%llx,0x%llx,0x%llx,0x%llx}",x.u3,x.u2,x.u1,x.u0);
 }
+
+
+
+
+

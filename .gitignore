@@ -1,6 +1,6 @@
 *.o
 .vscode/
 test
-main
+prog
 Makefile
 *.bin

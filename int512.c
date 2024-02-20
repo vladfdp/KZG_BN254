@@ -138,7 +138,6 @@ int512 mul_from_256(int256 a, int256 b){
 
 
 
-
 int512 shift_right_by_32(int512 x){
 
     x.u0 >>= 32;

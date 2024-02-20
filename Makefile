@@ -1,8 +1,8 @@
-main: main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o Pairing.o KZG.o TwistedG2.o
-	gcc -Wall -o prog main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o Pairing.o KZG.o TwistedG2.o
+main: main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o Pairing.o KZG.o TwistedG2.o int320.o
+	gcc -Wall -o prog main.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o Pairing.o KZG.o TwistedG2.o int320.o
 
-test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o Pairing.o
-	gcc -Wall -o test test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o Pairing.o
+test: test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o Pairing.o int320.o
+	gcc -Wall -o test test.o Fp.o int256.o int512.o Fp2.o Fp6.o Fp12.o Fr.o Poly.o EC.o KZG.o TwistedG2.o Pairing.o int320.o
 	./test
 	rm *.o
 	rm test
@@ -26,7 +26,9 @@ Fp.o: Fp.c
 Fr.o: Fr.c
 	gcc -c Fr.c 
 int256.o: int256.c
-	gcc -c int256.c 
+	gcc -c int256.c
+int320.o: int320.c
+	gcc -c int320.c 
 int512.o: int512.c
 	gcc -c int512.c 
 Fp2.o: Fp2.c

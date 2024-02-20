@@ -8,6 +8,7 @@
 #include "Fp6.h"
 #include "Fp12.h"
 #include "int256.h"
+#include "int320.h"
 #include "int512.h"
 #include "Fr.h"
 #include "Poly.h"
@@ -27,6 +28,7 @@ void test_Fp_exp(){
     Fp y = Fp_exp(x,e);
 
     print_Fp(Fp_mul(x,y));
+
     
 }
 
@@ -244,6 +246,7 @@ void test_Fr(){
     Fr y = Fr_exp(x,e);
     Fr z = Fr_inv(x);
 
+    print_Fr(y);printf("\n");
     print_Fr(Fr_mul(x,y));printf("\n");
     print_Fr(Fr_mul(x,z));
 }
@@ -640,8 +643,6 @@ void test_final_exp(){
     printf("\n\n\n");
 
     print_Fp12(final_exp(x));printf("\n\n\n");
-
-    print_Fp12(final_exp2(x));printf("\n\n\n");
 }
 
 void get_e_GH(){
@@ -678,65 +679,106 @@ void test_test(){
 
     double mul_time = 0;
     double daa_mul_time = 0;
+    double mq_mul_time = 0;
+    double mq2_mul_time = 0;
+    double mq3_mul_time = 0;
 
-    int sample_size = 100;
+    int sample_size = 10000;
 
     for (int i = 0; i < sample_size; i++)
     {
         Fr A = get_rand_Fr();
-        int256 pm2 = {0x30644E72E131A029,0xB85045B68181585D,0x2833E84879B97091,0x43E1F593F0000001 - 2};
+        Fr B = get_rand_Fr();
 
         start = clock();
-        Fr C = Fr_inv(A);
+        Fr C = Fr_mul_original(A,B);
         end = clock();
         mul_time += ((double) (end - start))/CLOCKS_PER_SEC;
 
 
         start = clock();
-        Fr C2 = Fr_exp(A, pm2);  
+        Fr C2 = Fr_mul_daa(A,B);
         end = clock();
         daa_mul_time += ((double) (end - start))/CLOCKS_PER_SEC;
+
+        start = clock();
+        Fr C3 = Fr_mul_mq(A,B);
+        end = clock();
+        mq_mul_time += ((double) (end - start))/CLOCKS_PER_SEC;
+
+        start = clock();
+        Fr C4 = Fr_mul_mq2(A,B);
+        end = clock();
+        mq2_mul_time += ((double) (end - start))/CLOCKS_PER_SEC;
+
+        start = clock();
+        Fr C5 = Fr_mul(A,B);
+        end = clock();
+        mq3_mul_time += ((double) (end - start))/CLOCKS_PER_SEC;
 
 
         if (!Fr_equal(C, C2))
         {
-            printf("erreur");
+            printf("erreur\n");
         }
-        
+        if (!Fr_equal(C, C3))
+        {
+            printf("erreur\n");
+        }
+        if (!Fr_equal(C, C5))
+        {
+            printf("erreur\n");
+        }
     }
+    printf("\nTemps de multiplication moyen: %f microsecond \n", mul_time/sample_size * 1000000);
+    printf("Temps de multiplication moyen avec double-and-add: %f microsecond \n", daa_mul_time/sample_size * 1000000);
+    printf("Temps de multiplication moyen avec mq: %f microsecond \n", mq_mul_time/sample_size * 1000000);
+    printf("Temps de multiplication moyen avec mq2: %f microsecond \n", mq2_mul_time/sample_size * 1000000);
+    printf("Temps de multiplication moyen avec mq3: %f microsecond \n", mq3_mul_time/sample_size * 1000000);
+
+    Fr rand = get_rand_Fr();
+    Fr rand2 = Fr_from_4_int(0x100000000,0,0,0);//get_rand_Fr();
+    print_Fr(rand);
+    printf("%u",cmp_256(rand.num, R));
+
+    printf("\n\n\nmult = ");
+    print_Fr(Fr_mul_original(rand,rand));
+    printf("\nmult daa = ");
+    print_Fr(Fr_mul_daa(rand,rand));
+    printf("\nmult mq = ");
+    print_Fr(Fr_mul_mq(rand,rand));
+    printf("\nmult mq2 = ");
+    print_Fr(Fr_mul_mq2(rand,rand));
+    printf("\nmult mq3 = ");
+    print_Fr(Fr_mul(rand,rand));
+
+    printf("\n\n\n");
     
-    printf("\nTemps de multiplication moyen: %f sec \n", mul_time/sample_size);
-    printf("Temps de multiplication moyen avec double-and-add: %f sec \n", daa_mul_time/sample_size);
+    int512 tp256 = {0,0,0,1,0,0,0,0};
+    int512 tp288 = {0,0,0,0x100000000,0,0,0,0};
+    int512 tp320 = {0,0,1,0,0,0,0,0};
+    int512 tp352 = {0,0,0x100000000,0,0,0,0,0};
+    int512 tp384 = {0,1,0,0,0,0,0,0};
+    int512 tp416 = {0,0x100000000,0,0,0,0,0,0};
+    int512 tp448 = {1,0,0,0,0,0,0,0};
+    int512 tp480 = {0x100000000,0,0,0,0,0,0,0};
 
-    Fr five = get_rand_Fr();
-    print_Fr(five);
-
-    printf("\n\n\n");
-    print_Fr(Fr_mul(five,five));
-    print_Fr(Fr_mul_daa(five,five));
-
-    printf("\n\n\n");
-    Fp6 x; 
-    x.x0 = Fp2_from_int(54356,1112);
-    x.x1 = Fp2_from_int(5156,1072);
-    x.x2 = Fp2_from_int(2,10000);
-
-    Fp12 x2;
-
-    x2.x0 = x;
-    int256 e = {0,0,0,45};
-    x2.x1 = Fp6_exp(x,e);
-
-
-    print_Fp12(Fp12_exp(x2,P));printf("\n\n\n");
-    print_Fp12(Fp12_frobenius(x2));
-
+    
+    print_256(modulo(tp256, P)); printf("\n");
+    print_256(modulo(tp288, P)); printf("\n");
+    print_256(modulo(tp320, P)); printf("\n");
+    print_256(modulo(tp352, P)); printf("\n");    
+    print_256(modulo(tp384, P)); printf("\n");
+    print_256(modulo(tp416, P)); printf("\n");
+    print_256(modulo(tp448, P)); printf("\n");
+    print_256(modulo(tp480, P)); printf("\n");  
+      
 }
 
 int main(){
    
     //test_Euclid();
-    //test_Fp_exp();
+    test_Fp_exp();
     //test_Fp_Inv();
     //test_Fp_ext();    
     //test_Fp_ext_Inv();
@@ -747,7 +789,7 @@ int main(){
     //test_G1();
     //test_G2();
     //test_frobenius();
-    test_final_exp();
+    //test_final_exp();
 
     //test_pairing();
     //test_test();

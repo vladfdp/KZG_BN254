@@ -104,6 +104,8 @@ G1 create_witness(Poly poly, Fr index, Fr eval){
 
     G1 proof = commit(quotient);                            //et on renvoie son commit
 
+    poly.coeffs[0] = Fr_add(poly.coeffs[0], eval); 
+
     free_Poly(quotient);
 
     return proof;
