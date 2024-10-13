@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Fp.h"
@@ -44,4 +48,8 @@ Fp2 Fp2_div(Fp2 a, Fp2 b);
 
 void print_Fp2(Fp2 a);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

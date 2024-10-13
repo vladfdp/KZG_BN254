@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Fp.h"
@@ -49,3 +53,6 @@ Fp6 Fp6_exp(Fp6 base, int256 exponent);
 
 #endif
 
+#ifdef __cplusplus
+}
+#endif

@@ -36,7 +36,7 @@ void protocol(){
 
         start = clock();
 
-        G1 comm = commit(poly);
+        g1 comm = commit(poly);
         
         end = clock();
         commit_time = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -52,8 +52,8 @@ void protocol(){
 
         start = clock();
 
-        G1 proof = create_witness(poly, index, eval);    //on crée une preuve
-        G1 proof2 = create_witness(poly, index, eval2);  //et une fausse
+        g1 proof = create_witness(poly, index, eval);    //on crée une preuve
+        g1 proof2 = create_witness(poly, index, eval2);  //et une fausse
 
         end = clock();
         prove_time = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -88,7 +88,7 @@ void benchmark(){
 
     FILE *srs_g2;
 
-    if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+    if ((srs_g2 = fopen("SRS_g2.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
@@ -96,22 +96,22 @@ void benchmark(){
 
     FILE *srs_g1;
 
-    if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
+    if ((srs_g1 = fopen("SRS_g1.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
     }
 
-    G2 H;
-    fread(&H, sizeof(G2), 1, srs_g2);
+    g2 H;
+    fread(&H, sizeof(g2), 1, srs_g2);
 
-    G1 G;
-    fread(&G, sizeof(G1), 1, srs_g1);
+    g1 G;
+    fread(&G, sizeof(g1), 1, srs_g1);
     
     double Pairing_time = 0;
-    double G1_mul_time = 0;
-    double G2_mul_time = 0;
-    double G2_mul_twist_time = 0;
+    double g1_mul_time = 0;
+    double g2_mul_time = 0;
+    double g2_mul_twist_time = 0;
     double final_exp_time = 0;
 
     int sample_size = 10;
@@ -121,22 +121,22 @@ void benchmark(){
         Fr rand = get_rand_Fr();
 
         start = clock();
-        G1 P = G1_mul_by_int(G, rand.num);              //mult dans G1
+        g1 P = g1_mul_by_int(G, rand.num);              //mult dans g1
         end = clock();
-        G1_mul_time += ((double) (end - start)) / CLOCKS_PER_SEC;
+        g1_mul_time += ((double) (end - start)) / CLOCKS_PER_SEC;
 
 
         start = clock();
-        G2 Q = G2_mul_by_int(H, rand.num);              //mult dans G2
+        g2 Q = g2_mul_by_int(H, rand.num);              //mult dans g2
         end = clock();
-        G2_mul_time += ((double) (end - start)) / CLOCKS_PER_SEC;
+        g2_mul_time += ((double) (end - start)) / CLOCKS_PER_SEC;
 
         start = clock();
-        G2 Q2 = G2_mul_by_int_twist(H, rand.num);              //mult dans G2 avec twist
+        g2 Q2 = g2_mul_by_int_twist(H, rand.num);              //mult dans g2 avec twist
         end = clock();
-        G2_mul_twist_time += ((double) (end - start)) / CLOCKS_PER_SEC;
+        g2_mul_twist_time += ((double) (end - start)) / CLOCKS_PER_SEC;
 
-        if (!G2_equal(Q, Q2))
+        if (!g2_equal(Q, Q2))
         {
             printf("erreur");
         }
@@ -154,9 +154,9 @@ void benchmark(){
         final_exp_time += ((double) (end - start)) / CLOCKS_PER_SEC;
     }
     
-    printf("\nTemps de multiplication moyen dans G1: %f sec \n", G1_mul_time/sample_size);
-    printf("Temps de multiplication moyen dans G2: %f sec \n", G2_mul_time/sample_size);
-    printf("Temps de multiplication moyen dans G2 avec twist: %f sec \n", G2_mul_twist_time/sample_size);
+    printf("\nTemps de multiplication moyen dans g1: %f sec \n", g1_mul_time/sample_size);
+    printf("Temps de multiplication moyen dans g2: %f sec \n", g2_mul_time/sample_size);
+    printf("Temps de multiplication moyen dans g2 avec twist: %f sec \n", g2_mul_twist_time/sample_size);
     printf("Temps moyen de calcul du Pairing de Tate: %f sec \n", Pairing_time/sample_size);
     printf("Dont exponentiation finale: %f sec \n", final_exp_time/sample_size);
 }

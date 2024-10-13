@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include "int256.h"
 
@@ -36,4 +40,8 @@ int256 modulo(int512 x, int256 mod);
 
 void print_512(int512 x);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

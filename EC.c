@@ -10,54 +10,54 @@
 #include "TwistedG2.h"
 #include "EC.h"
 
-G1 G1_zero()
+g1 g1_zero()
 {
-	G1 ans = {Fp_zero(),Fp_zero()};
+	g1 ans = {Fp_zero(),Fp_zero()};
 	return ans;
 } 
 
-G2 G2_zero()
+g2 g2_zero()
 {
-	G2 ans = {Fp6_zero(),Fp12_zero()};
+	g2 ans = {Fp6_zero(),Fp12_zero()};
 	return ans;
 } 
 
-G1 G1_opp(G1 P0)
+g1 g1_opp(g1 P0)
 {
-	G1 ans = {P0.x, Fp_opp( P0.y)};
+	g1 ans = {P0.x, Fp_opp( P0.y)};
 	return ans; 
 }
 
 
-int G1_equal(G1 P1, G1 P2)
+int g1_equal(g1 P1, g1 P2)
 {
 	return (Fp_equal(P1.x,P2.x) && Fp_equal(P1.y,P2.y));
 
 }
 
-G1 G1_add(G1 P1, G1 P2)
+g1 g1_add(g1 P1, g1 P2)
 {
 	Fp m;
-	G1 P;
-	if (G1_equal(P1, G1_zero()))
+	g1 P;
+	if (g1_equal(P1, g1_zero()))
 	{
 		return P2;
 	}
 	
-	if (G1_equal(P2, G1_zero()))
+	if (g1_equal(P2, g1_zero()))
 	{
 		return P1;
 	}
 	
-	if (G1_equal(P1, G1_opp(P2)))
+	if (g1_equal(P1, g1_opp(P2)))
 	{
-		G1 ans = {Fp_zero(),Fp_zero()};
+		g1 ans = {Fp_zero(),Fp_zero()};
 		return ans;
 	}
 
 	else 
 	{
-		if (G1_equal(P1, P2))
+		if (g1_equal(P1, P2))
 			{
 				m = Fp_div(Fp_mul(Fp_from_int(3),Fp_mul(P1.x,P1.x)), Fp_mul(Fp_from_int(2),P1.y)); //tangeante au point
 			}
@@ -72,41 +72,41 @@ G1 G1_add(G1 P1, G1 P2)
 }
 
 
-G2 G2_opp(G2 P0)
+g2 g2_opp(g2 P0)
 {
-	G2 ans ={P0.x, Fp12_sub(Fp12_zero() , P0.y)};
+	g2 ans ={P0.x, Fp12_sub(Fp12_zero() , P0.y)};
 	return ans; 
 }
 
 
-int G2_equal(G2 P1, G2 P2)
+int g2_equal(g2 P1, g2 P2)
 {
 	return (Fp6_equal(P1.x,P2.x) & Fp12_equal(P1.y,P2.y));
 
 }
 
-G2 G2_add(G2 P1, G2 P2)
+g2 g2_add(g2 P1, g2 P2)
 	{
 		Fp12 m;
-		G2 P;
-		if (G2_equal(P1, G2_zero()))
+		g2 P;
+		if (g2_equal(P1, g2_zero()))
 		{
 			return P2;
 		}
 	
-		if (G2_equal(P2, G2_zero()))
+		if (g2_equal(P2, g2_zero()))
 		{
 			return P1;
 		}
 
-		if (G2_equal(P1, G2_opp(P2)))
+		if (g2_equal(P1, g2_opp(P2)))
 		{
-			G2 ans = {Fp6_zero(),Fp12_zero()};
+			g2 ans = {Fp6_zero(),Fp12_zero()};
 			return ans;
 		}
 		else 
 		{
-			if (G2_equal(P1, P2))
+			if (g2_equal(P1, P2))
 				{
 					m = Fp12_mul_by_Fp6(Fp12_inv(Fp12_mul_by_scalar(P1.y, Fp_from_int(2))) , Fp6_mul_by_scalar(Fp6_mul(P1.x,P1.x),Fp_from_int(3)));		//tangeante
 				}
@@ -122,60 +122,60 @@ G2 G2_add(G2 P1, G2 P2)
 	}
 
 
-G1 G1_mul_by_int(G1 base, int256 exponent){		//double and add
+g1 g1_mul_by_int(g1 base, int256 exponent){		//double and add
 
-    G1 ans = G1_zero();
+    g1 ans = g1_zero();
 
     while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3)
     {
         if (exponent.u0 & 1){
-            ans = G1_add(ans,base);
+            ans = g1_add(ans,base);
         }
-        base = G1_add(base, base);
+        base = g1_add(base, base);
         exponent = shift_right_256(exponent);
     }
     return ans;
 }
 
 
-G2 G2_mul_by_int(G2 base, int256 exponent){		//double and add
+g2 g2_mul_by_int(g2 base, int256 exponent){		//double and add
 
-    G2 ans = G2_zero();
+    g2 ans = g2_zero();
 
     while (exponent.u0  || exponent.u1  || exponent.u2 ||  exponent.u3)
     {
         if (exponent.u0 & 1){
-            ans = G2_add(ans,base);
+            ans = g2_add(ans,base);
         }
-        base = G2_add(base, base);
+        base = g2_add(base, base);
         exponent = shift_right_256(exponent);
     }
     return ans;
 }
 
-G2 G2_frobenius(G2 A)
+g2 g2_frobenius(g2 A)
 {	
-	G2 B;
+	g2 B;
 	B.x = Fp6_frobenius(A.x);
 	B.y = Fp12_frobenius(A.y);
 	return B;
 }
 
-G2 G2_mul_by_int_twist(G2 base, int256 exponent){ //equivalent a G2_mul_by_int, plus rapide
+g2 g2_mul_by_int_twist(g2 base, int256 exponent){ //equivalent a g2_mul_by_int, plus rapide
 
-	TwistedG2 t_base = G2_twist(base);							//on transforme le point en TwistedG2
+	TwistedG2 t_base = g2_twist(base);							//on transforme le point en TwistedG2
 	TwistedG2 t_ans = TwistedG2_mul_by_int(t_base, exponent);	//on fait un double-and-add dans TwistedG2
-	return G2_untwist(t_ans);									//on retransforme en point de G2
+	return g2_untwist(t_ans);									//on retransforme en point de g2
 }
 
-void print_G1(G1 P)
+void print_g1(g1 P)
 {
 	printf("(");
 	print_Fp(P.x); printf(",");
 	print_Fp(P.y); printf(")\n");
 }
 
-void print_G2(G2 P)
+void print_g2(g2 P)
 {
 	printf("(");
 	print_Fp6(P.x); printf(",");
@@ -184,7 +184,7 @@ void print_G2(G2 P)
 
 
 
-int G2_is_on_curve(G2 P){		//verifie qu'un couple est bien sur la courbe
+int g2_is_on_curve(g2 P){		//verifie qu'un couple est bien sur la courbe
 
 	if (Fp6_is_zero(P.x) && Fp12_is_zero(P.y))
 	{

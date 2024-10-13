@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Fr.h"
@@ -23,4 +27,8 @@ void free_Poly(Poly poly);
 void print_Poly(Poly poly);
 
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

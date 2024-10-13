@@ -1,3 +1,10 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef TWISTEDg2_H
+#define TWISTEDg2_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Fp.h"
@@ -17,9 +24,9 @@ typedef struct TwistedG2
 
 
 
-TwistedG2 G2_twist(G2 P);
+TwistedG2 g2_twist(g2 P);
 
-G2 G2_untwist(TwistedG2 P);
+g2 g2_untwist(TwistedG2 P);
 
 TwistedG2 TwistedG2_zero();
 
@@ -30,3 +37,9 @@ int TwistedG2_equal(TwistedG2 P1, TwistedG2 P2);
 TwistedG2 TwistedG2_add(TwistedG2 P1, TwistedG2 P2);
 
 TwistedG2 TwistedG2_mul_by_int(TwistedG2 base, int256 exponent);
+
+#endif
+
+#ifdef __cplusplus
+}
+#endif

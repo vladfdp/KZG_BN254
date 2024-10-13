@@ -43,26 +43,26 @@ Fp12 e_GH(){
     return e_GH;
 }
 
-int verify(G1 commit, G1 proof, Fr index, Fr eval){
+int verify(g1 commit, g1 proof, Fr index, Fr eval){
 
     FILE *srs_g2;
 
-    if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){       //on ouvre le SRS
+    if ((srs_g2 = fopen("SRS_g2.bin","rb")) == NULL){       //on ouvre le SRS
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
     }
 
-    G2 H;
-    G2 alpha_H;
-    fread(&H, sizeof(G2), 1, srs_g2);
-    fread(&alpha_H, sizeof(G2), 1, srs_g2); 
+    g2 H;
+    g2 alpha_H;
+    fread(&H, sizeof(g2), 1, srs_g2);
+    fread(&alpha_H, sizeof(g2), 1, srs_g2); 
 
 
     Fp12 e_gh = e_GH();
 
-    G2 ind_H = G2_mul_by_int_twist(H, Fr_opp(index).num);
-    G2 cofactor = G2_add( alpha_H , ind_H);                 // (alpha - index) * H
+    g2 ind_H = g2_mul_by_int_twist(H, Fr_opp(index).num);
+    g2 cofactor = g2_add( alpha_H , ind_H);                 // (alpha - index) * H
 
     Fp12 exp_eval = Fp12_exp(e_gh, eval.num);               // e(G,H)^eval
     Fp12 pairing = Tate_pairing(proof, cofactor);
@@ -73,28 +73,28 @@ int verify(G1 commit, G1 proof, Fr index, Fr eval){
     return Fp12_equal(lhs, rhs);                            //on evalue e(commit, H) = e(proof, (alhpa - index)H) * e(G,H)^eval
 }
 
-G1 commit(Poly poly){
+g1 commit(Poly poly){
 
     FILE *srs_g1;
 
-    if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
+    if ((srs_g1 = fopen("SRS_g1.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");    //On ouvre le SRS
 
        exit(1);
     }
 
-    G1 ans = G1_zero();
-    G1 alpha_i_G;
+    g1 ans = g1_zero();
+    g1 alpha_i_G;
     
     for (int i = 0; i < poly.degree + 1; i++)                   //on calcul poly(alpha) * G
     {
-        fread(&alpha_i_G, sizeof(G1), 1, srs_g1);
-        ans = G1_add(ans, G1_mul_by_int(alpha_i_G, poly.coeffs[i].num ));
+        fread(&alpha_i_G, sizeof(g1), 1, srs_g1);
+        ans = g1_add(ans, g1_mul_by_int(alpha_i_G, poly.coeffs[i].num ));
     }
     return ans;
 }
 
-G1 create_witness(Poly poly, Fr index, Fr eval){
+g1 create_witness(Poly poly, Fr index, Fr eval){
 
     poly.coeffs[0] = Fr_sub(poly.coeffs[0], eval);
 
@@ -102,7 +102,7 @@ G1 create_witness(Poly poly, Fr index, Fr eval){
 
     Poly quotient = euclidean_div_Poly(poly, van_poly);     //on calcule poly / (X - index)
 
-    G1 proof = commit(quotient);                            //et on renvoie son commit
+    g1 proof = commit(quotient);                            //et on renvoie son commit
 
     poly.coeffs[0] = Fr_add(poly.coeffs[0], eval); 
 

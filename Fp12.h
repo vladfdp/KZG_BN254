@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef FP12_H
 #define FP12_H
 
@@ -60,4 +64,10 @@ Fp12 Fp12_frobenius(Fp12 x);
 
 
 
+#endif
+
+
+
+#ifdef __cplusplus
+}
 #endif

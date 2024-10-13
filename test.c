@@ -255,7 +255,7 @@ void test_setup(){
     FILE *srs_g1;
     FILE *srs_g2;
 
-   if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
+   if ((srs_g1 = fopen("SRS_g1.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
@@ -263,20 +263,20 @@ void test_setup(){
 
    for(int i = 0; i < 100; i++)
     {
-        G1 srs;
-        fread(&srs, sizeof(G1), 1, srs_g1); 
+        g1 srs;
+        fread(&srs, sizeof(g1), 1, srs_g1); 
         printf("\n");
         print_Fp(srs.x);print_Fp(srs.y);
     }
    fclose(srs_g1); 
 
-   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+   if ((srs_g2 = fopen("SRS_g2.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
     }
-    G2 srs2;
-    fread(&srs2, sizeof(G2), 1, srs_g2); 
+    g2 srs2;
+    fread(&srs2, sizeof(g2), 1, srs_g2); 
     printf("\n");
     print_Fp6(srs2.x);print_Fp12(srs2.y);
     fclose(srs_g2); 
@@ -395,20 +395,20 @@ void test_EC_gen(){
 
 // 268FF4DCF71C97A2C4C5275F368914E0D7FAAEDF79B9414190409DBBE802D801
 
-void test_G1()
+void test_g1()
 {  
-   G1 A = {{{0x1083588805634D3F,0x51C50FEF5D4A71C5,0x877415191FFD2C46,0x923028175C2F45D3}}, {{0x1604C841A2B0A4BC,0x6A6FBFBFC45B2A46,0xAD0F7EE20A1F99BC,0xB13154224160F996}}};
-   G1 B = {{{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}}, {{0x7060D04CA61EA23,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
+   g1 A = {{{0x1083588805634D3F,0x51C50FEF5D4A71C5,0x877415191FFD2C46,0x923028175C2F45D3}}, {{0x1604C841A2B0A4BC,0x6A6FBFBFC45B2A46,0xAD0F7EE20A1F99BC,0xB13154224160F996}}};
+   g1 B = {{{0x12E5C63E40D0A3E1,0x76D8AF88E5731746,0x4CF911570E142E6B,0x6CF5A1F1E272470C}}, {{0x7060D04CA61EA23,0x45FEABA976434E79,0x2E93FD8AB53A4FDB,0xC3957D8D1F39C96F}}};
    int256 a = {0,0,0,6548};
-   G1 C = G1_add (A, B);
-   G1 D = G1_mul_by_int(A,a);
-   G1 E = G1_mul_by_int(A,r);
-   print_G1(C);
-   print_G1(D);
-   print_G1(E);               
+   g1 C = g1_add (A, B);
+   g1 D = g1_mul_by_int(A,a);
+   g1 E = g1_mul_by_int(A,r);
+   print_g1(C);
+   print_g1(D);
+   print_g1(E);               
 }
 
-void test_G2()
+void test_g2()
 {
     int256 a = {0,0,0,6548};
     
@@ -431,21 +431,21 @@ void test_G2()
     TwistedG2 C = {B1, B2};
     TwistedG2 D = {B3, B4};
     
-    G2 P1 = G2_untwist(C);
-    G2 Q = G2_untwist(D);
+    g2 P1 = g2_untwist(C);
+    g2 Q = g2_untwist(D);
 
-    print_G2(P1);printf("\n \n");
-    print_G2(Q);printf("\n \n");
+    print_g2(P1);printf("\n \n");
+    print_g2(Q);printf("\n \n");
 
-    G2 R = G2_add(P1,Q);
-    print_G2(R);printf("\n \n");
+    g2 R = g2_add(P1,Q);
+    print_g2(R);printf("\n \n");
     
-    G2 R2 = G2_mul_by_int(P1,a);
-    print_G2(R2);printf("\n \n");
+    g2 R2 = g2_mul_by_int(P1,a);
+    print_g2(R2);printf("\n \n");
 
-    G2 H = G2_frobenius(R);
-    G2 I = G2_mul_by_int(R,P);
-    int i = G2_equal(H,I);
+    g2 H = g2_frobenius(R);
+    g2 I = g2_mul_by_int(R,P);
+    int i = g2_equal(H,I);
     printf("%d \n \n", i);
 
     Fp C1 = {{0x296A6F157EC84CF2,0x99D22CAB1377ACA8,0xB936AC1F2F726BD7,0x4D8ABCE3F5F89068}};
@@ -467,11 +467,11 @@ void test_G2()
     TwistedG2 E = {E1, E2};
     TwistedG2 F = {E3, E4};
 
-    G2 X = G2_untwist(E);
-    G2 Y = G2_untwist(F);
+    g2 X = g2_untwist(E);
+    g2 Y = g2_untwist(F);
 
-    print_G2(X);printf("\n \n");
-    print_G2(Y);printf("\n \n");
+    print_g2(X);printf("\n \n");
+    print_g2(Y);printf("\n \n");
 
 
 }
@@ -498,17 +498,17 @@ void test_pairing()
     TwistedG2 C = {B1, B2};
     TwistedG2 D = {B3, B4};
     
-    G2 P = G2_untwist(C);
-    G2 Q = G2_untwist(D);
+    g2 P = g2_untwist(C);
+    g2 Q = g2_untwist(D);
 
-    G2 PplusQ = G2_add(P,Q);
+    g2 PplusQ = g2_add(P,Q);
 
     Fp G_x = {0x187CC1E6F77C59DD,0x29AC8214D5733697,0xB33601F06D087C26,0xC1D8F343FA92FFC2};
     Fp G_y = {0x197C3E3702A874C3,0x424634A83761F37A,0xD8E8E8E4BE86082B,0xC8D9C9E6FE14275E};
 
-    G1 A = {G_x, G_y};
+    g1 A = {G_x, G_y};
    
-   // G1 AplusB = G1_add (A, B);
+   // g1 AplusB = g1_add (A, B);
 
    Fp12 K = Tate_pairing(A,PplusQ);
    Fp12 K2 = Fp12_mul(Tate_pairing(A,P),Tate_pairing(A,Q));
@@ -517,8 +517,8 @@ void test_pairing()
    print_Fp12(K2);printf("\n \n");
 
 
-   Fp12 F = Tate_pairing(A,G2_mul_by_int(P,a));
-   Fp12 F2 = Tate_pairing(G1_mul_by_int(A,a),P);
+   Fp12 F = Tate_pairing(A,g2_mul_by_int(P,a));
+   Fp12 F2 = Tate_pairing(g1_mul_by_int(A,a),P);
 
    print_Fp12(F) ;printf("\n \n");
    print_Fp12(F2);printf("\n \n");
@@ -549,18 +549,18 @@ void test_frobenius(){
     FILE *srs_g2;
 
 
-   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+   if ((srs_g2 = fopen("SRS_g2.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
     }
-    G2 H;
-    fread(&H, sizeof(G2), 1, srs_g2); 
+    g2 H;
+    fread(&H, sizeof(g2), 1, srs_g2); 
     printf("\n");
-    G2 pH = G2_mul_by_int(H, P);
-    G2 froH = G2_frobenius(H);
+    g2 pH = g2_mul_by_int(H, P);
+    g2 froH = g2_frobenius(H);
 
-    printf("\n%d",G2_equal(pH,froH));
+    printf("\n%d",g2_equal(pH,froH));
     
 
     fclose(srs_g2);
@@ -576,13 +576,13 @@ void test_frobenius(){
     
     TwistedG2 D = {B3, B4};
     
-    G2 Q = G2_untwist(D);
+    g2 Q = g2_untwist(D);
 
     printf("\n");
-    G2 pQ = G2_mul_by_int(Q, P);
-    G2 froQ = G2_frobenius(Q);
+    g2 pQ = g2_mul_by_int(Q, P);
+    g2 froQ = g2_frobenius(Q);
 
-    printf("\n%d",G2_equal(pQ,froQ));
+    printf("\n%d",g2_equal(pQ,froQ));
 
 }
 
@@ -592,21 +592,21 @@ void test_TwistedG2(){
     FILE *srs_g2;
 
 
-   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+   if ((srs_g2 = fopen("SRS_g2.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
     }
-    G2 H;
-    fread(&H, sizeof(G2), 1, srs_g2);
+    g2 H;
+    fread(&H, sizeof(g2), 1, srs_g2);
 
     Fr lambda = Fr_from_4_int(765,657543,109763,1111);
-    G2 lamH = G2_mul_by_int(H, lambda.num);
+    g2 lamH = g2_mul_by_int(H, lambda.num);
     
-    TwistedG2 tH = G2_twist(H);
+    TwistedG2 tH = g2_twist(H);
     TwistedG2 lamTH = TwistedG2_mul_by_int(tH, lambda.num);
 
-    G2 lamH2 = G2_untwist(lamTH);
+    g2 lamH2 = g2_untwist(lamTH);
 
 
     // Fp A1 = {{0x2CFC7B2345E6401B,0x2DF4923F8058718B,0xDC845E570A1AE9B1,0x3D97853E6C2B269A}};
@@ -619,13 +619,13 @@ void test_TwistedG2(){
     
     // TwistedG2 C = {B1, B2};
     
-    // G2 P = G2_untwist(C);
+    // g2 P = g2_untwist(C);
 
-    // TwistedG2 C2 = G2_twist(P);
+    // TwistedG2 C2 = g2_twist(P);
     
     // printf("\n\n%d\n\n",TwistedG2_equal(C,C2));
 
-    printf("pls be 1: %d",G2_equal(lamH, lamH2));
+    printf("pls be 1: %d",g2_equal(lamH, lamH2));
     
 
 
@@ -649,24 +649,24 @@ void get_e_GH(){
     FILE *srs_g1;
 
 
-   if ((srs_g1 = fopen("SRS_G1.bin","rb")) == NULL){
+   if ((srs_g1 = fopen("SRS_g1.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
     }
-    G1 G;
-    fread(&G, sizeof(G1), 1, srs_g1);
+    g1 G;
+    fread(&G, sizeof(g1), 1, srs_g1);
 
     FILE *srs_g2;
 
 
-   if ((srs_g2 = fopen("SRS_G2.bin","rb")) == NULL){
+   if ((srs_g2 = fopen("SRS_g2.bin","rb")) == NULL){
        printf("Missing SRS, run setup using 'make setup'");
 
        exit(1);
     }
-    G2 H;
-    fread(&H, sizeof(G2), 1, srs_g2);
+    g2 H;
+    fread(&H, sizeof(g2), 1, srs_g2);
 
     Fp12 e = Tate_pairing(G, H);
     Fp12 e2 = e_GH();
@@ -786,8 +786,8 @@ int main(){
     //test_poly();
     //test_poly_euclid_div();
     //test_setup();
-    //test_G1();
-    //test_G2();
+    //test_g1();
+    //test_g2();
     //test_frobenius();
     //test_final_exp();
 

@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #ifndef INT_256_H
@@ -38,4 +42,9 @@ QR euclidean_div_256(int256 a ,int256 b);
 
 
 
+#endif
+
+
+#ifdef __cplusplus
+}
 #endif

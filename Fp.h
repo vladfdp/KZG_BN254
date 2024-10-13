@@ -1,3 +1,7 @@
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include "int256.h"
 
@@ -39,4 +43,8 @@ Fp Fp_inv(Fp x);
 
 Fp Fp_div(Fp a,Fp b);
 
+#endif
+
+#ifdef __cplusplus
+}
 #endif

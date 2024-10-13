@@ -52,9 +52,9 @@ Fp12 final_exp(Fp12 x){
 }
 
 
-Fp12 Tate_pairing(G1 P, G2 Q){
+Fp12 Tate_pairing(g1 P, g2 Q){
 
-	G1 T = P;
+	g1 T = P;
 	Fp12 f = Fp12_one();
 
 	int256 r = shift_left_256(shift_left_256(shift_left_256(R)));

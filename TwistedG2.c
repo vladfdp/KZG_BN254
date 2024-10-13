@@ -10,7 +10,7 @@
 #include "EC.h"
 #include "TwistedG2.h"
 
-TwistedG2 G2_twist(G2 P){	//iso G2->TwistedG2
+TwistedG2 g2_twist(g2 P){	//iso g2->TwistedG2
 
     Fp6 omega_squared_inv = Fp6_zero();
     Fp12 omega_cubed_inv = Fp12_zero();
@@ -34,7 +34,7 @@ TwistedG2 G2_twist(G2 P){	//iso G2->TwistedG2
     return ans;
 }
 
-G2 G2_untwist(TwistedG2 P){			//iso TwistedG2->G2
+g2 g2_untwist(TwistedG2 P){			//iso TwistedG2->g2
 
     Fp6 omega_squared = Fp6_zero();
     Fp12 omega_cubed = Fp12_zero();
@@ -42,7 +42,7 @@ G2 G2_untwist(TwistedG2 P){			//iso TwistedG2->G2
     omega_squared.x1 = Fp2_one();
     omega_cubed.x1.x1 = Fp2_one();
     
-    G2 ans;
+    g2 ans;
     ans.x = Fp6_mul_by_Fp2(omega_squared, P.x);
     ans.y = Fp12_mul_by_Fp2(omega_cubed, P.y);
 
@@ -69,7 +69,7 @@ int TwistedG2_equal(TwistedG2 P1, TwistedG2 P2)
 
 }
 
-TwistedG2 TwistedG2_add(TwistedG2 P1, TwistedG2 P2)		//algorithme d'addition similaire a G1 et G2
+TwistedG2 TwistedG2_add(TwistedG2 P1, TwistedG2 P2)		//algorithme d'addition similaire a g1 et g2
 {
 	Fp2 m;
 	TwistedG2 P;

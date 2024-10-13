@@ -55,24 +55,24 @@ int main(){
 
 
     FILE *srs_g1;
-    srs_g1 = fopen("SRS_G1.bin","wb");
+    srs_g1 = fopen("SRS_g1.bin","wb");
     FILE *srs_g2;
-    srs_g2 = fopen("SRS_G2.bin","wb");
+    srs_g2 = fopen("SRS_g2.bin","wb");
 
 
-    G2 H = {H_x, H_y};
-    fwrite(&H, sizeof(G2), 1, srs_g2);                      //SRS de G2: H, alpha * H                                
-    G2 alpha_H = G2_mul_by_int_twist(H, alpha.num);
-    fwrite(&alpha_H, sizeof(G2), 1, srs_g2);
+    g2 H = {H_x, H_y};
+    fwrite(&H, sizeof(g2), 1, srs_g2);                      //SRS de g2: H, alpha * H                                
+    g2 alpha_H = g2_mul_by_int_twist(H, alpha.num);
+    fwrite(&alpha_H, sizeof(g2), 1, srs_g2);
 
 
-    G1 G = {G_x, G_y};
-    fwrite(&G, sizeof(G1), 1, srs_g1);
+    g1 G = {G_x, G_y};
+    fwrite(&G, sizeof(g1), 1, srs_g1);
 
     for(unsigned int i = 0; i < MAX_DEGREE; i++)
     {
-    G = G1_mul_by_int(G, alpha.num);
-    fwrite(&G, sizeof(G1), 1, srs_g1);                      //SRS de G1: alpha^i * G
+    G = g1_mul_by_int(G, alpha.num);
+    fwrite(&G, sizeof(g1), 1, srs_g1);                      //SRS de g1: alpha^i * G
     }
 
     fclose(srs_g1);
